@@ -369,6 +369,11 @@ public class MainActivity extends BaseAppActivity implements TextWatcher, Servic
     }
 
     @Override
+    public void onUserCountChanged(int count) {
+        setSubtitle(mChatBinder.getCurrentRoomName() + " [" + count + "]");
+    }
+
+    @Override
     public void onQuitByUser() {
         finish();
     }

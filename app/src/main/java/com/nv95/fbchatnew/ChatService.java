@@ -149,6 +149,7 @@ public class ChatService extends Service implements FbChat.ChatCallback {
                             msg
                     );
                     mCallback.onMessageReceived(cm);
+                    mCallback.onUserCountChanged(message.getInt("users_count"));
                     break;
                 }
                 case "history": {

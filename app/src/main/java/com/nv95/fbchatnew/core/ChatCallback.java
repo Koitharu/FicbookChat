@@ -23,5 +23,7 @@ public interface ChatCallback {
 
     void onOnlineListReceived(String room, List<String> participants);
 
+    void onUserCountChanged(int count);
+
     void onQuitByUser();
 }
