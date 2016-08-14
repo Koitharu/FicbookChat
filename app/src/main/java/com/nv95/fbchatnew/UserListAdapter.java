@@ -48,7 +48,7 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.UserHo
         AvatarUtils.assignAvatarTo(holder.imageView, mDataset.get(position));
     }
 
-    static class UserHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    static class UserHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
 
         String nickname;
         final TextView textView;
@@ -62,12 +62,19 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.UserHo
             imageView = (ImageView) itemView.findViewById(R.id.imageView);
             if (clickListener != null) {
                 itemView.setOnClickListener(this);
+                itemView.setOnLongClickListener(this);
             }
         }
 
         @Override
         public void onClick(View view) {
-            mClickListener.onUserClick(nickname);
+            mClickListener.onUserClick(nickname, false);
+        }
+
+        @Override
+        public boolean onLongClick(View view) {
+            mClickListener.onUserClick(nickname, true);
+            return true;
         }
     }
 }

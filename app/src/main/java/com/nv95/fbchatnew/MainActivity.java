@@ -31,6 +31,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.nv95.fbchatnew.components.EndlessHeaderedAdapter;
 import com.nv95.fbchatnew.core.AccountStore;
@@ -41,7 +42,9 @@ import com.nv95.fbchatnew.core.emoji.EmojiAdapter;
 import com.nv95.fbchatnew.core.emoji.EmojiUtils;
 import com.nv95.fbchatnew.core.emoji.OnEmojiSelectListener;
 import com.nv95.fbchatnew.dialogs.AdminMenuDialog;
+import com.nv95.fbchatnew.dialogs.BanhammerDialog;
 import com.nv95.fbchatnew.dialogs.LoginDialog;
+import com.nv95.fbchatnew.dialogs.OnUserClickListener;
 import com.nv95.fbchatnew.dialogs.UserListDialog;
 import com.nv95.fbchatnew.utils.AvatarUtils;
 import com.nv95.fbchatnew.utils.CloseHelper;
@@ -379,7 +382,21 @@ public class MainActivity extends BaseAppActivity implements TextWatcher, Servic
         if (mProgressDialog != null) {
             mProgressDialog.dismiss();
             mProgressDialog = null;
-            new UserListDialog(this).show(participants);
+            new UserListDialog(this).setOnUserClickListener(new OnUserClickListener() {
+                @Override
+                public void onUserClick(String nickname, boolean isLongClick) {
+                    if (isLongClick) {
+                        if (nickname.equals(mChatBinder.getMe())) {
+                            Toast.makeText(MainActivity.this, R.string.this_is_you, Toast.LENGTH_SHORT).show();
+                        } else if (mChatBinder.isAdmin()) {
+                            new BanhammerDialog(MainActivity.this, mChatBinder)
+                                    .show(nickname);
+                        } else if (mChatBinder.isModer()) {
+                            BanhammerDialog.kikDialog(MainActivity.this, nickname, mChatBinder);
+                        }
+                    }
+                }
+            }).show(participants);
         }
     }
 

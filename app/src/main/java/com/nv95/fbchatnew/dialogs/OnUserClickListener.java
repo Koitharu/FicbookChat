@@ -5,5 +5,5 @@ package com.nv95.fbchatnew.dialogs;
  */
 
 public interface OnUserClickListener {
-    void onUserClick(String nickname);
+    void onUserClick(String nickname, boolean isLongClick);
 }

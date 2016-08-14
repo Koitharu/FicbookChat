@@ -51,7 +51,7 @@ public class UserListDialog implements View.OnClickListener, OnUserClickListener
     }
 
     public void show(List<String> data) {
-        mRecyclerView.setAdapter(new UserListAdapter(data, mClickListener));
+        mRecyclerView.setAdapter(new UserListAdapter(data, this));
         mDialog.show();
     }
 
@@ -61,9 +61,10 @@ public class UserListDialog implements View.OnClickListener, OnUserClickListener
     }
 
     @Override
-    public void onUserClick(String nickname) {
+    public void onUserClick(String nickname, boolean isLongClick) {
         if (mClickListener != null) {
-            mClickListener.onUserClick(nickname);
+            mDialog.dismiss();
+            mClickListener.onUserClick(nickname, isLongClick);
         }
     }
 }

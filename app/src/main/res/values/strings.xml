@@ -29,4 +29,9 @@
     <string name="remove_room">Удалить комнату</string>
     <string name="input_room_name">Введите имя комнаты</string>
     <string name="banhammer">Забанить пользователя</string>
+    <string name="reason">Причина</string>
+    <string name="kik_confirm" formatted="false">Отключить пользователя %s?</string>
+    <string name="this_is_you">Это вы</string>
+    <string name="query_sent">Запрос отправлен</string>
+    <string name="you_kiked">Вы отключены администратором</string>
 </resources>

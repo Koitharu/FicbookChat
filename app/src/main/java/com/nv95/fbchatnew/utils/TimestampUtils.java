@@ -8,6 +8,8 @@ import android.text.format.DateUtils;
 
 public class TimestampUtils {
 
+    public static final long HOUR = 3600000L;
+
     public static long getDiffMinutes(long ts1, long ts2) {
         return Math.abs(ts1 - ts2) / 60000;
     }

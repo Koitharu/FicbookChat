@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="banhammer_times">
+        <item>Только отключить</item>
+        <item>1 час</item>
+        <item>3 часа</item>
+        <item>6 часов</item>
+        <item>Сутки</item>
+        <item>2 дня</item>
+        <item>3 дня</item>
+        <item>Неделя</item>
+        <item>2 недели</item>
+    </string-array>
+    <integer-array name="banhammer_hours">
+        <item>0</item>
+        <item>1</item>
+        <item>3</item>
+        <item>6</item>
+        <item>24</item>
+        <item>48</item>
+        <item>72</item>
+        <item>168</item>
+        <item>336</item>
+    </integer-array>
+</resources>

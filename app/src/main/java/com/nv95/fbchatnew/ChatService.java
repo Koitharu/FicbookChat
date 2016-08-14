@@ -15,6 +15,7 @@ import com.nv95.fbchatnew.core.ChatMessage;
 import com.nv95.fbchatnew.core.FbChat;
 import com.nv95.fbchatnew.core.Rooms;
 import com.nv95.fbchatnew.core.emoji.EmojiUtils;
+import com.nv95.fbchatnew.utils.TimestampUtils;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -352,6 +353,25 @@ public class ChatService extends Service implements FbChat.ChatCallback {
             }
         }
 
+
+        public boolean banhammer(String userName, int hours, String reason) {
+            try {
+                JSONObject jo = new JSONObject();
+                jo.put("type", "administration");
+                jo.put("message", reason);
+                jo.put("action", hours == 0 ? "kik" : "ban");
+                jo.put("user_name", userName);
+                if (hours != 0) {
+                    jo.put("duration", (long)(hours * TimestampUtils.HOUR));
+                }
+                mChat.send(jo);
+                return true;
+            } catch (JSONException e) {
+                e.printStackTrace();
+                return false;
+            }
+        }
+
         @Nullable
         public String getCurrentRoomName() {
             return mCurrentRoom;
@@ -359,6 +379,10 @@ public class ChatService extends Service implements FbChat.ChatCallback {
 
         public void terminate() {
             stopSelf();
+        }
+
+        public String getMe() {
+            return mMyLogin;
         }
     }
 }
