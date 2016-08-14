@@ -11,7 +11,7 @@ public interface ChatCallback {
 
     void onAuthorizationFailed(String reason);
 
-    void onAuthorizationSuccessful(String login, String password);
+    void onAuthorizationSuccessful(String login, String password, int power);
 
     void onRoomsUpdated(Rooms rooms, String current);
 

@@ -30,6 +30,8 @@ import java.util.List;
 public class ChatService extends Service implements FbChat.ChatCallback {
 
     private static final int NOTIFY_ID = 333;
+    public static final int POWER_ADMIN = 1000;
+    public static final int POWER_MODER = 100;
 
     private NotificationManager mNotificationManager;
     private NotificationCompat.Builder mNotificationBuilder;
@@ -107,7 +109,8 @@ public class ChatService extends Service implements FbChat.ChatCallback {
                                 mNotificationManager.notify(NOTIFY_ID, mNotificationBuilder.build());
                                 mCallback.onAuthorizationSuccessful(
                                         mMyLogin = message.getString("login"),
-                                        message.getString("password")
+                                        message.getString("password"),
+                                        message.getInt("power")
                                 );
                             } else if ("error".equals(message.getString("status"))) {
                                 mCallback.onAuthorizationFailed(

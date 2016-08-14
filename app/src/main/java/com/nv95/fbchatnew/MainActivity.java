@@ -63,6 +63,7 @@ public class MainActivity extends BaseAppActivity implements TextWatcher, Servic
     private NavigationView mNavigationView;
     private FloatingActionButton mFabSend;
     private EditText mEditTextMessage;
+    private ImageView mImageViewPower;
     private DrawerLayout mDrawerLayout;
     private ImageButton mImageButtonEmoji;
     private ActionBarDrawerToggle mToggle;
@@ -101,6 +102,7 @@ public class MainActivity extends BaseAppActivity implements TextWatcher, Servic
         mDrawerLayout.addDrawerListener(mToggle);
         mNavigationView.setNavigationItemSelectedListener(this);
         View v = mNavigationView.getHeaderView(0);
+        mImageViewPower = (ImageView) v.findViewById(R.id.imageViewPower);
         mTextViewLogin = (TextView) v.findViewById(R.id.textViewLogin);
         mImageViewAvatar = (ImageView) v.findViewById(R.id.imageViewAvatar);
         mImageButtonEmoji.setOnClickListener(this);
@@ -284,7 +286,7 @@ public class MainActivity extends BaseAppActivity implements TextWatcher, Servic
     }
 
     @Override
-    public void onAuthorizationSuccessful(String login, String password) {
+    public void onAuthorizationSuccessful(String login, String password, int power) {
         AccountStore.write(this, login, password);
         if (mProgressDialog != null) {
             mProgressDialog.dismiss();
@@ -293,6 +295,15 @@ public class MainActivity extends BaseAppActivity implements TextWatcher, Servic
         mTextViewLogin.setText(login);
         AvatarUtils.assignAvatarTo(mImageViewAvatar, login);
         mChatBinder.requestRooms();
+        if (power >= ChatService.POWER_ADMIN) {
+            mImageViewPower.setImageResource(R.drawable.ic_icon_key_white);
+            mImageViewPower.setVisibility(View.VISIBLE);
+        } else if (power >= ChatService.POWER_MODER) {
+            mImageViewPower.setImageResource(R.drawable.ic_icon_star_white);
+            mImageViewPower.setVisibility(View.VISIBLE);
+        } else {
+            mImageViewPower.setVisibility(View.GONE);
+        }
     }
 
     @Override
