@@ -1,4 +1,4 @@
-package com.nv95.fbchatnew.components;
+package com.nv95.fbchatnew.components.preferences;
 
 import android.content.Context;
 import android.os.Build;

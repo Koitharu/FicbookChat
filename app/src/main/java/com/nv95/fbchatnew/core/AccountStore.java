@@ -32,4 +32,11 @@ public class AccountStore {
         SharedPreferences prefs = context.getSharedPreferences("acc", Context.MODE_PRIVATE);
         return prefs.getString("pass", "");
     }
+
+    public static void clear(Context context) {
+        context.getSharedPreferences("acc", Context.MODE_PRIVATE)
+                .edit()
+                .clear()
+                .apply();
+    }
 }

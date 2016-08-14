@@ -34,6 +34,7 @@ public class AdminMenuDialog implements DialogInterface.OnClickListener {
         }
         mDialog = new AlertDialog.Builder(activity)
                 .setItems(items.toArray(new String[items.size()]), this)
+                .setTitle(chatBinder.isAdmin() ? R.string.admin : R.string.moder)
                 .create();
         mDialog.setOwnerActivity(activity);
     }

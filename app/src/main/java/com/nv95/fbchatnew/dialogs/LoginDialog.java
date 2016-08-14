@@ -12,6 +12,8 @@ import android.widget.TextView;
 
 import com.nv95.fbchatnew.ChatApp;
 import com.nv95.fbchatnew.R;
+import com.nv95.fbchatnew.utils.DayNightPalette;
+import com.nv95.fbchatnew.utils.ThemeUtils;
 
 /**
  * Created by nv95 on 11.08.16.
@@ -35,7 +37,12 @@ public class LoginDialog implements View.OnClickListener {
         mEditTextPassword = (EditText) view.findViewById(R.id.editTextPassword);
         mButtonSignIn = (Button) view.findViewById(R.id.buttonSignIn);
         mTextViewHelp = (TextView) view.findViewById(R.id.textViewHelp);
-        mTextViewHelp.setTextColor(((ChatApp)activity.getApplication()).getApplicationPalette().getAccentColor());
+
+        DayNightPalette palette = ChatApp.getApplicationPalette();
+        mTextViewHelp.setTextColor(palette.getAccentColor());
+        ThemeUtils.paintEditText(mAutoCompletteLogin, palette);
+        ThemeUtils.paintEditText(mEditTextPassword, palette);
+
         mDialog.setContentView(view);
         if (activity instanceof DialogInterface.OnClickListener) {
             mDialog.setCancelable(true);

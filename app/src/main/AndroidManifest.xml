@@ -21,7 +21,8 @@
             </intent-filter>
         </activity>
         <service android:name="com.nv95.fbchatnew.ChatService" />
-        <activity android:name=".SettingsActivity" />
+        <activity android:name=".SettingsActivity"
+            android:label="@string/settings" />
     </application>
 
 </manifest>

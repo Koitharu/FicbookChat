@@ -1,4 +1,4 @@
-package com.nv95.fbchatnew.components;
+package com.nv95.fbchatnew.components.preferences;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
@@ -26,7 +26,8 @@ import com.nv95.fbchatnew.utils.LayoutUtils;
  * Created by nv95 on 13.08.16.
  */
 
-public class ColorPreference extends Preference implements DialogInterface.OnClickListener, SeekBar.OnSeekBarChangeListener {
+public class ColorPreference extends Preference implements DialogInterface.OnClickListener,
+        SeekBar.OnSeekBarChangeListener {
 
     private int mValue;
     private boolean mValueSet;

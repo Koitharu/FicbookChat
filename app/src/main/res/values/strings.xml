@@ -34,4 +34,7 @@
     <string name="this_is_you">Это вы</string>
     <string name="query_sent">Запрос отправлен</string>
     <string name="you_kiked">Вы отключены администратором</string>
+    <string name="moder">Модератор</string>
+    <string name="admin">Администратор</string>
+    <string name="logout_confirm">Выйти из аккаунта?</string>
 </resources>

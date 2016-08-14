@@ -1,20 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <com.nv95.fbchatnew.components.PreferenceCategoryCompat
+    <com.nv95.fbchatnew.components.preferences.PreferenceCategoryCompat
         android:title="Внешний вид">
 
-        <com.nv95.fbchatnew.components.ColorPreference
+        <com.nv95.fbchatnew.components.preferences.ColorPreference
             android:key="color"
             android:title="Основной цвет"
             android:summary="Настройка цветовой гаммы интерфейса" />
 
-        <com.nv95.fbchatnew.components.CheckPreferenceCompat
+        <com.nv95.fbchatnew.components.preferences.CheckPreferenceCompat
             android:key="dark"
             android:title="Тёмная тема"
             android:defaultValue="false"
             android:summary="Использовать тёмную тему для приложения" />
 
-    </com.nv95.fbchatnew.components.PreferenceCategoryCompat>
+    </com.nv95.fbchatnew.components.preferences.PreferenceCategoryCompat>
+
+    <com.nv95.fbchatnew.components.preferences.PreferenceCategoryCompat
+        android:title="Аккаунт">
+
+        <com.nv95.fbchatnew.components.preferences.AccountPreference
+            android:key="logout"
+            android:title="Выйти из аккаунта" />
+
+    </com.nv95.fbchatnew.components.preferences.PreferenceCategoryCompat>
 
 </PreferenceScreen>

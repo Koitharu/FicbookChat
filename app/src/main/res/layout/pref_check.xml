@@ -27,7 +27,8 @@
             android:layout_height="wrap_content"
             android:ellipsize="marquee"
             android:fadingEdge="horizontal"
-            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textColor="?android:textColorPrimary"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
             android:maxLines="1" />
 
         <TextView
@@ -38,7 +39,7 @@
             android:layout_alignStart="@android:id/title"
             android:layout_below="@android:id/title"
             android:maxLines="4"
-            android:textAppearance="?android:attr/textAppearanceSmall" />
+            android:textAppearance="@style/TextAppearance.AppCompat.Small" />
 
     </RelativeLayout>
 
