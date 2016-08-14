@@ -6,6 +6,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.support.annotation.DrawableRes;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.TextInputLayout;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -16,6 +17,8 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 
 import com.nv95.fbchatnew.R;
+
+import java.lang.reflect.Field;
 
 /**
  * Created by nv95 on 08.08.16.
@@ -71,5 +74,20 @@ public class ThemeUtils {
             d.setColorFilter(palette.getContrastColor(), PorterDuff.Mode.SRC_ATOP);
         }
         imageView.setImageDrawable(d);
+    }
+
+    public static void paintEditText(EditText editText, DayNightPalette palette) {
+        TextInputLayout til = (TextInputLayout) editText.getParent();
+        try {
+            Field fDefaultTextColor = TextInputLayout.class.getDeclaredField("mDefaultTextColor");
+            fDefaultTextColor.setAccessible(true);
+            fDefaultTextColor.set(til, new ColorStateList(new int[][]{{0}}, new int[]{palette.getAccentColor()}));
+
+            Field fFocusedTextColor = TextInputLayout.class.getDeclaredField("mFocusedTextColor");
+            fFocusedTextColor.setAccessible(true);
+            fFocusedTextColor.set(til, new ColorStateList(new int[][]{{0}}, new int[]{palette.getAccentColor()}));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

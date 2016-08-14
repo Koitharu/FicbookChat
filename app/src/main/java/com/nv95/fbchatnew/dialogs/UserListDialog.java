@@ -1,13 +1,17 @@
-package com.nv95.fbchatnew;
+package com.nv95.fbchatnew.dialogs;
 
 import android.app.Activity;
 import android.app.Dialog;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 
+import com.nv95.fbchatnew.ChatApp;
+import com.nv95.fbchatnew.R;
+import com.nv95.fbchatnew.UserListAdapter;
 import com.nv95.fbchatnew.utils.LayoutUtils;
 
 import java.util.List;
@@ -16,10 +20,12 @@ import java.util.List;
  * Created by nv95 on 12.08.16.
  */
 
-public class UserListDialog implements View.OnClickListener {
+public class UserListDialog implements View.OnClickListener, OnUserClickListener {
 
     private final Dialog mDialog;
     private final RecyclerView mRecyclerView;
+    @Nullable
+    private OnUserClickListener mClickListener = null;
 
     public UserListDialog(Activity activity) {
         mDialog = new Dialog(activity);
@@ -39,13 +45,25 @@ public class UserListDialog implements View.OnClickListener {
         mDialog.setOwnerActivity(activity);
     }
 
+    public UserListDialog setOnUserClickListener(OnUserClickListener listener) {
+        mClickListener = listener;
+        return this;
+    }
+
     public void show(List<String> data) {
-        mRecyclerView.setAdapter(new UserListAdapter(data));
+        mRecyclerView.setAdapter(new UserListAdapter(data, mClickListener));
         mDialog.show();
     }
 
     @Override
     public void onClick(View view) {
         mDialog.dismiss();
+    }
+
+    @Override
+    public void onUserClick(String nickname) {
+        if (mClickListener != null) {
+            mClickListener.onUserClick(nickname);
+        }
     }
 }

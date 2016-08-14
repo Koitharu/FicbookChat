@@ -41,10 +41,12 @@ public class ChatService extends Service implements FbChat.ChatCallback {
     @Nullable
     private String mCurrentRoom;
     private String mMyLogin;
+    private int mPower;
 
     @Override
     public void onCreate() {
         super.onCreate();
+        mPower = 0;
         mMyLogin = AccountStore.getLogin(this);
         mNotificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         mNotificationBuilder = new NotificationCompat.Builder(this);
@@ -110,7 +112,7 @@ public class ChatService extends Service implements FbChat.ChatCallback {
                                 mCallback.onAuthorizationSuccessful(
                                         mMyLogin = message.getString("login"),
                                         message.getString("password"),
-                                        message.getInt("power")
+                                        mPower = message.getInt("power")
                                 );
                             } else if ("error".equals(message.getString("status"))) {
                                 mCallback.onAuthorizationFailed(
@@ -308,6 +310,14 @@ public class ChatService extends Service implements FbChat.ChatCallback {
             }
         }
 
+        public boolean isAdmin() {
+            return mPower >= POWER_ADMIN;
+        }
+
+        public boolean isModer() {
+            return mPower >= POWER_MODER;
+        }
+
         public boolean requestRoomMembers(@Nullable String roomName) {
             try {
                 JSONObject jo = new JSONObject();
@@ -315,6 +325,25 @@ public class ChatService extends Service implements FbChat.ChatCallback {
                 jo.put("subject", "participants");
                 jo.put("action", "get");
                 jo.put("room_name", roomName == null ? mCurrentRoom : roomName);
+                mChat.send(jo);
+                return true;
+            } catch (JSONException e) {
+                e.printStackTrace();
+                return false;
+            }
+        }
+
+
+        public boolean createNewRoom(String name) {
+            if (!isModer()) {
+                return false;
+            }
+            try {
+                JSONObject jo = new JSONObject();
+                jo.put("type", "administration");
+                jo.put("object", "room");
+                jo.put("action", "create");
+                jo.put("name", name);
                 mChat.send(jo);
                 return true;
             } catch (JSONException e) {

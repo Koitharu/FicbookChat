@@ -25,4 +25,8 @@
     <string name="loading">Загрузка…</string>
     <string name="online_users">Сейчас в сети</string>
     <string name="need_restart">Необходим перезапуск приложения</string>
+    <string name="create_room">Создать комнату</string>
+    <string name="remove_room">Удалить комнату</string>
+    <string name="input_room_name">Введите имя комнаты</string>
+    <string name="banhammer">Забанить пользователя</string>
 </resources>

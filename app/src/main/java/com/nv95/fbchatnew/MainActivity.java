@@ -40,6 +40,9 @@ import com.nv95.fbchatnew.core.Rooms;
 import com.nv95.fbchatnew.core.emoji.EmojiAdapter;
 import com.nv95.fbchatnew.core.emoji.EmojiUtils;
 import com.nv95.fbchatnew.core.emoji.OnEmojiSelectListener;
+import com.nv95.fbchatnew.dialogs.AdminMenuDialog;
+import com.nv95.fbchatnew.dialogs.LoginDialog;
+import com.nv95.fbchatnew.dialogs.UserListDialog;
 import com.nv95.fbchatnew.utils.AvatarUtils;
 import com.nv95.fbchatnew.utils.CloseHelper;
 import com.nv95.fbchatnew.utils.DayNightPalette;
@@ -106,6 +109,7 @@ public class MainActivity extends BaseAppActivity implements TextWatcher, Servic
         mTextViewLogin = (TextView) v.findViewById(R.id.textViewLogin);
         mImageViewAvatar = (ImageView) v.findViewById(R.id.imageViewAvatar);
         mImageButtonEmoji.setOnClickListener(this);
+        mImageViewPower.setOnClickListener(this);
 
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
@@ -447,6 +451,9 @@ public class MainActivity extends BaseAppActivity implements TextWatcher, Servic
                     mRecyclerViewEmoji.setVisibility(View.VISIBLE);
                     ThemeUtils.setDrawableCompat(mImageButtonEmoji, R.drawable.ic_keyboard_arrow_down_black_24dp, ChatApp.getApplicationPalette());
                 }
+                break;
+            case R.id.imageViewPower:
+                new AdminMenuDialog(this, mChatBinder).show();
                 break;
             case R.id.fabSend:
                 String msg = mEditTextMessage.getText().toString().trim();

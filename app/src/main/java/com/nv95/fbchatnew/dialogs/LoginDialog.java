@@ -1,4 +1,4 @@
-package com.nv95.fbchatnew;
+package com.nv95.fbchatnew.dialogs;
 
 import android.app.Activity;
 import android.app.Dialog;
@@ -9,6 +9,9 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+
+import com.nv95.fbchatnew.ChatApp;
+import com.nv95.fbchatnew.R;
 
 /**
  * Created by nv95 on 11.08.16.
