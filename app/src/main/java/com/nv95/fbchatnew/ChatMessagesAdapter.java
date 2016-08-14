@@ -14,7 +14,7 @@ import com.nv95.fbchatnew.components.BubbleDrawable;
 import com.nv95.fbchatnew.components.EndlessHeaderedAdapter;
 import com.nv95.fbchatnew.core.ChatMessage;
 import com.nv95.fbchatnew.utils.AvatarUtils;
-import com.nv95.fbchatnew.utils.Palette;
+import com.nv95.fbchatnew.utils.DayNightPalette;
 import com.nv95.fbchatnew.utils.TimestampUtils;
 
 import java.util.LinkedList;
@@ -66,7 +66,7 @@ public class ChatMessagesAdapter extends EndlessHeaderedAdapter<RecyclerView.Vie
     public void onBindDataViewHolder(RecyclerView.ViewHolder holder, int position) {
         ChatMessage cm = mDataset.get(position);
         if (holder instanceof MessageHolder) {
-            ((MessageHolder)holder).bubble.setColor(ChatApp.isDark() ? Palette.fromString(cm.login).getDarkColor() : Palette.fromString(cm.login).getLightColor());
+            ((MessageHolder)holder).bubble.setColor(DayNightPalette.fromString(cm.login, ChatApp.getApplicationPalette().isDark()).getCompatColor());
             ((MessageHolder)holder).textViewLogin.setText(cm.login);
             ((MessageHolder)holder).textViewMessage.setText(cm.message);
             AvatarUtils.assignAvatarTo(((MessageHolder)holder).imageView, cm.login);
@@ -134,7 +134,7 @@ public class ChatMessagesAdapter extends EndlessHeaderedAdapter<RecyclerView.Vie
 
         EventHolder(View itemView) {
             super(itemView);
-            itemView.setBackgroundColor(ContextCompat.getColor(itemView.getContext(), ChatApp.isDark() ? R.color.white_60 : R.color.black_60));
+            itemView.setBackgroundColor(ContextCompat.getColor(itemView.getContext(), ChatApp.getApplicationPalette().isDark() ? R.color.white_60 : R.color.black_60));
             textViewLogin = (TextView) itemView.findViewById(R.id.textViewLogin);
             textViewMessage = (TextView) itemView.findViewById(R.id.textViewMessage);
             imageView = (ImageView) itemView.findViewById(R.id.imageView);

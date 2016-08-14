@@ -11,9 +11,9 @@ import java.util.Random;
 
 public class Palette {
 
-    private int mColor;
+    protected int mColor;
 
-    private Palette(int color) {
+    protected Palette(int color) {
         mColor = color;
     }
 

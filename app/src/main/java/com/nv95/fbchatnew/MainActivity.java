@@ -5,6 +5,7 @@ import android.content.ComponentName;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.content.res.ColorStateList;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.IBinder;
@@ -41,8 +42,9 @@ import com.nv95.fbchatnew.core.emoji.EmojiUtils;
 import com.nv95.fbchatnew.core.emoji.OnEmojiSelectListener;
 import com.nv95.fbchatnew.utils.AvatarUtils;
 import com.nv95.fbchatnew.utils.CloseHelper;
+import com.nv95.fbchatnew.utils.DayNightPalette;
 import com.nv95.fbchatnew.utils.LayoutUtils;
-import com.nv95.fbchatnew.utils.Palette;
+import com.nv95.fbchatnew.utils.ThemeUtils;
 
 import java.util.List;
 import java.util.Random;
@@ -138,9 +140,23 @@ public class MainActivity extends BaseAppActivity implements TextWatcher, Servic
     }
 
     @Override
-    public void onPaletteChanged(Palette palette) {
+    public void onPaletteChanged(DayNightPalette palette) {
         super.onPaletteChanged(palette);
         mNavigationView.getHeaderView(0).setBackgroundColor(palette.getDarkColor());
+        ColorStateList csl = new ColorStateList(new int[][]{
+                new int[]{android.R.attr.state_checked},
+                new int[]{}
+        }, new int[]{
+                palette.getInverseColor(),
+                palette.getContrastColor()
+        });
+        mNavigationView.setItemTextColor(csl);
+        mNavigationView.setItemIconTintList(csl);
+        ThemeUtils.setDrawableCompat(
+                mImageButtonEmoji,
+                mRecyclerViewEmoji.getVisibility() == View.VISIBLE ? R.drawable.ic_keyboard_arrow_down_black_24dp : R.drawable.ic_insert_emoticon_black_24dp,
+                ChatApp.getApplicationPalette()
+        );
         mAdapter.notifyDataSetChanged();
     }
 
@@ -410,10 +426,10 @@ public class MainActivity extends BaseAppActivity implements TextWatcher, Servic
             case R.id.buttonEmoji:
                 if (mRecyclerViewEmoji.getVisibility() == View.VISIBLE) {
                     mRecyclerViewEmoji.setVisibility(View.GONE);
-                    mImageButtonEmoji.setImageResource(R.drawable.ic_insert_emoticon_black_24dp);
+                    ThemeUtils.setDrawableCompat(mImageButtonEmoji, R.drawable.ic_insert_emoticon_black_24dp, ChatApp.getApplicationPalette());
                 } else {
                     mRecyclerViewEmoji.setVisibility(View.VISIBLE);
-                    mImageButtonEmoji.setImageResource(R.drawable.ic_keyboard_arrow_down_black_24dp);
+                    ThemeUtils.setDrawableCompat(mImageButtonEmoji, R.drawable.ic_keyboard_arrow_down_black_24dp, ChatApp.getApplicationPalette());
                 }
                 break;
             case R.id.fabSend:

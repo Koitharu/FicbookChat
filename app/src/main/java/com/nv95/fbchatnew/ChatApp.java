@@ -11,8 +11,8 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.display.FadeInBitmapDisplayer;
 import com.nv95.fbchatnew.components.BubbleDrawable;
+import com.nv95.fbchatnew.utils.DayNightPalette;
 import com.nv95.fbchatnew.utils.LayoutUtils;
-import com.nv95.fbchatnew.utils.Palette;
 
 /**
  * Created by nv95 on 08.08.16.
@@ -21,28 +21,23 @@ import com.nv95.fbchatnew.utils.Palette;
 public class ChatApp extends Application {
 
     public static final String CHAT_URL = "ws://146.120.111.42:7070";
-    private static Palette mAppPalette;
-    private static boolean mIsDark;
-
-    public static boolean isDark() {
-        return mIsDark;
-    }
+    private static DayNightPalette mAppPalette;
 
     @Override
     public void onCreate() {
         super.onCreate();
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        mIsDark = prefs.getBoolean("dark",false);
+        boolean dark = prefs.getBoolean("dark",false);
         int color = prefs.getInt("color", -1);
         if (color == -1) {
             color = 217;
         }
-        mAppPalette = Palette.fromValue(color);
+        mAppPalette = DayNightPalette.fromValue(color, dark);
         BubbleDrawable.pointerSize = LayoutUtils.DpToPx(getResources(), 18);
         initImageLoader(this);
     }
 
-    public static Palette getApplicationPalette() {
+    public static DayNightPalette getApplicationPalette() {
         return mAppPalette;
     }
 

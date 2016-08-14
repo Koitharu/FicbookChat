@@ -4,12 +4,15 @@ import android.content.res.ColorStateList;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
+import android.support.annotation.DrawableRes;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 
 import com.nv95.fbchatnew.R;
@@ -20,13 +23,13 @@ import com.nv95.fbchatnew.R;
 
 public class ThemeUtils {
 
-    public static void paintStatusBar(AppCompatActivity activity, Palette palette) {
+    public static void paintStatusBar(AppCompatActivity activity, DayNightPalette palette) {
         if (Build.VERSION.SDK_INT >= 21) {
             activity.getWindow().setStatusBarColor(palette.getDarkerColor());
         }
     }
 
-    public static void paintUi(AppCompatActivity activity, Palette palette) {
+    public static void paintUi(AppCompatActivity activity, DayNightPalette palette) {
         if (Build.VERSION.SDK_INT >= 21) {
             activity.getWindow().setStatusBarColor(palette.getDarkerColor());
         }
@@ -37,7 +40,7 @@ public class ThemeUtils {
         paintView(activity.getWindow().getDecorView(), palette);
     }
 
-    public static void paintView(View view, Palette palette) {
+    public static void paintView(View view, DayNightPalette palette) {
         if (view instanceof ProgressBar) {
             setProgressBarTint((ProgressBar) view, palette.getAccentColor());
         } else if (view instanceof EditText) {
@@ -60,5 +63,13 @@ public class ThemeUtils {
         if (d != null) {
             d.setColorFilter(color, PorterDuff.Mode.SRC_ATOP);
         }
+    }
+
+    public static void setDrawableCompat(ImageView imageView, @DrawableRes int resId, DayNightPalette palette) {
+        Drawable d = ContextCompat.getDrawable(imageView.getContext(), resId);
+        if (d != null) {
+            d.setColorFilter(palette.getContrastColor(), PorterDuff.Mode.SRC_ATOP);
+        }
+        imageView.setImageDrawable(d);
     }
 }

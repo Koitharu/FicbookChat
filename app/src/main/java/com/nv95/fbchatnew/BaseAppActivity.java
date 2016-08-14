@@ -8,7 +8,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
-import com.nv95.fbchatnew.utils.Palette;
+import com.nv95.fbchatnew.utils.DayNightPalette;
 import com.nv95.fbchatnew.utils.ThemeUtils;
 
 /**
@@ -32,7 +32,7 @@ public class BaseAppActivity extends AppCompatActivity implements SharedPreferen
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (ChatApp.isDark()) {
+        if (ChatApp.getApplicationPalette().isDark()) {
             setTheme(R.style.AppTheme_Dark);
         }
         PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).registerOnSharedPreferenceChangeListener(this);
@@ -58,7 +58,7 @@ public class BaseAppActivity extends AppCompatActivity implements SharedPreferen
         }
     }
 
-    public void onPaletteChanged(Palette palette) {
+    public void onPaletteChanged(DayNightPalette palette) {
 
     }
 }

@@ -19,8 +19,8 @@ import android.widget.TextView;
 
 import com.nv95.fbchatnew.ChatApp;
 import com.nv95.fbchatnew.R;
+import com.nv95.fbchatnew.utils.DayNightPalette;
 import com.nv95.fbchatnew.utils.LayoutUtils;
-import com.nv95.fbchatnew.utils.Palette;
 
 /**
  * Created by nv95 on 13.08.16.
@@ -33,12 +33,12 @@ public class ColorPreference extends Preference implements DialogInterface.OnCli
     private final Dialog mDialog;
     private final View  mContentView;
     private final AppCompatSeekBar mSeekBar;
-    private final Palette mPalette;
+    private final DayNightPalette mPalette;
 
     public ColorPreference(Context context, AttributeSet attrs) {
         super(context, attrs);
         mValueSet = false;
-        mPalette = Palette.fromColor(ChatApp.getApplicationPalette().getNormalColor());
+        mPalette = DayNightPalette.fromColor(ChatApp.getApplicationPalette().getNormalColor(), ChatApp.getApplicationPalette().isDark());
         View v = LayoutInflater.from(context).inflate(R.layout.dialog_color, null, false);
         mContentView = v.findViewById(R.id.content);
         mSeekBar = (AppCompatSeekBar) v.findViewById(R.id.seekBar);
