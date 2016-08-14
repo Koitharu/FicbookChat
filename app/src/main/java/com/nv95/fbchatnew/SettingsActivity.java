@@ -2,6 +2,7 @@ package com.nv95.fbchatnew;
 
 import android.app.Activity;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
@@ -46,11 +47,18 @@ public class SettingsActivity extends BaseAppActivity implements Preference.OnPr
         switch (preference.getKey()) {
             case "dark":
                 ChatApp.getApplicationPalette().setDark((Boolean) o);
-                Toast.makeText(this, R.string.need_restart, Toast.LENGTH_SHORT).show();
+                requestRestart();
                 return true;
             default:
                 return false;
         }
+    }
+
+    private void requestRestart() {
+        setSubtitle(R.string.need_restart);
+        Intent intent = new Intent();
+        intent.putExtra("restart", true);
+        setResult(RESULT_OK, intent);
     }
 
     @Override
@@ -63,8 +71,8 @@ public class SettingsActivity extends BaseAppActivity implements Preference.OnPr
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
                                 AccountStore.clear(SettingsActivity.this);
-                                Toast.makeText(SettingsActivity.this, R.string.need_restart, Toast.LENGTH_SHORT).show();
                                 preference.setEnabled(false);
+                                requestRestart();
                             }
                         })
                         .setNegativeButton(android.R.string.cancel, null)

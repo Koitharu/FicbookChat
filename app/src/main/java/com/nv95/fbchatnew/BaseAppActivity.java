@@ -1,16 +1,14 @@
 package com.nv95.fbchatnew;
 
 import android.content.SharedPreferences;
-import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.annotation.ColorRes;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.Nullable;
-import android.support.v4.content.ContextCompat;
+import android.support.annotation.StringRes;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.view.Window;
 
 import com.nv95.fbchatnew.utils.DayNightPalette;
 import com.nv95.fbchatnew.utils.ThemeUtils;
@@ -66,15 +64,14 @@ public class BaseAppActivity extends AppCompatActivity implements SharedPreferen
 
     }
 
-    public void enableTransparentStatusBar(@ColorRes int color) {
-        if (Build.VERSION.SDK_INT >= 21) {
-            Window window = getWindow();
-            window.getDecorView().setSystemUiVisibility(
-                    View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                            | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
-            if (color != 0) {
-                window.setStatusBarColor(ContextCompat.getColor(this, color));
-            }
+    void setSubtitle(CharSequence scq) {
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setSubtitle(scq);
         }
+    }
+
+    void setSubtitle(@StringRes int resId) {
+        setSubtitle(getString(resId));
     }
 }

@@ -154,8 +154,10 @@ public class ChatService extends Service implements FbChat.ChatCallback {
                             message.getString("user_name"),
                             msg
                     );
-                    mCallback.onMessageReceived(cm);
-                    mCallback.onUserCountChanged(message.getInt("users_count"));
+                    if (mCallback != null) {
+                        mCallback.onMessageReceived(cm);
+                        mCallback.onUserCountChanged(message.getInt("users_count"));
+                    }
                     break;
                 }
                 case "history": {
@@ -167,7 +169,9 @@ public class ChatService extends Service implements FbChat.ChatCallback {
                         cm.type = mMyLogin.equals(cm.login) ? ChatMessage.MSG_MY : ChatMessage.MSG_NORMAL;
                         lst.add(cm);
                     }
-                    mCallback.onHistoryReceived(lst, message.getString("name"));
+                    if (mCallback != null) {
+                        mCallback.onHistoryReceived(lst, message.getString("name"));
+                    }
                     break;
                 }
                 case "chat":
@@ -180,7 +184,9 @@ public class ChatService extends Service implements FbChat.ChatCallback {
                                         message.getLong("time")
                                 );
                                 cm.type = mMyLogin.equals(cm.login) ? ChatMessage.MSG_MY : ChatMessage.MSG_NORMAL;
-                                mCallback.onMessageReceived(cm);
+                                if (mCallback != null) {
+                                    mCallback.onMessageReceived(cm);
+                                }
                             }
                             break;
                         }
@@ -190,7 +196,9 @@ public class ChatService extends Service implements FbChat.ChatCallback {
                             for (int i=0;i<ja.length();i++) {
                                 pcp.add(ja.getString(i));
                             }
-                            mCallback.onOnlineListReceived(message.getString("room_name"), pcp);
+                            if (mCallback != null) {
+                                mCallback.onOnlineListReceived(message.getString("room_name"), pcp);
+                            }
                         }
                     }
 

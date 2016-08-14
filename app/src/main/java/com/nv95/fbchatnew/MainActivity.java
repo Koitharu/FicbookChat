@@ -144,7 +144,9 @@ public class MainActivity extends BaseAppActivity implements TextWatcher, Servic
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_SETTINGS && resultCode == RESULT_OK) {
-
+            if (data.hasExtra("restart") && data.getBooleanExtra("restart", false)) {
+                recreate();
+            }
         }
     }
 
@@ -479,13 +481,6 @@ public class MainActivity extends BaseAppActivity implements TextWatcher, Servic
                     mEditTextMessage.getText().clear();
                 }
                 break;
-        }
-    }
-
-    private void setSubtitle(CharSequence scq) {
-        ActionBar actionBar = getSupportActionBar();
-        if (actionBar != null) {
-            actionBar.setSubtitle(scq);
         }
     }
 
