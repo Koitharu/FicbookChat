@@ -4,10 +4,10 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 /**
  * Created by nv95 on 13.08.16.
@@ -42,7 +42,7 @@ public class SettingsActivity extends BaseAppActivity implements Preference.OnPr
         switch (preference.getKey()) {
             case "dark":
                 ChatApp.getApplicationPalette().setDark((Boolean) o);
-                Snackbar.make(findViewById(R.id.toolbar), R.string.need_restart, Snackbar.LENGTH_SHORT).show();
+                Toast.makeText(this, R.string.need_restart, Toast.LENGTH_SHORT).show();
                 return true;
             default:
                 return false;
@@ -55,6 +55,7 @@ public class SettingsActivity extends BaseAppActivity implements Preference.OnPr
         public void onCreate(final Bundle savedInstanceState){
             super.onCreate(savedInstanceState);
             addPreferencesFromResource(R.xml.pref_main);
+            getView();
         }
 
         @Override

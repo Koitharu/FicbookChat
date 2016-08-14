@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <PreferenceCategory
+    <com.nv95.fbchatnew.components.PreferenceCategoryCompat
         android:title="Внешний вид">
 
         <com.nv95.fbchatnew.components.ColorPreference
@@ -9,12 +9,12 @@
             android:title="Основной цвет"
             android:summary="Настройка цветовой гаммы интерфейса" />
 
-        <CheckBoxPreference
+        <com.nv95.fbchatnew.components.CheckPreferenceCompat
             android:key="dark"
             android:title="Тёмная тема"
             android:defaultValue="false"
             android:summary="Использовать тёмную тему для приложения" />
 
-    </PreferenceCategory>
+    </com.nv95.fbchatnew.components.PreferenceCategoryCompat>
 
 </PreferenceScreen>

@@ -42,10 +42,19 @@
 
     </RelativeLayout>
 
-    <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="36dp"
-        android:layout_height="36dp"
-        tools:ignore="ContentDescription" />
+    <LinearLayout
+        android:id="@android:id/widget_frame"
+        android:layout_gravity="center_vertical"
+        android:layout_width="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center_vertical"
+        android:layout_height="match_parent" >
+
+        <android.support.v7.widget.SwitchCompat xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@android:id/checkbox" android:layout_width="wrap_content"
+            android:layout_height="wrap_content" android:focusable="false"
+            android:clickable="false"/>
+
+    </LinearLayout>
 
 </LinearLayout>
