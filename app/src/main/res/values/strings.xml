@@ -37,4 +37,7 @@
     <string name="moder">Модератор</string>
     <string name="admin">Администратор</string>
     <string name="logout_confirm">Выйти из аккаунта?</string>
+    <string name="accept">Принять</string>
+    <string name="dismiss">Отклонить</string>
+    <string name="rules">Запрещено:\n\n- Плохо себя вести\n- Обижать других\n- Флудить\n- Заниматься рекламой и самопиаром\n- Устраивать споры на политические и религиозные темы</string>
 </resources>

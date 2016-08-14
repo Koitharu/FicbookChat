@@ -19,7 +19,7 @@ import com.nv95.fbchatnew.utils.ThemeUtils;
  * Created by nv95 on 11.08.16.
  */
 
-public class LoginDialog implements View.OnClickListener {
+public class LoginDialog implements View.OnClickListener, DialogInterface.OnClickListener {
 
     private final OnLoginListener mLoginListener;
     private final Dialog mDialog;
@@ -68,11 +68,7 @@ public class LoginDialog implements View.OnClickListener {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.buttonSignIn:
-                mDialog.dismiss();
-                mLoginListener.onLogin(
-                        mAutoCompletteLogin.getText().toString().trim(),
-                        mEditTextPassword.getText().toString()
-                );
+                RulesDialog.show(view.getContext(), this);
                 break;
         }
     }
@@ -80,6 +76,15 @@ public class LoginDialog implements View.OnClickListener {
     public void show(String reason) {
         mEditTextPassword.setError(reason);
         show();
+    }
+
+    @Override
+    public void onClick(DialogInterface dialogInterface, int i) {
+        mDialog.dismiss();
+        mLoginListener.onLogin(
+                mAutoCompletteLogin.getText().toString().trim(),
+                mEditTextPassword.getText().toString()
+        );
     }
 
     public interface OnLoginListener {

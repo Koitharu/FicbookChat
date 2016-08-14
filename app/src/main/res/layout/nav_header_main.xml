@@ -23,9 +23,9 @@
         android:layout_alignStart="@+id/imageViewAvatar"
         android:layout_below="@id/imageViewAvatar"
         android:layout_marginTop="12dp"
-        android:gravity="left"
+        android:gravity="start"
         android:paddingBottom="4dp"
-        android:text="Undefined user"
+        android:text="Login is undefined"
         android:textColor="#FFF"
         android:textSize="14sp"
         android:textStyle="bold" />
