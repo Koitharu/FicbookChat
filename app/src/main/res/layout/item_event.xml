@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="wrap_content"
+    android:padding="4dp" >
+
+    <LinearLayout
+        android:layout_gravity="center_horizontal"
+        android:layout_width="wrap_content"
+        android:gravity="center_vertical"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="18dp"
+            android:layout_height="18dp"
+            android:src="@drawable/ic_avatar_holder" />
+
+        <TextView
+            android:id="@+id/textViewLogin"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="4dp"
+            android:layout_marginRight="4dp"
+            android:layout_weight="1"
+            android:ellipsize="middle"
+            android:text="Usrname username2"
+            android:lines="1"
+            android:textStyle="bold"
+            android:textAppearance="@style/TextAppearance.AppCompat.Inverse" />
+
+        <TextView
+            android:id="@+id/textViewMessage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:lines="1"
+            android:textAppearance="@style/TextAppearance.AppCompat.Inverse"
+            android:text="покинул нас" />
+    </LinearLayout>
+</FrameLayout>

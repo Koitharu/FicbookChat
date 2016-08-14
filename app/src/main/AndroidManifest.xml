@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.nv95.fbchatnew">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <application
+        android:name="com.nv95.fbchatnew.ChatApp"
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+        <activity android:name="com.nv95.fbchatnew.MainActivity"
+            android:launchMode="singleInstance"
+            android:configChanges="orientation|screenSize">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <service android:name="com.nv95.fbchatnew.ChatService" />
+        <activity android:name=".SettingsActivity" />
+    </application>
+
+</manifest>

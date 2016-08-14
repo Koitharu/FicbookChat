@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:id="@+id/nav_rooms"
+        android:title="@string/rooms" >
+        <menu>
+            <group android:id="@+id/groupRooms"  android:checkableBehavior="single" />
+        </menu>
+    </item>
+    <item android:id="@+id/nav_options"
+        android:title="@string/options" >
+        <menu>
+            <item android:id="@+id/action_settings"
+                android:icon="@drawable/ic_settings_black_24dp"
+                android:title="@string/settings" />
+        </menu>
+    </item>
+</menu>

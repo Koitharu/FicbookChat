@@ -1,0 +1,27 @@
+<resources>
+    <string name="app_name">Ficbook Chat</string>
+    <string name="input_message_text">Введите текст сообщения</string>
+    <string name="drawer_open">Open drawer</string>
+    <string name="drawer_close">Close drawer</string>
+    <string name="welcome">Добро пожаловать</string>
+    <string name="login">Логин</string>
+    <string name="password">Пароль</string>
+    <string name="signin">Войти</string>
+    <string name="need_a_help">Нужна помощь?</string>
+    <string name="connecting">Подключение…</string>
+    <string name="signingin">Авторизация…</string>
+    <string name="select_room">Выберите комнату</string>
+    <string name="online">В сети</string>
+    <string name="press_again_to_exit">Нажмите ещё раз для выхода</string>
+    <string name="close">Закрыть</string>
+    <string name="disconnected">Соединение разорвано</string>
+    <string name="joined">присоеденился</string>
+    <string name="left">покинул чат</string>
+    <string name="kiked">отключен администратором</string>
+    <string name="exit">Выход</string>
+    <string name="rooms">Комнаты</string>
+    <string name="settings">Настройки</string>
+    <string name="options">Опции</string>
+    <string name="loading">Загрузка…</string>
+    <string name="online_users">Сейчас в сети</string>
+</resources>
