@@ -26,7 +26,7 @@ public class LoginDialog implements View.OnClickListener, DialogInterface.OnClic
     private AutoCompleteTextView mAutoCompletteLogin;
     private EditText mEditTextPassword;
     private Button mButtonSignIn;
-    private TextView mTextViewHelp;
+    private TextView mTextViewError;
 
     public LoginDialog(final Activity activity, OnLoginListener loginListener) {
         mLoginListener = loginListener;
@@ -36,10 +36,9 @@ public class LoginDialog implements View.OnClickListener, DialogInterface.OnClic
         mAutoCompletteLogin = (AutoCompleteTextView) view.findViewById(R.id.autoCompleteLogin);
         mEditTextPassword = (EditText) view.findViewById(R.id.editTextPassword);
         mButtonSignIn = (Button) view.findViewById(R.id.buttonSignIn);
-        mTextViewHelp = (TextView) view.findViewById(R.id.textViewHelp);
+        mTextViewError = (TextView) view.findViewById(R.id.textViewError);
 
         DayNightPalette palette = ChatApp.getApplicationPalette();
-        mTextViewHelp.setTextColor(palette.getAccentColor());
         ThemeUtils.paintEditText(mAutoCompletteLogin, palette);
         ThemeUtils.paintEditText(mEditTextPassword, palette);
 
@@ -61,6 +60,7 @@ public class LoginDialog implements View.OnClickListener, DialogInterface.OnClic
     }
 
     public void show() {
+        mTextViewError.setVisibility(View.GONE);
         mDialog.show();
     }
 
@@ -68,13 +68,20 @@ public class LoginDialog implements View.OnClickListener, DialogInterface.OnClic
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.buttonSignIn:
-                RulesDialog.show(view.getContext(), this);
+                if (mAutoCompletteLogin.getText().toString().trim().length() == 0) {
+                    mAutoCompletteLogin.setError(view.getContext().getString(R.string.login_empty));
+                } else if (mEditTextPassword.getText().toString().isEmpty()) {
+                    mEditTextPassword.setError(view.getContext().getString(R.string.password_empty));
+                } else {
+                    RulesDialog.show(view.getContext(), this);
+                }
                 break;
         }
     }
 
     public void show(String reason) {
-        mEditTextPassword.setError(reason);
+        mTextViewError.setText(reason);
+        mTextViewError.setVisibility(View.VISIBLE);
         show();
     }
 

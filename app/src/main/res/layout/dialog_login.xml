@@ -42,8 +42,9 @@
 
     <TextView
         android:layout_marginTop="12dp"
-        android:id="@+id/textViewHelp"
-        android:text="@string/need_a_help"
+        android:id="@+id/textViewError"
+        android:textColor="#ef5350"
+        android:visibility="gone"
         android:gravity="center_horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />

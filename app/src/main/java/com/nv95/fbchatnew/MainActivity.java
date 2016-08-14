@@ -133,6 +133,7 @@ public class MainActivity extends BaseAppActivity implements TextWatcher, Servic
         mProgressDialog.setMessage(getString(R.string.connecting));
         mProgressDialog.setCancelable(false);
         mProgressDialog.setButton(DialogInterface.BUTTON_NEGATIVE, getString(android.R.string.cancel), this);
+        mProgressDialog.setOnShowListener(new ThemeUtils.DialogPainter());
         mProgressDialog.show();
 
         Intent serviceIntent = new Intent(this, ChatService.class);
@@ -418,6 +419,7 @@ public class MainActivity extends BaseAppActivity implements TextWatcher, Servic
         mProgressDialog.setIndeterminate(true);
         mProgressDialog.setMessage(getString(R.string.signingin));
         mProgressDialog.setCancelable(false);
+        mProgressDialog.setOnShowListener(new ThemeUtils.DialogPainter());
         mProgressDialog.setButton(DialogInterface.BUTTON_NEGATIVE, getString(android.R.string.cancel), this);
         mProgressDialog.show();
         mChatBinder.signIn(email, password);

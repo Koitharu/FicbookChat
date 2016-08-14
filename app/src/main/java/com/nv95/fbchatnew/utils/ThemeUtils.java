@@ -1,5 +1,7 @@
 package com.nv95.fbchatnew.utils;
 
+import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.res.ColorStateList;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
@@ -8,14 +10,17 @@ import android.support.annotation.DrawableRes;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 
+import com.nv95.fbchatnew.ChatApp;
 import com.nv95.fbchatnew.R;
 
 import java.lang.reflect.Field;
@@ -88,6 +93,28 @@ public class ThemeUtils {
             fFocusedTextColor.set(til, new ColorStateList(new int[][]{{0}}, new int[]{palette.getAccentColor()}));
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    public static class DialogPainter implements DialogInterface.OnShowListener {
+
+        @Override
+        public void onShow(DialogInterface dialogInterface) {
+            if (dialogInterface instanceof AlertDialog) {
+                DayNightPalette palette = ChatApp.getApplicationPalette();
+                Button b = ((AlertDialog) dialogInterface).getButton(DialogInterface.BUTTON_POSITIVE);
+                if (b != null) {
+                    b.setTextColor(palette.getAccentColor());
+                }
+                b = ((AlertDialog) dialogInterface).getButton(DialogInterface.BUTTON_NEGATIVE);
+                if (b != null) {
+                    b.setTextColor(palette.getAccentColor());
+                }
+                b = ((AlertDialog) dialogInterface).getButton(DialogInterface.BUTTON_NEUTRAL);
+                if (b != null) {
+                    b.setTextColor(palette.getAccentColor());
+                }
+            }
         }
     }
 }

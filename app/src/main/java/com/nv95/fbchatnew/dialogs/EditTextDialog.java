@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.EditText;
 
 import com.nv95.fbchatnew.R;
+import com.nv95.fbchatnew.utils.ThemeUtils;
 
 /**
  * Created by nv95 on 14.08.16.
@@ -33,6 +34,7 @@ public class EditTextDialog implements DialogInterface.OnClickListener{
                 .setPositiveButton(android.R.string.ok, this)
                 .setNegativeButton(android.R.string.cancel, null)
                 .create();
+        mDialog.setOnShowListener(new ThemeUtils.DialogPainter());
     }
 
     public void show(@StringRes int hint, @Nullable String initialValue) {

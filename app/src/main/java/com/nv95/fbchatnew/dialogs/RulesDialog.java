@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.support.v7.app.AlertDialog;
 
 import com.nv95.fbchatnew.R;
+import com.nv95.fbchatnew.utils.ThemeUtils;
 
 /**
  * Created by nv95 on 14.08.16.
@@ -13,12 +14,13 @@ import com.nv95.fbchatnew.R;
 public class RulesDialog {
 
     public static void show(Context context, DialogInterface.OnClickListener clickListener) {
-        new AlertDialog.Builder(context)
+        AlertDialog dialog = new AlertDialog.Builder(context)
                 .setCancelable(false)
                 .setMessage(R.string.rules)
                 .setPositiveButton(R.string.accept, clickListener)
                 .setNegativeButton(R.string.dismiss, null)
-                .create()
-                .show();
+                .create();
+        dialog.setOnShowListener(new ThemeUtils.DialogPainter());
+        dialog.show();
     }
 }

@@ -9,6 +9,7 @@ import android.widget.Toast;
 
 import com.nv95.fbchatnew.ChatService;
 import com.nv95.fbchatnew.R;
+import com.nv95.fbchatnew.utils.ThemeUtils;
 
 /**
  * Created by nv95 on 14.08.16.
@@ -26,6 +27,7 @@ public class BanhammerDialog implements DialogInterface.OnClickListener {
                 .setItems(R.array.banhammer_times, this)
                 .setNegativeButton(android.R.string.cancel, null)
                 .create();
+        mDialog.setOnShowListener(new ThemeUtils.DialogPainter());
         mDialog.setOwnerActivity(activity);
     }
 
