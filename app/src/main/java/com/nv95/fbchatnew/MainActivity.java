@@ -438,8 +438,11 @@ public class MainActivity extends BaseAppActivity implements TextWatcher, Servic
                 }
                 break;
             case R.id.fabSend:
-                mChatBinder.sendMessage(mEditTextMessage.getText().toString());
-                mEditTextMessage.getText().clear();
+                String msg = mEditTextMessage.getText().toString().trim();
+                if (msg.length() != 0) {
+                    mChatBinder.sendMessage(msg);
+                    mEditTextMessage.getText().clear();
+                }
                 break;
         }
     }
