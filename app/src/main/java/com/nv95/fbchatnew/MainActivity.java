@@ -157,9 +157,11 @@ public class MainActivity extends BaseAppActivity implements TextWatcher, Servic
         mNavigationView.getHeaderView(0).setBackgroundColor(palette.getDarkColor());
         ColorStateList csl = new ColorStateList(new int[][]{
                 new int[]{android.R.attr.state_checked},
+                new int[]{-android.R.attr.state_enabled},
                 new int[]{}
         }, new int[]{
                 palette.getInverseColor(),
+                palette.getGrayColor(),
                 palette.getContrastColor()
         });
         mNavigationView.setItemTextColor(csl);

@@ -13,6 +13,7 @@ import android.widget.TextView;
 import com.nv95.fbchatnew.components.BubbleDrawable;
 import com.nv95.fbchatnew.components.EndlessHeaderedAdapter;
 import com.nv95.fbchatnew.core.ChatMessage;
+import com.nv95.fbchatnew.utils.AutoLinkMovement;
 import com.nv95.fbchatnew.utils.AvatarUtils;
 import com.nv95.fbchatnew.utils.DayNightPalette;
 import com.nv95.fbchatnew.utils.TimestampUtils;
@@ -123,6 +124,7 @@ public class ChatMessagesAdapter extends EndlessHeaderedAdapter<RecyclerView.Vie
             imageView = (ImageView) itemView.findViewById(R.id.imageView);
             textViewHeader = (TextView) itemView.findViewById(R.id.textViewHeader);
             blockMessage.setBackgroundDrawable(bubble = new BubbleDrawable());
+            textViewMessage.setMovementMethod(AutoLinkMovement.getInstance());
         }
     }
 

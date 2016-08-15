@@ -82,7 +82,9 @@
                     android:background="@android:color/transparent"
                     android:padding="10dp"
                     android:maxHeight="340dp"
-                    android:inputType="textMultiLine|textCapSentences|textLongMessage" />
+                    android:inputType="textMultiLine|textCapSentences|textLongMessage"
+                    android:paddingEnd="52dp"
+                    android:paddingRight="52dp" />
 
                 <android.support.design.widget.FloatingActionButton
                     android:layout_width="wrap_content"

@@ -8,8 +8,8 @@ android {
         applicationId "com.nv95.fbchatnew"
         minSdkVersion 15
         targetSdkVersion 24
-        versionCode 1
-        versionName "1.0"
+        versionCode 2
+        versionName "0.1 preview"
     }
     buildTypes {
         release {
@@ -23,7 +23,5 @@ dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile 'com.android.support:design:24.1.1'
     compile 'com.android.support:recyclerview-v7:24.1.1'
-    compile 'org.jsoup:jsoup:1.9.2'
-    compile 'com.davemorrissey.labs:subsampling-scale-image-view:3.5.0'
     compile 'com.nostra13.universalimageloader:universal-image-loader:1.9.5'
 }
