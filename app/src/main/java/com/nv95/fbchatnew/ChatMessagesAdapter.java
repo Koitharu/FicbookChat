@@ -13,6 +13,7 @@ import android.widget.TextView;
 import com.nv95.fbchatnew.components.BubbleDrawable;
 import com.nv95.fbchatnew.components.EndlessHeaderedAdapter;
 import com.nv95.fbchatnew.core.ChatMessage;
+import com.nv95.fbchatnew.dialogs.OnUserClickListener;
 import com.nv95.fbchatnew.utils.AutoLinkMovement;
 import com.nv95.fbchatnew.utils.AvatarUtils;
 import com.nv95.fbchatnew.utils.DayNightPalette;
@@ -28,10 +29,13 @@ import java.util.List;
 public class ChatMessagesAdapter extends EndlessHeaderedAdapter<RecyclerView.ViewHolder> {
 
     private final LinkedList<ChatMessage> mDataset;
+    @Nullable
+    private final OnUserClickListener mUserClickListener;
 
-    public ChatMessagesAdapter(RecyclerView recyclerView) {
+    public ChatMessagesAdapter(RecyclerView recyclerView, @Nullable OnUserClickListener clickListener) {
         super(recyclerView);
         mDataset = new LinkedList<>();
+        mUserClickListener = clickListener;
     }
 
     @Override
@@ -58,7 +62,7 @@ public class ChatMessagesAdapter extends EndlessHeaderedAdapter<RecyclerView.Vie
                         viewType == ChatMessage.MSG_MY ? R.layout.item_message_my : R.layout.item_message,
                         parent,
                         false
-                ));
+                ), mUserClickListener);
         mh.bubble.setRtl(viewType == ChatMessage.MSG_MY);
         return mh;
     }
@@ -81,6 +85,7 @@ public class ChatMessagesAdapter extends EndlessHeaderedAdapter<RecyclerView.Vie
             ((EventHolder)holder).textViewLogin.setText(cm.login);
             ((EventHolder)holder).textViewMessage.setText(cm.message);
             AvatarUtils.assignAvatarTo(((EventHolder)holder).imageView, cm.login);
+            ((ViewGroup)holder.itemView).getChildAt(0).requestLayout();
         }
     }
 
@@ -107,7 +112,7 @@ public class ChatMessagesAdapter extends EndlessHeaderedAdapter<RecyclerView.Vie
         return mDataset.getLast();
     }
 
-    private static class MessageHolder extends RecyclerView.ViewHolder {
+    private static class MessageHolder extends RecyclerView.ViewHolder implements View.OnLongClickListener, View.OnClickListener {
 
         final LinearLayout blockMessage;
         final TextView textViewLogin;
@@ -115,9 +120,12 @@ public class ChatMessagesAdapter extends EndlessHeaderedAdapter<RecyclerView.Vie
         final BubbleDrawable bubble;
         final TextView textViewHeader;
         final ImageView imageView;
+        @Nullable
+        private final OnUserClickListener mClickListener;
 
-        MessageHolder(View itemView) {
+        MessageHolder(View itemView, @Nullable OnUserClickListener clickListener) {
             super(itemView);
+            mClickListener = clickListener;
             blockMessage = (LinearLayout) itemView.findViewById(R.id.blockMessage);
             textViewLogin = (TextView) itemView.findViewById(R.id.textViewLogin);
             textViewMessage = (TextView) itemView.findViewById(R.id.textViewMessage);
@@ -125,6 +133,25 @@ public class ChatMessagesAdapter extends EndlessHeaderedAdapter<RecyclerView.Vie
             textViewHeader = (TextView) itemView.findViewById(R.id.textViewHeader);
             blockMessage.setBackgroundDrawable(bubble = new BubbleDrawable());
             textViewMessage.setMovementMethod(AutoLinkMovement.getInstance());
+            imageView.setOnClickListener(this);
+            imageView.setOnLongClickListener(this);
+        }
+
+        @Override
+        public boolean onLongClick(View view) {
+            if (mClickListener != null) {
+                mClickListener.onUserClick(textViewLogin.getText().toString(), true);
+                return true;
+            } else {
+                return false;
+            }
+        }
+
+        @Override
+        public void onClick(View view) {
+            if (mClickListener != null) {
+                mClickListener.onUserClick(textViewLogin.getText().toString(), false);
+            }
         }
     }
 

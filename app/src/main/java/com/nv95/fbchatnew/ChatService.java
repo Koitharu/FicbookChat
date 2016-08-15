@@ -14,7 +14,7 @@ import com.nv95.fbchatnew.core.ChatCallback;
 import com.nv95.fbchatnew.core.ChatMessage;
 import com.nv95.fbchatnew.core.FbChat;
 import com.nv95.fbchatnew.core.Rooms;
-import com.nv95.fbchatnew.core.emoji.EmojiUtils;
+import com.nv95.fbchatnew.core.emoji.SpanUtils;
 import com.nv95.fbchatnew.utils.TimestampUtils;
 
 import org.json.JSONArray;
@@ -180,7 +180,7 @@ public class ChatService extends Service implements FbChat.ChatCallback {
                             if (message.getString("room_name").equals(mCurrentRoom)) {
                                 ChatMessage cm = new ChatMessage(
                                         message.getString("user"),
-                                        EmojiUtils.emojify(this, message.getString("message")),
+                                        SpanUtils.makeSpans(this, message.getString("message")),
                                         message.getLong("time")
                                 );
                                 cm.type = mMyLogin.equals(cm.login) ? ChatMessage.MSG_MY : ChatMessage.MSG_NORMAL;

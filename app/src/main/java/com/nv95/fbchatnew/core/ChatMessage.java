@@ -2,7 +2,7 @@ package com.nv95.fbchatnew.core;
 
 import android.content.Context;
 
-import com.nv95.fbchatnew.core.emoji.EmojiUtils;
+import com.nv95.fbchatnew.core.emoji.SpanUtils;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -36,7 +36,7 @@ public class ChatMessage {
     }
 
     public ChatMessage(Context context, JSONObject jo) throws JSONException {
-        message = EmojiUtils.emojify(context, jo.getString("message"));
+        message = SpanUtils.makeSpans(context, jo.getString("message"));
         timestamp = jo.getLong("timestamp");
         login = jo.getString("login");
     }

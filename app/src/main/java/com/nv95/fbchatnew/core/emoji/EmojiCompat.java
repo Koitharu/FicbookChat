@@ -1,5 +1,12 @@
 package com.nv95.fbchatnew.core.emoji;
 
+import android.content.Context;
+import android.content.res.AssetManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+
+import java.io.InputStream;
+
 /**
  * Created by nv95 on 13.08.16.
  */
@@ -109,7 +116,32 @@ public class EmojiCompat {
         } else return EMOJI_CUSTOM + "" + mEmojiMap[1][index - mEmojiMap[0].length];
     }
 
-    public static int getMapSize() {
+    public static int getCount() {
         return mEmojiMap[0].length + mEmojiMap[1].length;
+    }
+
+    public static Bitmap getEmojiBitmap(Context context, int index, int size) {
+        AssetManager am = context.getAssets();
+        InputStream in = null;
+        try {
+            in = am.open(index + ".png");
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+        Bitmap src = BitmapFactory.decodeStream(in, null, null);
+        Bitmap res = Bitmap.createScaledBitmap(src, size, size, false);
+        src.recycle();
+        return res;
+    }
+
+    public static Bitmap getEmojiBitmap(Context context, int index) {
+        AssetManager am = context.getAssets();
+        InputStream in = null;
+        try {
+            in = am.open(index + ".png");
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+        return BitmapFactory.decodeStream(in, null, null);
     }
 }

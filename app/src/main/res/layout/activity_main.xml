@@ -81,7 +81,7 @@
                     android:hint="@string/input_message_text"
                     android:background="@android:color/transparent"
                     android:padding="10dp"
-                    android:maxHeight="340dp"
+                    android:maxHeight="240dp"
                     android:inputType="textMultiLine|textCapSentences|textLongMessage"
                     android:paddingEnd="52dp"
                     android:paddingRight="52dp" />

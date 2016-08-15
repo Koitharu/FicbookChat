@@ -39,7 +39,7 @@ import com.nv95.fbchatnew.core.ChatCallback;
 import com.nv95.fbchatnew.core.ChatMessage;
 import com.nv95.fbchatnew.core.Rooms;
 import com.nv95.fbchatnew.core.emoji.EmojiAdapter;
-import com.nv95.fbchatnew.core.emoji.EmojiUtils;
+import com.nv95.fbchatnew.core.emoji.SpanUtils;
 import com.nv95.fbchatnew.core.emoji.OnEmojiSelectListener;
 import com.nv95.fbchatnew.dialogs.AdminMenuDialog;
 import com.nv95.fbchatnew.dialogs.BanhammerDialog;
@@ -57,7 +57,7 @@ import java.util.Random;
 
 public class MainActivity extends BaseAppActivity implements TextWatcher, ServiceConnection, ChatCallback,
         LoginDialog.OnLoginListener, DialogInterface.OnClickListener, NavigationView.OnNavigationItemSelectedListener,
-        View.OnClickListener, EndlessHeaderedAdapter.OnLoadMoreListener, OnEmojiSelectListener, DialogInterface.OnCancelListener {
+        View.OnClickListener, EndlessHeaderedAdapter.OnLoadMoreListener, OnEmojiSelectListener, DialogInterface.OnCancelListener, OnUserClickListener {
 
     private static final int REQUEST_SETTINGS = 238;
 
@@ -93,7 +93,7 @@ public class MainActivity extends BaseAppActivity implements TextWatcher, Servic
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        mAdapter = new ChatMessagesAdapter(mRecyclerView);
+        mAdapter = new ChatMessagesAdapter(mRecyclerView, this);
         mRecyclerView.setAdapter(mAdapter);
         mFabSend.setOnClickListener(this);
         mToggle = new ActionBarDrawerToggle(this, mDrawerLayout, toolbar, R.string.drawer_open, R.string.drawer_close) {
@@ -387,21 +387,7 @@ public class MainActivity extends BaseAppActivity implements TextWatcher, Servic
         if (mProgressDialog != null) {
             mProgressDialog.dismiss();
             mProgressDialog = null;
-            new UserListDialog(this).setOnUserClickListener(new OnUserClickListener() {
-                @Override
-                public void onUserClick(String nickname, boolean isLongClick) {
-                    if (isLongClick) {
-                        if (nickname.equals(mChatBinder.getMe())) {
-                            Toast.makeText(MainActivity.this, R.string.this_is_you, Toast.LENGTH_SHORT).show();
-                        } else if (mChatBinder.isAdmin()) {
-                            new BanhammerDialog(MainActivity.this, mChatBinder)
-                                    .show(nickname);
-                        } else if (mChatBinder.isModer()) {
-                            BanhammerDialog.kikDialog(MainActivity.this, nickname, mChatBinder);
-                        }
-                    }
-                }
-            }).show(participants);
+            new UserListDialog(this).setOnUserClickListener(this).show(participants);
         }
     }
 
@@ -514,12 +500,29 @@ public class MainActivity extends BaseAppActivity implements TextWatcher, Servic
 
     @Override
     public void onEmojiSelected(int index) {
-        mEditTextMessage.getText().append(EmojiUtils.getEmojiString(this, index));
+        mEditTextMessage.getText().append(SpanUtils.getEmojiString(this, index));
         onClick(mImageButtonEmoji);
     }
 
     @Override
     public void onCancel(DialogInterface dialogInterface) {
         mProgressDialog = null;
+    }
+
+    @Override
+    public void onUserClick(String nickname, boolean isLongClick) {
+        if (isLongClick) {
+            if (nickname.equals(mChatBinder.getMe())) {
+                Toast.makeText(MainActivity.this, R.string.this_is_you, Toast.LENGTH_SHORT).show();
+            } else if (mChatBinder.isAdmin()) {
+                new BanhammerDialog(MainActivity.this, mChatBinder)
+                        .show(nickname);
+            } else if (mChatBinder.isModer()) {
+                BanhammerDialog.kikDialog(MainActivity.this, nickname, mChatBinder);
+            }
+        } else {
+            mEditTextMessage.getText().insert(0,  " ");
+            mEditTextMessage.getText().insert(0, SpanUtils.getUserString(nickname));
+        }
     }
 }

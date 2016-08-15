@@ -32,12 +32,12 @@ public class EmojiAdapter extends RecyclerView.Adapter<EmojiAdapter.EmojiHolder>
 
     @Override
     public void onBindViewHolder(EmojiHolder holder, int position) {
-        ((ImageView)holder.itemView).setImageBitmap(EmojiUtils.getEmojiBitmap(holder.getContext(), position, size));
+        ((ImageView)holder.itemView).setImageBitmap(EmojiCompat.getEmojiBitmap(holder.getContext(), position, size));
     }
 
     @Override
     public int getItemCount() {
-        return EmojiUtils.getEmojiCount();
+        return EmojiCompat.getCount();
     }
 
     static class EmojiHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
