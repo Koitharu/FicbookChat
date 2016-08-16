@@ -26,25 +26,21 @@ public class ChipsSpan extends ReplacementSpan {
     }
 
     @Override
-    public  void draw(@NonNull Canvas canvas, CharSequence text, int start, int end, float x,
-                      int top, int y, int bottom, @NonNull Paint paint)
-    {
+    public void draw(@NonNull Canvas canvas, CharSequence text, int start, int end, float x,
+                     int top, int y, int bottom, @NonNull Paint paint) {
         RectF rect = new RectF(x, top, x + measureText(paint, text, start, end), bottom);
         paint.setColor(mBgColor);
         canvas.drawRoundRect(rect, mCornerSize, mCornerSize, paint);
         paint.setColor(mFgColor);
-        canvas.drawText(text, start, end, x + mCornerSize, y, paint);
+        canvas.drawText(text, start, end, x + mCornerSize, y - 0.5f, paint);
     }
 
     @Override
-    public int getSize(@NonNull Paint paint, CharSequence text, int start, int end, Paint.FontMetricsInt fm)
-    {
+    public int getSize(@NonNull Paint paint, CharSequence text, int start, int end, Paint.FontMetricsInt fm) {
         return Math.round(measureText(paint, text, start, end));
     }
 
-    private float measureText(Paint paint, CharSequence text, int start, int end)
-    {
+    private float measureText(Paint paint, CharSequence text, int start, int end) {
         return paint.measureText(text, start, end) + mCornerSize * 2;
     }
-
 }

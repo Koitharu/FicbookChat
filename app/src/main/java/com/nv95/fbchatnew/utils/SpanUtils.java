@@ -12,11 +12,11 @@ import android.graphics.drawable.Drawable;
 import android.support.v4.content.ContextCompat;
 import android.text.SpannableString;
 import android.text.Spanned;
-import android.text.style.DynamicDrawableSpan;
 import android.text.style.ImageSpan;
 
 import com.nv95.fbchatnew.ChatApp;
 import com.nv95.fbchatnew.R;
+import com.nv95.fbchatnew.components.CenteredImageSpan;
 import com.nv95.fbchatnew.components.ChipsSpan;
 import com.nv95.fbchatnew.core.emoji.EmojiCompat;
 
@@ -32,7 +32,7 @@ public class SpanUtils {
         if (mSizeSmall == 0) {
             mSizeSmall = context.getResources().getDimensionPixelSize(R.dimen.emoji_size_small);
         }
-        return new ImageSpan(context, EmojiCompat.getEmojiBitmap(context, index, mSizeSmall), DynamicDrawableSpan.ALIGN_BOTTOM);
+        return new CenteredImageSpan(context, EmojiCompat.getEmojiBitmap(context, index, mSizeSmall));
     }
 
     public static SpannableString getEmojiString(Context context, int index) {
