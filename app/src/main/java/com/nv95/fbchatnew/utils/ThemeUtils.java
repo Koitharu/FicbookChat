@@ -1,5 +1,6 @@
 package com.nv95.fbchatnew.utils;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.res.ColorStateList;
 import android.graphics.PorterDuff;
@@ -83,11 +84,7 @@ public class ThemeUtils {
     }
 
     public static void setDrawableCompat(ImageView imageView, @DrawableRes int resId, DayNightPalette palette) {
-        Drawable d = ContextCompat.getDrawable(imageView.getContext(), resId);
-        if (d != null) {
-            d.setColorFilter(palette.getContrastColor(), PorterDuff.Mode.SRC_ATOP);
-        }
-        imageView.setImageDrawable(d);
+        imageView.setImageDrawable(getThemedDrawable(imageView.getContext(), resId, palette.getContrastColor()));
     }
 
     public static void paintEditText(EditText editText, DayNightPalette palette) {
@@ -103,6 +100,14 @@ public class ThemeUtils {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public static Drawable getThemedDrawable(Context context, @DrawableRes int drawableId, int color) {
+        Drawable drawable = ContextCompat.getDrawable(context, drawableId);
+        if (drawable != null) {
+            drawable.setColorFilter(color, PorterDuff.Mode.SRC_ATOP);
+        }
+        return drawable;
     }
 
     public static class DialogPainter implements DialogInterface.OnShowListener {

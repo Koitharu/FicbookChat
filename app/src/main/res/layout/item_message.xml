@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:padding="6dp">
 
@@ -45,14 +46,29 @@
                 android:text="12324123123"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body2" />
 
-
-            <TextView
-                android:id="@+id/textViewMessage"
+            <com.nv95.fbchatnew.components.ExpandableTextLayout
+                android:id="@+id/expand_text_view"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:autoLink="web"
-                android:text="wdecgsxfexfse" />
+                app:maxCollapsedLines="4"
+                app:animDuration="200">
 
+                <TextView
+                    android:id="@id/expandable_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:autoLink="web"
+                    android:text="wdecgsxfexfse" />
+
+                <ImageButton
+                    android:id="@id/expand_collapse"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="4dp"
+                    android:layout_gravity="bottom"
+                    android:background="?selectableItemBackground"/>
+
+            </com.nv95.fbchatnew.components.ExpandableTextLayout>
         </LinearLayout>
     </FrameLayout>
 </LinearLayout>
