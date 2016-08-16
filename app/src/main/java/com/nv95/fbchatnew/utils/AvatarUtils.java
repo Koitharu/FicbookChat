@@ -11,7 +11,7 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.display.CircleBitmapDisplayer;
 import com.nv95.fbchatnew.ChatApp;
 import com.nv95.fbchatnew.R;
-import com.nv95.fbchatnew.core.FicbookConnection;
+import com.nv95.fbchatnew.core.ficbook.FicbookConnection;
 
 import org.json.JSONException;
 import org.json.JSONObject;

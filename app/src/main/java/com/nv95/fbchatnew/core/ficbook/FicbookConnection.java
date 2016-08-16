@@ -1,4 +1,4 @@
-package com.nv95.fbchatnew.core;
+package com.nv95.fbchatnew.core.ficbook;
 
 import android.text.TextUtils;
 

@@ -1,12 +1,13 @@
 package com.nv95.fbchatnew.utils;
 
-import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.res.ColorStateList;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.support.annotation.DrawableRes;
+import android.support.design.widget.AppBarLayout;
+import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.content.ContextCompat;
@@ -53,7 +54,15 @@ public class ThemeUtils {
             setProgressBarTint((ProgressBar) view, palette.getAccentColor());
         } else if (view instanceof EditText) {
             view.getBackground().setColorFilter(palette.getAccentColor(), PorterDuff.Mode.SRC_ATOP);
+        } else if (view instanceof AppBarLayout) {
+            view.setBackgroundColor(palette.getDarkColor());
+        } else if (view instanceof CollapsingToolbarLayout) {
+            int c = palette.getDarkColor();
+            view.setBackgroundColor(c);
+            ((CollapsingToolbarLayout)view).setContentScrimColor(c);
+            ((CollapsingToolbarLayout)view).setStatusBarScrimColor(c);
         } else if (view instanceof FloatingActionButton) {
+            //noinspection RedundantCast
             ((FloatingActionButton) view).setBackgroundTintList(ColorStateList.valueOf(palette.getAccentColor()));
         } else if (view instanceof ViewGroup) {
             for (int i = ((ViewGroup) view).getChildCount();i>=0;i--) {

@@ -42,4 +42,6 @@
     <string name="rules">Запрещено:\n\n- Плохо себя вести\n- Обижать других\n- Флудить\n- Заниматься рекламой и самопиаром\n- Устраивать споры на политические и религиозные темы</string>
     <string name="login_empty">Введите логин</string>
     <string name="password_empty">Введите пароль</string>
+    <string name="profile_info_fail">Не удалось загрузить данные профиля</string>
+    <string name="no_profile_info">Нет информации о пользователе</string>
 </resources>
