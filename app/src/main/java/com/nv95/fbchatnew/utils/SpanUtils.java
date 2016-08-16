@@ -41,23 +41,6 @@ public class SpanUtils {
         return ss;
     }
 
-    @Deprecated
-    public static Spanned emojify(Context context, String source) {
-        SpannableString ss = new SpannableString(source);
-        char c;
-        for (int i=0;i<ss.length()-1;i++) {
-            c = ss.charAt(i);
-            if (EmojiCompat.isEmoji(c)) {
-                int ind = EmojiCompat.indexOf(c, ss.charAt(i+1));
-                if (ind != -1) {
-                    ss.setSpan(getEmojiSpan(context, ind), i, i + 2, Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
-                    i++;
-                }
-            }
-        }
-        return ss;
-    }
-
     private static ChipsSpan getUserSpan(Context context, String nickname) {
         DayNightPalette palette = DayNightPalette.fromString(nickname, ChatApp.getApplicationPalette().isDark());
         return new ChipsSpan(
