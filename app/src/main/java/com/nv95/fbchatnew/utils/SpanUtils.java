@@ -1,15 +1,16 @@
-package com.nv95.fbchatnew.core.emoji;
+package com.nv95.fbchatnew.utils;
 
 import android.content.Context;
+import android.support.v4.content.ContextCompat;
 import android.text.SpannableString;
 import android.text.Spanned;
-import android.text.style.BackgroundColorSpan;
 import android.text.style.DynamicDrawableSpan;
 import android.text.style.ImageSpan;
 
 import com.nv95.fbchatnew.ChatApp;
 import com.nv95.fbchatnew.R;
-import com.nv95.fbchatnew.utils.DayNightPalette;
+import com.nv95.fbchatnew.components.ChipsSpan;
+import com.nv95.fbchatnew.core.emoji.EmojiCompat;
 
 /**
  * Created by nv95 on 13.08.16.
@@ -49,14 +50,19 @@ public class SpanUtils {
         return ss;
     }
 
-    private static BackgroundColorSpan getUserSpan(String nickname) {
-        return new BackgroundColorSpan(DayNightPalette.fromString(nickname, ChatApp.getApplicationPalette().isDark())
-                .getCompatColor());
+    private static ChipsSpan getUserSpan(Context context, String nickname) {
+        DayNightPalette palette = DayNightPalette.fromString(nickname, ChatApp.getApplicationPalette().isDark());
+        return new ChipsSpan(
+                context,
+                ContextCompat.getColor(context, R.color.gray_60),
+                palette.getContrastColor()
+
+        );
     }
 
-    public static Spanned getUserString(String nickname) {
+    public static Spanned getUserString(Context context, String nickname) {
         SpannableString ss = new SpannableString("@" + nickname.replace(" ", "\u00A0"));
-        ss.setSpan(getUserSpan(nickname), 0, ss.length(), Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
+        ss.setSpan(getUserSpan(context, nickname), 0, ss.length(), Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
         return ss;
     }
 
@@ -70,7 +76,8 @@ public class SpanUtils {
                 while (to < ss.length() && ss.charAt(to) != ' ' && ss.charAt(to) != '\n') {
                     to++;
                 }
-                ss.setSpan(getUserSpan(ss.subSequence(i+1,to).toString().replace("\u00A0", " ")), i, to, Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
+                ss.setSpan(getUserSpan(context, ss.subSequence(i+1,to).toString().replace("\u00A0", " ")),
+                        i, to, Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
             } if (EmojiCompat.isEmoji(c)) {
                 int ind = EmojiCompat.indexOf(c, ss.charAt(i+1));
                 if (ind != -1) {

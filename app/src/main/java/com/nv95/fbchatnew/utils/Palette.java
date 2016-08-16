@@ -40,7 +40,7 @@ public class Palette {
     public int getLightColor() {
         float[] hsv = new float[3];
         Color.colorToHSV(mColor, hsv);
-        hsv[1] = 0.31373f;
+        hsv[1] = 0.45f;
         hsv[2] = 1f;
         return Color.HSVToColor(Color.alpha(mColor), hsv);
     }

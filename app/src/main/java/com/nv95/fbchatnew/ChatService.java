@@ -14,7 +14,7 @@ import com.nv95.fbchatnew.core.ChatCallback;
 import com.nv95.fbchatnew.core.ChatMessage;
 import com.nv95.fbchatnew.core.FbChat;
 import com.nv95.fbchatnew.core.Rooms;
-import com.nv95.fbchatnew.core.emoji.SpanUtils;
+import com.nv95.fbchatnew.utils.SpanUtils;
 import com.nv95.fbchatnew.utils.TimestampUtils;
 
 import org.json.JSONArray;

@@ -39,7 +39,7 @@ import com.nv95.fbchatnew.core.ChatCallback;
 import com.nv95.fbchatnew.core.ChatMessage;
 import com.nv95.fbchatnew.core.Rooms;
 import com.nv95.fbchatnew.core.emoji.EmojiAdapter;
-import com.nv95.fbchatnew.core.emoji.SpanUtils;
+import com.nv95.fbchatnew.utils.SpanUtils;
 import com.nv95.fbchatnew.core.emoji.OnEmojiSelectListener;
 import com.nv95.fbchatnew.dialogs.AdminMenuDialog;
 import com.nv95.fbchatnew.dialogs.BanhammerDialog;
@@ -522,7 +522,7 @@ public class MainActivity extends BaseAppActivity implements TextWatcher, Servic
             }
         } else {
             mEditTextMessage.getText().insert(0,  " ");
-            mEditTextMessage.getText().insert(0, SpanUtils.getUserString(nickname));
+            mEditTextMessage.getText().insert(0, SpanUtils.getUserString(this, nickname));
         }
     }
 }

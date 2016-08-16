@@ -51,6 +51,15 @@ public class DayNightPalette extends Palette {
         );
     }
 
+    public int getInverseGrayColor() {
+        return Color.argb(
+                100,
+                isDark() ? 0 : 255,
+                isDark() ? 0 : 255,
+                isDark() ? 0 : 255
+        );
+    }
+
     public int getContrastColor() {
         return Color.argb(
                 200,

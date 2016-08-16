@@ -2,7 +2,7 @@ package com.nv95.fbchatnew.core;
 
 import android.content.Context;
 
-import com.nv95.fbchatnew.core.emoji.SpanUtils;
+import com.nv95.fbchatnew.utils.SpanUtils;
 
 import org.json.JSONException;
 import org.json.JSONObject;
