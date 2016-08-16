@@ -15,7 +15,7 @@
     <string name="press_again_to_exit">Нажмите ещё раз для выхода</string>
     <string name="close">Закрыть</string>
     <string name="disconnected">Соединение разорвано</string>
-    <string name="joined">присоеденился</string>
+    <string name="joined">присоединился</string>
     <string name="left">покинул чат</string>
     <string name="kiked">отключен администратором</string>
     <string name="exit">Выход</string>
@@ -44,4 +44,5 @@
     <string name="password_empty">Введите пароль</string>
     <string name="profile_info_fail">Не удалось загрузить данные профиля</string>
     <string name="no_profile_info">Нет информации о пользователе</string>
+    <string name="remove_room_confirm">Вы уверены, что хотите удалить команту \"%s\"?\nЭто вызовет фатальные последствия</string>
 </resources>

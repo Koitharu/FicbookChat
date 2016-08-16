@@ -71,9 +71,11 @@ public class ChatMessagesAdapter extends EndlessHeaderedAdapter<RecyclerView.Vie
     public void onBindDataViewHolder(RecyclerView.ViewHolder holder, int position) {
         ChatMessage cm = mDataset.get(position);
         if (holder instanceof MessageHolder) {
-            ((MessageHolder)holder).bubble.setColor(DayNightPalette.fromString(cm.login, ChatApp.getApplicationPalette().isDark()).getCompatColor());
+            DayNightPalette palette = DayNightPalette.fromString(cm.login, ChatApp.getApplicationPalette().isDark());
+            ((MessageHolder)holder).bubble.setColor(palette.getCompatColor());
             ((MessageHolder)holder).textViewLogin.setText(cm.login);
             ((MessageHolder)holder).textViewMessage.setText(cm.message);
+            ((MessageHolder)holder).textViewMessage.setLinkTextColor(palette.getAccentColor());
             AvatarUtils.assignAvatarTo(((MessageHolder)holder).imageView, cm.login);
             if (position == mDataset.size() - 1 || TimestampUtils.getDiffMinutes(mDataset.get(position + 1).timestamp, cm.timestamp) >= 20) {
                 ((MessageHolder)holder).textViewHeader.setVisibility(View.VISIBLE);
@@ -82,9 +84,16 @@ public class ChatMessagesAdapter extends EndlessHeaderedAdapter<RecyclerView.Vie
                 ((MessageHolder)holder).textViewHeader.setVisibility(View.GONE);
             }
         } else if (holder instanceof EventHolder) {
-            ((EventHolder)holder).textViewLogin.setText(cm.login);
-            ((EventHolder)holder).textViewMessage.setText(cm.message);
-            AvatarUtils.assignAvatarTo(((EventHolder)holder).imageView, cm.login);
+            if (cm.login == null) {
+                ((EventHolder)holder).textViewLogin.setVisibility(View.GONE);
+                ((EventHolder)holder).imageView.setVisibility(View.GONE);
+            } else {
+                ((EventHolder)holder).textViewLogin.setVisibility(View.VISIBLE);
+                ((EventHolder)holder).imageView.setVisibility(View.VISIBLE);
+                ((EventHolder) holder).textViewLogin.setText(cm.login);
+                AvatarUtils.assignAvatarTo(((EventHolder) holder).imageView, cm.login);
+            }
+            ((EventHolder) holder).textViewMessage.setText(cm.message);
             ((ViewGroup)holder.itemView).getChildAt(0).requestLayout();
         }
     }

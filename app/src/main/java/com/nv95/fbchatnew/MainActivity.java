@@ -469,6 +469,7 @@ public class MainActivity extends BaseAppActivity implements TextWatcher, Servic
                 }
                 break;
             case R.id.imageViewPower:
+                mDrawerLayout.closeDrawer(GravityCompat.START);
                 new AdminMenuDialog(this, mChatBinder).show();
                 break;
             case R.id.fabSend:

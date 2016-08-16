@@ -140,6 +140,16 @@ public class ChatService extends Service implements FbChat.ChatCallback {
                 case "event": {
                     String msg;
                     switch (message.getString("action")) {
+                        case "custom":
+                            if (mCallback != null) {
+                                mCallback.onMessageReceived(
+                                        new ChatMessage(
+                                                null,
+                                                message.getString("message")
+                                        )
+                                );
+                            }
+                            return;
                         case "join":
                             msg = getString(R.string.joined);
                             break;
@@ -363,6 +373,23 @@ public class ChatService extends Service implements FbChat.ChatCallback {
             }
         }
 
+        public boolean removeRoom(String name) {
+            if (!isAdmin()) {
+                return false;
+            }
+            try {
+                JSONObject jo = new JSONObject();
+                jo.put("type", "administration");
+                jo.put("object", "room");
+                jo.put("action", "destroy");
+                jo.put("room_name", name);
+                mChat.send(jo);
+                return true;
+            } catch (JSONException e) {
+                e.printStackTrace();
+                return false;
+            }
+        }
 
         public boolean banhammer(String userName, int hours, String reason) {
             try {

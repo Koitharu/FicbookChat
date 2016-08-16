@@ -82,6 +82,9 @@ public class EmojiCompat {
                     '\uDC4B',
                     '\uDC4C',
                     '\uDCA4',
+                    '\uDE02',
+                    '\uDE1A',
+                    '\uDFB1'
             }
     };
 

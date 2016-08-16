@@ -4,9 +4,11 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.support.v7.app.AlertDialog;
+import android.widget.Toast;
 
 import com.nv95.fbchatnew.ChatService;
 import com.nv95.fbchatnew.R;
+import com.nv95.fbchatnew.utils.ThemeUtils;
 
 import java.util.ArrayList;
 
@@ -52,12 +54,27 @@ public class AdminMenuDialog implements DialogInterface.OnClickListener {
                 new EditTextDialog(mDialog.getContext(), R.string.create_room, new EditTextDialog.OnTextChangedListener() {
                     @Override
                     public void onTextChanged(String newText) {
-                        mBinder.createNewRoom(newText);
+                        if (mBinder.createNewRoom(newText)) {
+                            Toast.makeText(mDialog.getContext(), R.string.query_sent, Toast.LENGTH_SHORT).show();
+                        }
                     }
                 }).show(R.string.input_room_name, null);
                 break;
             case 1: //remove room
-
+                AlertDialog d = new AlertDialog.Builder(mDialog.getContext())
+                        .setNegativeButton(android.R.string.cancel, null)
+                        .setMessage(mDialog.getContext().getString(R.string.remove_room_confirm, mBinder.getCurrentRoomName()))
+                        .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                if (mBinder.removeRoom(mBinder.getCurrentRoomName())) {
+                                    Toast.makeText(mDialog.getContext(), R.string.query_sent, Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        })
+                        .create();
+                d.setOnShowListener(new ThemeUtils.DialogPainter());
+                d.show();
                 break;
         }
         dialogInterface.dismiss();
