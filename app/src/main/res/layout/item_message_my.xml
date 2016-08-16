@@ -36,18 +36,19 @@
                 android:id="@+id/textViewLogin"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:lines="1"
                 android:ellipsize="middle"
+                android:lines="1"
                 android:text="w"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body2" />
 
 
-            <TextView
+            <com.nv95.fbchatnew.components.ExpandableTextView
                 android:id="@+id/textViewMessage"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:autoLink="web"
-                android:text="wdecgsxfexfse" />
+                android:text="wdecgsxfexfse"
+                android:textIsSelectable="true" />
 
         </LinearLayout>
 

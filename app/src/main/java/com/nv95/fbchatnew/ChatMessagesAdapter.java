@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.nv95.fbchatnew.components.BubbleDrawable;
 import com.nv95.fbchatnew.components.EndlessHeaderedAdapter;
+import com.nv95.fbchatnew.components.ExpandableTextView;
 import com.nv95.fbchatnew.core.ChatMessage;
 import com.nv95.fbchatnew.dialogs.OnUserClickListener;
 import com.nv95.fbchatnew.utils.AutoLinkMovement;
@@ -125,7 +126,7 @@ public class ChatMessagesAdapter extends EndlessHeaderedAdapter<RecyclerView.Vie
 
         final LinearLayout blockMessage;
         final TextView textViewLogin;
-        final TextView textViewMessage;
+        final ExpandableTextView textViewMessage;
         final BubbleDrawable bubble;
         final TextView textViewHeader;
         final ImageView imageView;
@@ -137,7 +138,7 @@ public class ChatMessagesAdapter extends EndlessHeaderedAdapter<RecyclerView.Vie
             mClickListener = clickListener;
             blockMessage = (LinearLayout) itemView.findViewById(R.id.blockMessage);
             textViewLogin = (TextView) itemView.findViewById(R.id.textViewLogin);
-            textViewMessage = (TextView) itemView.findViewById(R.id.textViewMessage);
+            textViewMessage = (ExpandableTextView) itemView.findViewById(R.id.textViewMessage);
             imageView = (ImageView) itemView.findViewById(R.id.imageView);
             textViewHeader = (TextView) itemView.findViewById(R.id.textViewHeader);
             blockMessage.setBackgroundDrawable(bubble = new BubbleDrawable());
