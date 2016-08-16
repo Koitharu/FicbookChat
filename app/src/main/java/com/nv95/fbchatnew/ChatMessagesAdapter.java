@@ -12,7 +12,6 @@ import android.widget.TextView;
 
 import com.nv95.fbchatnew.components.BubbleDrawable;
 import com.nv95.fbchatnew.components.EndlessHeaderedAdapter;
-import com.nv95.fbchatnew.components.ExpandableTextLayout;
 import com.nv95.fbchatnew.core.ChatMessage;
 import com.nv95.fbchatnew.dialogs.OnUserClickListener;
 import com.nv95.fbchatnew.utils.AutoLinkMovement;
@@ -75,7 +74,7 @@ public class ChatMessagesAdapter extends EndlessHeaderedAdapter<RecyclerView.Vie
             DayNightPalette palette = DayNightPalette.fromString(cm.login, ChatApp.getApplicationPalette().isDark());
             ((MessageHolder)holder).bubble.setColor(palette.getCompatColor());
             ((MessageHolder)holder).textViewLogin.setText(cm.login);
-            ((MessageHolder)holder).textLayout.setText(cm.message);
+            ((MessageHolder)holder).textViewMessage.setText(cm.message);
             ((MessageHolder)holder).textViewMessage.setLinkTextColor(palette.getAccentColor());
             AvatarUtils.assignAvatarTo(((MessageHolder)holder).imageView, cm.login);
             if (position == mDataset.size() - 1 || TimestampUtils.getDiffMinutes(mDataset.get(position + 1).timestamp, cm.timestamp) >= 20) {
@@ -127,7 +126,6 @@ public class ChatMessagesAdapter extends EndlessHeaderedAdapter<RecyclerView.Vie
         final LinearLayout blockMessage;
         final TextView textViewLogin;
         final TextView textViewMessage;
-        final ExpandableTextLayout textLayout;
         final BubbleDrawable bubble;
         final TextView textViewHeader;
         final ImageView imageView;
@@ -139,8 +137,7 @@ public class ChatMessagesAdapter extends EndlessHeaderedAdapter<RecyclerView.Vie
             mClickListener = clickListener;
             blockMessage = (LinearLayout) itemView.findViewById(R.id.blockMessage);
             textViewLogin = (TextView) itemView.findViewById(R.id.textViewLogin);
-            textViewMessage = (TextView) itemView.findViewById(R.id.expandable_text);
-            textLayout = (ExpandableTextLayout) itemView.findViewById(R.id.expand_text_view);
+            textViewMessage = (TextView) itemView.findViewById(R.id.textViewMessage);
             imageView = (ImageView) itemView.findViewById(R.id.imageView);
             textViewHeader = (TextView) itemView.findViewById(R.id.textViewHeader);
             blockMessage.setBackgroundDrawable(bubble = new BubbleDrawable());
