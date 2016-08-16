@@ -1,6 +1,14 @@
 package com.nv95.fbchatnew.utils;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.Rect;
+import android.graphics.RectF;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.support.v4.content.ContextCompat;
 import android.text.SpannableString;
 import android.text.Spanned;
@@ -87,5 +95,28 @@ public class SpanUtils {
             }
         }
         return ss;
+    }
+
+    private static final Rect textBounds = new Rect();
+
+    public static Drawable getCounterIcon(Context context, String text) {
+        int size = LayoutUtils.DpToPx(context.getResources(), 24);
+        int corners = LayoutUtils.DpToPx(context.getResources(), 4);
+        Bitmap bitmap = Bitmap.createBitmap(size, size, Bitmap.Config.ARGB_4444);
+        Canvas canvas = new Canvas(bitmap);
+
+        Paint paint = new Paint();
+        paint.setAntiAlias(true);
+        paint.setColor(Color.WHITE);
+        paint.setStyle(Paint.Style.FILL);
+        canvas.drawRoundRect(new RectF(0, 0, size, size), corners, corners, paint);
+
+        paint.setFakeBoldText(true);
+        paint.setColor(ChatApp.getApplicationPalette().getDarkColor());
+        paint.setTextSize(LayoutUtils.DpToPx(context.getResources(), 12));
+
+        paint.getTextBounds(text, 0, text.length(), textBounds);
+        canvas.drawText(text, (size / 2) - textBounds.exactCenterX(), (size / 2) - textBounds.exactCenterY(), paint);
+        return new BitmapDrawable(context.getResources(), bitmap);
     }
 }

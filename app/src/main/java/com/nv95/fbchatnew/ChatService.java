@@ -41,6 +41,7 @@ public class ChatService extends Service implements FbChat.ChatCallback {
     private ChatCallback mCallback;
     @Nullable
     private String mCurrentRoom;
+    private int mCurrentOnline;
     private String mMyLogin;
     private int mPower;
 
@@ -48,6 +49,7 @@ public class ChatService extends Service implements FbChat.ChatCallback {
     public void onCreate() {
         super.onCreate();
         mPower = 0;
+        mCurrentOnline = 0;
         mMyLogin = AccountStore.getLogin(this);
         mNotificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         mNotificationBuilder = new NotificationCompat.Builder(this);
@@ -156,7 +158,7 @@ public class ChatService extends Service implements FbChat.ChatCallback {
                     );
                     if (mCallback != null) {
                         mCallback.onMessageReceived(cm);
-                        mCallback.onUserCountChanged(message.getInt("users_count"));
+                        mCallback.onUserCountChanged(mCurrentOnline = message.getInt("users_count"));
                     }
                     break;
                 }
@@ -391,6 +393,10 @@ public class ChatService extends Service implements FbChat.ChatCallback {
 
         public String getMe() {
             return mMyLogin;
+        }
+
+        public int getCurrentOnline() {
+            return mCurrentOnline;
         }
     }
 }

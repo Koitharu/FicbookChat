@@ -39,7 +39,6 @@ import com.nv95.fbchatnew.core.ChatCallback;
 import com.nv95.fbchatnew.core.ChatMessage;
 import com.nv95.fbchatnew.core.Rooms;
 import com.nv95.fbchatnew.core.emoji.EmojiAdapter;
-import com.nv95.fbchatnew.utils.SpanUtils;
 import com.nv95.fbchatnew.core.emoji.OnEmojiSelectListener;
 import com.nv95.fbchatnew.dialogs.AdminMenuDialog;
 import com.nv95.fbchatnew.dialogs.BanhammerDialog;
@@ -50,6 +49,7 @@ import com.nv95.fbchatnew.utils.AvatarUtils;
 import com.nv95.fbchatnew.utils.CloseHelper;
 import com.nv95.fbchatnew.utils.DayNightPalette;
 import com.nv95.fbchatnew.utils.LayoutUtils;
+import com.nv95.fbchatnew.utils.SpanUtils;
 import com.nv95.fbchatnew.utils.ThemeUtils;
 
 import java.util.List;
@@ -191,6 +191,14 @@ public class MainActivity extends BaseAppActivity implements TextWatcher, Servic
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main, menu);
         return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        menu.findItem(R.id.action_online).setIcon(
+                SpanUtils.getCounterIcon(this, String.valueOf(mChatBinder != null ? mChatBinder.getCurrentOnline() : 0))
+        );
+        return super.onPrepareOptionsMenu(menu);
     }
 
     @Override
@@ -393,7 +401,7 @@ public class MainActivity extends BaseAppActivity implements TextWatcher, Servic
 
     @Override
     public void onUserCountChanged(int count) {
-        setSubtitle(mChatBinder.getCurrentRoomName() + " [" + count + "]");
+        invalidateOptionsMenu();
     }
 
     @Override
