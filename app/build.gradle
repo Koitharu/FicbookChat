@@ -5,11 +5,11 @@ android {
     buildToolsVersion "24.0.1"
     useLibrary 'org.apache.http.legacy'
     defaultConfig {
-        applicationId "com.nv95.fbchatnew"
+        applicationId "com.nv95.fbchat"
         minSdkVersion 15
         targetSdkVersion 24
-        versionCode 3
-        versionName "0.1 preview 3"
+        versionCode 100
+        versionName "4.0 alpha"
     }
     buildTypes {
         release {
