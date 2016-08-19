@@ -8,6 +8,7 @@ import android.os.Binder;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.support.v7.app.NotificationCompat;
+import android.text.Html;
 
 import com.nv95.fbchat.core.AccountStore;
 import com.nv95.fbchat.core.ChatCallback;
@@ -119,7 +120,7 @@ public class ChatService extends Service implements FbChat.ChatCallback {
                                 );
                             } else if ("error".equals(message.getString("status"))) {
                                 mCallback.onAuthorizationFailed(
-                                        message.getString("message")
+                                        Html.fromHtml(message.getString("message")).toString().trim()
                                 );
                             }
                             break;

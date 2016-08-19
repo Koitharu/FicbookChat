@@ -82,7 +82,7 @@ public class LoginDialog implements View.OnClickListener, DialogInterface.OnClic
     public void show(String reason) {
         mTextViewError.setText(reason);
         mTextViewError.setVisibility(View.VISIBLE);
-        show();
+        mDialog.show();
     }
 
     @Override
