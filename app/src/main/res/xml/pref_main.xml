@@ -26,4 +26,15 @@
 
     </com.nv95.fbchat.components.preferences.PreferenceCategoryCompat>
 
+    <com.nv95.fbchat.components.preferences.PreferenceCategoryCompat
+        android:title="Служебное">
+
+        <com.nv95.fbchat.components.preferences.CheckPreferenceCompat
+            android:key="debug"
+            android:defaultValue="false"
+            android:summary="Исключительно для тестирования"
+            android:title="Резервное подключение" />
+
+    </com.nv95.fbchat.components.preferences.PreferenceCategoryCompat>
+
 </PreferenceScreen>

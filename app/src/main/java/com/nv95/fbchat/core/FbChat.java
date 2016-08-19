@@ -4,7 +4,6 @@ import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 
-import com.nv95.fbchat.ChatApp;
 import com.nv95.fbchat.core.websocket.WebSocketClient;
 
 import org.apache.http.message.BasicNameValuePair;
@@ -29,9 +28,9 @@ public class FbChat implements WebSocketClient.Listener, Handler.Callback {
     private boolean mConnected;
     private final Handler mHandler;
 
-    public FbChat(ChatCallback callback) {
+    public FbChat(String url, ChatCallback callback) {
         mHandler = new Handler(this);
-        mWebSocket = new WebSocketClient(URI.create(ChatApp.CHAT_URL), this, new ArrayList<BasicNameValuePair>());
+        mWebSocket = new WebSocketClient(URI.create(url), this, new ArrayList<BasicNameValuePair>());
         mCallback = callback;
         mConnected = false;
     }

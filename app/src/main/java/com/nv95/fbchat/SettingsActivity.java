@@ -48,6 +48,9 @@ public class SettingsActivity extends BaseAppActivity implements Preference.OnPr
                 ChatApp.getApplicationPalette().setDark((Boolean) o);
                 requestRestart();
                 return true;
+            case "debug":
+                requestRestart();
+                return true;
             default:
                 return false;
         }
@@ -97,6 +100,7 @@ public class SettingsActivity extends BaseAppActivity implements Preference.OnPr
             Activity activity = getActivity();
             if (activity != null && activity instanceof Preference.OnPreferenceChangeListener) {
                 findPreference("dark").setOnPreferenceChangeListener((Preference.OnPreferenceChangeListener) activity);
+                findPreference("debug").setOnPreferenceClickListener((Preference.OnPreferenceClickListener) activity);
                 findPreference("logout").setOnPreferenceClickListener((Preference.OnPreferenceClickListener) activity);
                 findPreference("logout").setSummary(AccountStore.getLogin(activity));
             }

@@ -20,7 +20,6 @@ import com.nv95.fbchat.utils.LayoutUtils;
 
 public class ChatApp extends Application {
 
-    public static final String CHAT_URL = "ws://146.120.111.42:7070";
     private static DayNightPalette mAppPalette;
 
     @Override

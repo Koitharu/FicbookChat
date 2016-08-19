@@ -6,6 +6,7 @@ import android.app.Service;
 import android.content.Intent;
 import android.os.Binder;
 import android.os.IBinder;
+import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v7.app.NotificationCompat;
 import android.text.Html;
@@ -35,6 +36,9 @@ public class ChatService extends Service implements FbChat.ChatCallback {
     public static final int POWER_ADMIN = 1000;
     public static final int POWER_MODER = 100;
 
+    public static final String MAIN_URL = "ws://146.120.111.42:7070";
+    public static final String DEBUG_URL = "ws://146.120.111.42:7070";
+
     private NotificationManager mNotificationManager;
     private NotificationCompat.Builder mNotificationBuilder;
     private FbChat mChat;
@@ -61,7 +65,8 @@ public class ChatService extends Service implements FbChat.ChatCallback {
                 PendingIntent.getService(this, 1, new Intent(this, ChatService.class).putExtra("action", "exit"), 0));
         mNotificationBuilder.setContentText(getString(R.string.connecting));
         mCurrentRoom = null;
-        mChat = new FbChat(this);
+        boolean debug = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getBoolean("debug", false);
+        mChat = new FbChat(debug ? DEBUG_URL : MAIN_URL, this);
         mChat.connect();
         startForeground(NOTIFY_ID, mNotificationBuilder.build());
     }
