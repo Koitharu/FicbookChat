@@ -50,13 +50,13 @@
 
             <com.nv95.fbchat.components.recycler.GridRecyclerView
                 android:id="@+id/recyclerViewEmoji"
-                android:background="?android:windowBackground"
+                android:background="@drawable/emoji_bg"
                 android:layout_width="400dp"
                 android:layout_gravity="start|bottom"
                 android:visibility="gone"
                 android:padding="2dp"
                 android:layoutAnimation="@anim/emoji_layout"
-                android:layout_height="400dp" />
+                android:layout_height="wrap_content" />
 
         </FrameLayout>
 
