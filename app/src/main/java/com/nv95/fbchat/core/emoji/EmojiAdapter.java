@@ -16,7 +16,7 @@ import com.nv95.fbchat.R;
 public class EmojiAdapter extends RecyclerView.Adapter<EmojiAdapter.EmojiHolder> {
 
     private final OnEmojiSelectListener mSelectListener;
-    private int size = 0;
+    private static int size = 0;
 
     public EmojiAdapter(OnEmojiSelectListener selectListener) {
         mSelectListener = selectListener;

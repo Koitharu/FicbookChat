@@ -33,6 +33,8 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.nv95.fbchat.components.EndlessHeaderedAdapter;
+import com.nv95.fbchat.components.recycler.GridRecyclerView;
+import com.nv95.fbchat.components.recycler.SmartItemAnimator;
 import com.nv95.fbchat.core.AccountStore;
 import com.nv95.fbchat.core.ChatCallback;
 import com.nv95.fbchat.core.ChatMessage;
@@ -61,7 +63,7 @@ public class MainActivity extends BaseAppActivity implements TextWatcher, Servic
     private static final int REQUEST_SETTINGS = 238;
 
     private RecyclerView mRecyclerView;
-    private RecyclerView mRecyclerViewEmoji;
+    private GridRecyclerView mRecyclerViewEmoji;
     private ImageView mImageViewAvatar;
     private TextView mTextViewLogin;
     private ProgressBar mProgressBar;
@@ -83,7 +85,7 @@ public class MainActivity extends BaseAppActivity implements TextWatcher, Servic
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         mRecyclerView = (RecyclerView) findViewById(R.id.recyclerView);
-        mRecyclerViewEmoji = (RecyclerView) findViewById(R.id.recyclerViewEmoji);
+        mRecyclerViewEmoji = (GridRecyclerView) findViewById(R.id.recyclerViewEmoji);
         mProgressBar = (ProgressBar) findViewById(R.id.progressBar);
         mNavigationView = (NavigationView) findViewById(R.id.navigationView);
         mEditTextMessage = (EditText) findViewById(R.id.editMessage);
@@ -94,6 +96,7 @@ public class MainActivity extends BaseAppActivity implements TextWatcher, Servic
         setSupportActionBar(toolbar);
         mAdapter = new ChatMessagesAdapter(mRecyclerView, this);
         mRecyclerView.setAdapter(mAdapter);
+        mRecyclerView.setItemAnimator(new SmartItemAnimator());
         mFabSend.setOnClickListener(this);
         mToggle = new ActionBarDrawerToggle(this, mDrawerLayout, toolbar, R.string.drawer_open, R.string.drawer_close) {
             @Override
@@ -481,6 +484,7 @@ public class MainActivity extends BaseAppActivity implements TextWatcher, Servic
                     ThemeUtils.setDrawableCompat(mImageButtonEmoji, R.drawable.ic_insert_emoticon_black_24dp, ChatApp.getApplicationPalette());
                 } else {
                     mRecyclerViewEmoji.setVisibility(View.VISIBLE);
+                    mRecyclerViewEmoji.animateGrid();
                     ThemeUtils.setDrawableCompat(mImageButtonEmoji, R.drawable.ic_keyboard_arrow_down_black_24dp, ChatApp.getApplicationPalette());
                 }
                 break;

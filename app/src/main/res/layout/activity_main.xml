@@ -43,11 +43,12 @@
                 android:layout_gravity="center" />
 
 
-            <android.support.v7.widget.RecyclerView
+            <com.nv95.fbchat.components.recycler.GridRecyclerView
                 android:id="@+id/recyclerViewEmoji"
                 android:background="?android:windowBackground"
                 android:layout_width="match_parent"
                 android:visibility="gone"
+                android:layoutAnimation="@anim/emoji_layout"
                 android:layout_height="match_parent" />
 
         </FrameLayout>

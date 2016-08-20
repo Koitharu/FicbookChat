@@ -12,7 +12,6 @@ import android.widget.TextView;
 
 import com.nv95.fbchat.components.BubbleDrawable;
 import com.nv95.fbchat.components.EndlessHeaderedAdapter;
-import com.nv95.fbchat.components.ExpandableTextView;
 import com.nv95.fbchat.core.ChatMessage;
 import com.nv95.fbchat.dialogs.OnUserClickListener;
 import com.nv95.fbchat.utils.AutoLinkMovement;
@@ -27,7 +26,7 @@ import java.util.List;
  * Created by nv95 on 11.08.16.
  */
 
-public class ChatMessagesAdapter extends EndlessHeaderedAdapter<RecyclerView.ViewHolder> {
+public class ChatMessagesAdapter extends EndlessHeaderedAdapter<ChatMessagesAdapter.MessageHolderAbs> {
 
     private final LinkedList<ChatMessage> mDataset;
     @Nullable
@@ -50,7 +49,7 @@ public class ChatMessagesAdapter extends EndlessHeaderedAdapter<RecyclerView.Vie
     }
 
     @Override
-    public RecyclerView.ViewHolder onCreateDataViewHolder(ViewGroup parent, int viewType) {
+    public ChatMessagesAdapter.MessageHolderAbs onCreateDataViewHolder(ViewGroup parent, int viewType) {
         if (viewType == ChatMessage.MSG_EVENT) {
             return new EventHolder(LayoutInflater.from(parent.getContext()).inflate(
                     R.layout.item_event,
@@ -69,7 +68,7 @@ public class ChatMessagesAdapter extends EndlessHeaderedAdapter<RecyclerView.Vie
     }
 
     @Override
-    public void onBindDataViewHolder(RecyclerView.ViewHolder holder, int position) {
+    public void onBindDataViewHolder(ChatMessagesAdapter.MessageHolderAbs holder, int position) {
         ChatMessage cm = mDataset.get(position);
         if (holder instanceof MessageHolder) {
             DayNightPalette palette = DayNightPalette.fromString(cm.login, ChatApp.getApplicationPalette().isDark());
@@ -93,9 +92,10 @@ public class ChatMessagesAdapter extends EndlessHeaderedAdapter<RecyclerView.Vie
                 ((EventHolder)holder).imageView.setVisibility(View.VISIBLE);
                 ((EventHolder) holder).textViewLogin.setText(cm.login);
                 AvatarUtils.assignAvatarTo(((EventHolder) holder).imageView, cm.login);
+                ((EventHolder)holder).textViewLogin.requestLayout();
             }
             ((EventHolder) holder).textViewMessage.setText(cm.message);
-            holder.itemView.requestLayout();
+            ((EventHolder)holder).textViewMessage.requestLayout();
         }
     }
 
@@ -122,14 +122,12 @@ public class ChatMessagesAdapter extends EndlessHeaderedAdapter<RecyclerView.Vie
         return mDataset.getLast();
     }
 
-    private static class MessageHolder extends RecyclerView.ViewHolder implements View.OnLongClickListener, View.OnClickListener {
+    private static class MessageHolder extends ChatMessagesAdapter.MessageHolderAbs implements
+            View.OnLongClickListener, View.OnClickListener {
 
         final LinearLayout blockMessage;
-        final TextView textViewLogin;
-        final ExpandableTextView textViewMessage;
         final BubbleDrawable bubble;
         final TextView textViewHeader;
-        final ImageView imageView;
         @Nullable
         private final OnUserClickListener mClickListener;
 
@@ -137,9 +135,6 @@ public class ChatMessagesAdapter extends EndlessHeaderedAdapter<RecyclerView.Vie
             super(itemView);
             mClickListener = clickListener;
             blockMessage = (LinearLayout) itemView.findViewById(R.id.blockMessage);
-            textViewLogin = (TextView) itemView.findViewById(R.id.textViewLogin);
-            textViewMessage = (ExpandableTextView) itemView.findViewById(R.id.textViewMessage);
-            imageView = (ImageView) itemView.findViewById(R.id.imageView);
             textViewHeader = (TextView) itemView.findViewById(R.id.textViewHeader);
             blockMessage.setBackgroundDrawable(bubble = new BubbleDrawable());
             textViewMessage.setMovementMethod(AutoLinkMovement.getInstance());
@@ -165,15 +160,23 @@ public class ChatMessagesAdapter extends EndlessHeaderedAdapter<RecyclerView.Vie
         }
     }
 
-    private static class EventHolder extends RecyclerView.ViewHolder {
+    private static class EventHolder extends ChatMessagesAdapter.MessageHolderAbs {
+
+        EventHolder(View itemView) {
+            super(itemView);
+            itemView.setBackgroundColor(ContextCompat.getColor(itemView.getContext(), ChatApp.getApplicationPalette().isDark() ? R.color.white_60 : R.color.black_60));
+
+        }
+    }
+
+    static abstract class MessageHolderAbs extends RecyclerView.ViewHolder {
 
         final TextView textViewLogin;
         final TextView textViewMessage;
         final ImageView imageView;
 
-        EventHolder(View itemView) {
+        MessageHolderAbs(View itemView) {
             super(itemView);
-            itemView.setBackgroundColor(ContextCompat.getColor(itemView.getContext(), ChatApp.getApplicationPalette().isDark() ? R.color.white_60 : R.color.black_60));
             textViewLogin = (TextView) itemView.findViewById(R.id.textViewLogin);
             textViewMessage = (TextView) itemView.findViewById(R.id.textViewMessage);
             imageView = (ImageView) itemView.findViewById(R.id.imageView);
