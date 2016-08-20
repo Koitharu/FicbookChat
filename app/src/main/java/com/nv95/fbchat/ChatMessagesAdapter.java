@@ -95,7 +95,7 @@ public class ChatMessagesAdapter extends EndlessHeaderedAdapter<RecyclerView.Vie
                 AvatarUtils.assignAvatarTo(((EventHolder) holder).imageView, cm.login);
             }
             ((EventHolder) holder).textViewMessage.setText(cm.message);
-            ((ViewGroup)holder.itemView).getChildAt(0).requestLayout();
+            holder.itemView.requestLayout();
         }
     }
 

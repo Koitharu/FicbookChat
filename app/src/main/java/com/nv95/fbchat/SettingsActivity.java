@@ -54,9 +54,6 @@ public class SettingsActivity extends BaseAppActivity implements Preference.OnPr
                 ChatApp.getApplicationPalette().setDark((Boolean) o);
                 requestRestart();
                 return true;
-            case "debug":
-                requestRestart();
-                return true;
             default:
                 return false;
         }
@@ -86,6 +83,9 @@ public class SettingsActivity extends BaseAppActivity implements Preference.OnPr
                         .setNegativeButton(android.R.string.cancel, null)
                         .create()
                         .show();
+                return true;
+            case "debug":
+                requestRestart();
                 return true;
             default:
                 return false;

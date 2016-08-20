@@ -17,4 +17,7 @@
         <item name="windowActionModeOverlay">true</item>
     </style>
 
+    <style name="ItemTextAppearance">
+        <item name="android:ellipsize">end</item>
+    </style>
 </resources>

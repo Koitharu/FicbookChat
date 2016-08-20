@@ -8,6 +8,7 @@ import android.net.Uri;
 import android.os.Vibrator;
 import android.preference.PreferenceManager;
 import android.support.v4.content.ContextCompat;
+import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.ImageView;
@@ -44,8 +45,22 @@ public class NotificationHelper implements SharedPreferences.OnSharedPreferenceC
     }
 
     @Override
-    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String s) {
-
+    public void onSharedPreferenceChanged(SharedPreferences prefs, String key) {
+        if (TextUtils.isEmpty(key)) {
+            return;
+        }
+        switch (key) {
+            case "notify.popup":
+                mPopupNotification = Integer.parseInt(prefs.getString("notify.popup", String.valueOf(POPUP_ME_ONLY)));
+                break;
+            case "notify.vibrate":
+                mVibration = prefs.getBoolean("notify.vibrate", false);
+                break;
+            case "notify.sound":
+                String sound = prefs.getString("notify.sound", "");
+                mSound = RingtoneManager.getRingtone(mContext, Uri.parse(sound));
+                break;
+        }
     }
 
     public void notify(ChatMessage message, boolean mention) {

@@ -16,7 +16,7 @@
     <string name="close">Закрыть</string>
     <string name="disconnected">Соединение разорвано</string>
     <string name="joined">присоединился</string>
-    <string name="left">покинул чат</string>
+    <string name="left">покинул(а) чат</string>
     <string name="kiked">отключен администратором</string>
     <string name="exit">Выход</string>
     <string name="rooms">Комнаты</string>

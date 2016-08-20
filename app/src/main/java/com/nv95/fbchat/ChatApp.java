@@ -76,7 +76,7 @@ public class ChatApp extends Application {
         Intent mStartActivity = new Intent(activity, activity.getClass());
         PendingIntent mPendingIntent = PendingIntent.getActivity(activity, 48568, mStartActivity, PendingIntent.FLAG_CANCEL_CURRENT);
         AlarmManager mgr = (AlarmManager)activity.getSystemService(Context.ALARM_SERVICE);
-        mgr.set(AlarmManager.RTC, System.currentTimeMillis() + 200, mPendingIntent);
+        mgr.set(AlarmManager.RTC, System.currentTimeMillis() + 100, mPendingIntent);
         Toast.makeText(activity, R.string.restarting, Toast.LENGTH_LONG).show();
         activity.finish();
     }

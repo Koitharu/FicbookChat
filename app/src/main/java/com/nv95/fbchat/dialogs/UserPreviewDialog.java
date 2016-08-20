@@ -71,6 +71,7 @@ public class UserPreviewDialog implements DialogInterface.OnDismissListener, Too
         mDialog = new AlertDialog.Builder(activity)
                 .setOnDismissListener(this)
                 .setView(mContentView)
+                .setNegativeButton(R.string.close, null)
                 .create();
         mDialog.setOwnerActivity(activity);
     }
