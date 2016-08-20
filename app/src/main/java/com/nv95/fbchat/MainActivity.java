@@ -145,7 +145,7 @@ public class MainActivity extends BaseAppActivity implements TextWatcher, Servic
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_SETTINGS && resultCode == RESULT_OK) {
             if (data.hasExtra("restart") && data.getBooleanExtra("restart", false)) {
-                recreate();
+                ChatApp.restart(this);
             }
         }
     }

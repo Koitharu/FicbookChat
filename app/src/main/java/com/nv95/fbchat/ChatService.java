@@ -37,7 +37,7 @@ public class ChatService extends Service implements FbChat.ChatCallback {
     public static final int POWER_MODER = 100;
 
     public static final String MAIN_URL = "ws://146.120.111.42:7070";
-    public static final String DEBUG_URL = "ws://146.120.111.42:7070";
+    public static final String DEBUG_URL = "ws://146.120.111.42:9000";
 
     private NotificationManager mNotificationManager;
     private NotificationCompat.Builder mNotificationBuilder;

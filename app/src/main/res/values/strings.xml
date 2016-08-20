@@ -45,4 +45,5 @@
     <string name="profile_info_fail">Не удалось загрузить данные профиля</string>
     <string name="no_profile_info">Нет информации о пользователе</string>
     <string name="remove_room_confirm">Вы уверены, что хотите удалить команту \"%s\"?\nЭто вызовет фатальные последствия</string>
+    <string name="restarting">Перезапуск…</string>
 </resources>

@@ -28,8 +28,11 @@ public class SettingsActivity extends BaseAppActivity implements Preference.OnPr
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
+
+        PrefFragment pf = new PrefFragment();
+        pf.setArguments(getIntent().getExtras());
         getFragmentManager().beginTransaction()
-                .add(R.id.content, new PrefFragment())
+                .add(R.id.content, pf)
                 .commit();
     }
 
@@ -100,9 +103,9 @@ public class SettingsActivity extends BaseAppActivity implements Preference.OnPr
             Activity activity = getActivity();
             if (activity != null && activity instanceof Preference.OnPreferenceChangeListener) {
                 findPreference("dark").setOnPreferenceChangeListener((Preference.OnPreferenceChangeListener) activity);
-                findPreference("debug").setOnPreferenceClickListener((Preference.OnPreferenceClickListener) activity);
                 findPreference("logout").setOnPreferenceClickListener((Preference.OnPreferenceClickListener) activity);
                 findPreference("logout").setSummary(AccountStore.getLogin(activity));
+                findPreference("debug").setOnPreferenceClickListener((Preference.OnPreferenceClickListener) activity);
             }
         }
     }

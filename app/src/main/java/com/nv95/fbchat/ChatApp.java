@@ -1,9 +1,14 @@
 package com.nv95.fbchat;
 
+import android.app.Activity;
+import android.app.AlarmManager;
 import android.app.Application;
+import android.app.PendingIntent;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+import android.widget.Toast;
 
 import com.nostra13.universalimageloader.cache.memory.impl.UsingFreqLimitedMemoryCache;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
@@ -65,5 +70,14 @@ public class ChatApp extends Application {
                 .cacheOnDisk(true)
                 .resetViewBeforeLoading(false)
                 .displayer(new FadeInBitmapDisplayer(400, true, true, false));
+    }
+
+    public static void restart(Activity activity) {
+        Intent mStartActivity = new Intent(activity, activity.getClass());
+        PendingIntent mPendingIntent = PendingIntent.getActivity(activity, 48568, mStartActivity, PendingIntent.FLAG_CANCEL_CURRENT);
+        AlarmManager mgr = (AlarmManager)activity.getSystemService(Context.ALARM_SERVICE);
+        mgr.set(AlarmManager.RTC, System.currentTimeMillis() + 500, mPendingIntent);
+        Toast.makeText(activity, R.string.restarting, Toast.LENGTH_LONG).show();
+        activity.finish();
     }
 }
