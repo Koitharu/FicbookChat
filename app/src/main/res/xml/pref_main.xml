@@ -73,4 +73,8 @@
 
     </com.nv95.fbchat.components.preferences.PreferenceCategoryCompat>
 
+
+    <com.nv95.fbchat.components.preferences.AboutPreference
+        android:selectable="false" />
+
 </PreferenceScreen>
