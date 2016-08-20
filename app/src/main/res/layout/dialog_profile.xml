@@ -44,7 +44,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scrollbars="vertical"
-        android:paddingBottom="36dp"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <LinearLayout
@@ -55,6 +54,7 @@
 
             <TextView
                 android:paddingTop="12dp"
+                android:paddingBottom="?actionBarSize"
                 android:id="@+id/textViewContent"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />

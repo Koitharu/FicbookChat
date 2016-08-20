@@ -5,6 +5,7 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
@@ -12,6 +13,7 @@ import android.widget.TextView;
 
 import com.nv95.fbchat.ChatApp;
 import com.nv95.fbchat.R;
+import com.nv95.fbchat.UsersAdapter;
 import com.nv95.fbchat.utils.DayNightPalette;
 import com.nv95.fbchat.utils.ThemeUtils;
 
@@ -37,6 +39,18 @@ public class LoginDialog implements View.OnClickListener, DialogInterface.OnClic
         mEditTextPassword = (EditText) view.findViewById(R.id.editTextPassword);
         mButtonSignIn = (Button) view.findViewById(R.id.buttonSignIn);
         mTextViewError = (TextView) view.findViewById(R.id.textViewError);
+        mAutoCompletteLogin.setAdapter(new UsersAdapter(activity));
+        mAutoCompletteLogin.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                mAutoCompletteLogin.setText(((TextView)view.findViewById(android.R.id.text1)).getText());
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
 
         DayNightPalette palette = ChatApp.getApplicationPalette();
         ThemeUtils.paintEditText(mAutoCompletteLogin, palette);
