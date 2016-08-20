@@ -32,10 +32,18 @@ public class DayNightPalette extends Palette {
         return mDark ? getLightColor() : getDarkColor();
     }
 
+    public int getContrastAccentColor() {
+        float[] hsv = new float[3];
+        Color.colorToHSV(mColor, hsv);
+        hsv[0] = (hsv[0] + DELTA_ACCENT) % 360;
+        hsv[1] = mDark ? 0.21373f : 0.71373f;
+        return Color.HSVToColor(Color.alpha(mColor), hsv);
+    }
+
     public int getAccentColor() {
         float[] hsv = new float[3];
         Color.colorToHSV(mColor, hsv);
-        hsv[0] = (hsv[0] + 100) % 360;
+        hsv[0] = (hsv[0] + DELTA_ACCENT) % 360;
         if (mDark) {
             hsv[1] = 0.31373f;
         }

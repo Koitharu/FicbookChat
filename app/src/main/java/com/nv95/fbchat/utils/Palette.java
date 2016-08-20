@@ -11,6 +11,8 @@ import java.util.Random;
 
 public class Palette {
 
+    protected static final int DELTA_ACCENT = 120;
+
     protected int mColor;
 
     protected Palette(int color) {
@@ -48,7 +50,7 @@ public class Palette {
     public int getAccentColor() {
         float[] hsv = new float[3];
         Color.colorToHSV(mColor, hsv);
-        hsv[0] = (hsv[0] + 100) % 360;
+        hsv[0] = (hsv[0] + DELTA_ACCENT) % 360;
         return Color.HSVToColor(Color.alpha(mColor), hsv);
     }
 
