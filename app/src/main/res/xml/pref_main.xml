@@ -16,6 +16,11 @@
             android:defaultValue="false"
             android:summary="Использовать тёмную тему для приложения" />
 
+        <com.nv95.fbchat.components.preferences.CheckPreferenceCompat
+            android:key="keepscreen"
+            android:title="Не гасить экран"
+            android:defaultValue="false" />
+
     </com.nv95.fbchat.components.preferences.PreferenceCategoryCompat>
 
     <com.nv95.fbchat.components.preferences.PreferenceCategoryCompat

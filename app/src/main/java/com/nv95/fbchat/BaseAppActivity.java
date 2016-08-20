@@ -9,6 +9,7 @@ import android.support.annotation.StringRes;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.view.WindowManager;
 
 import com.nv95.fbchat.utils.DayNightPalette;
 import com.nv95.fbchat.utils.ThemeUtils;
@@ -18,6 +19,8 @@ import com.nv95.fbchat.utils.ThemeUtils;
  */
 
 public class BaseAppActivity extends AppCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener {
+
+    private boolean mKeepScreen = false;
 
     @Override
     public void setContentView(@LayoutRes int layoutResID) {
@@ -37,7 +40,9 @@ public class BaseAppActivity extends AppCompatActivity implements SharedPreferen
         if (ChatApp.getApplicationPalette().isDark()) {
             setTheme(R.style.AppTheme_Dark);
         }
-        PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).registerOnSharedPreferenceChangeListener(this);
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        setKeepScreenOn(prefs.getBoolean("keepscreen", false));
+        prefs.registerOnSharedPreferenceChangeListener(this);
     }
 
     @Override
@@ -57,6 +62,8 @@ public class BaseAppActivity extends AppCompatActivity implements SharedPreferen
         if("color".equals(s)) {
             ThemeUtils.paintUi(this, ChatApp.getApplicationPalette());
             onPaletteChanged(ChatApp.getApplicationPalette());
+        } else if ("keepscreen".equals(s)) {
+            setKeepScreenOn(sharedPreferences.getBoolean("keepscreen", false));
         }
     }
 
@@ -73,5 +80,16 @@ public class BaseAppActivity extends AppCompatActivity implements SharedPreferen
 
     void setSubtitle(@StringRes int resId) {
         setSubtitle(getString(resId));
+    }
+
+    private void setKeepScreenOn(boolean keep) {
+        if (keep != mKeepScreen) {
+            mKeepScreen = keep;
+            if (keep) {
+                getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+            } else {
+                getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+            }
+        }
     }
 }
