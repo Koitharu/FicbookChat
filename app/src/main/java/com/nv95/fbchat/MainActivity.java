@@ -2,6 +2,7 @@ package com.nv95.fbchat;
 
 import android.app.ProgressDialog;
 import android.content.ComponentName;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.ServiceConnection;
@@ -125,7 +126,7 @@ public class MainActivity extends BaseAppActivity implements TextWatcher, Servic
         }
 
         EmojiAdapter adapter = new EmojiAdapter(this);
-        GridLayoutManager lm = new GridLayoutManager(this, LayoutUtils.getOptimalColumnsCount(getResources(), getResources().getDimensionPixelSize(R.dimen.emoji_size_large), 0));
+        GridLayoutManager lm = new GridLayoutManager(this, getOptimalColumnsCountTablet(this, getResources().getDimensionPixelSize(R.dimen.emoji_size_large)));
         lm.setReverseLayout(true);
         mRecyclerViewEmoji.setLayoutManager(lm);
         mRecyclerViewEmoji.setAdapter(adapter);
@@ -559,5 +560,19 @@ public class MainActivity extends BaseAppActivity implements TextWatcher, Servic
             mEditTextMessage.getText().insert(0,  " ");
             mEditTextMessage.getText().insert(0, SpanUtils.getUserString(this, nickname));
         }
+    }
+
+    public static int getOptimalColumnsCountTablet(Context context, int columnWidth) {
+        float width = LayoutUtils.isTabletLandscape(context) ? LayoutUtils.DpToPx(context.getResources(), 404) : context.getResources().getDisplayMetrics().widthPixels;
+
+        float modW = width % columnWidth;
+        int count = (int) (width / columnWidth);
+        if (modW > columnWidth/2) {
+            count++;
+        }
+        if (count == 0) {
+            count = 1;
+        }
+        return count;
     }
 }

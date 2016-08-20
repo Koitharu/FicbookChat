@@ -88,7 +88,11 @@ public class ThemeUtils {
     }
 
     public static void paintEditText(EditText editText, DayNightPalette palette) {
-        TextInputLayout til = (TextInputLayout) editText.getParent();
+        View v = (View) editText.getParent();
+        if (!(v instanceof TextInputLayout)) {
+            return;
+        }
+        TextInputLayout til = (TextInputLayout) v;
         try {
             Field fDefaultTextColor = TextInputLayout.class.getDeclaredField("mDefaultTextColor");
             fDefaultTextColor.setAccessible(true);
