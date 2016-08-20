@@ -21,6 +21,11 @@
             android:title="Не гасить экран"
             android:defaultValue="false" />
 
+        <com.nv95.fbchat.components.preferences.ImagePreference
+            android:key="wallpaper"
+            android:defaultValue=""
+            android:title="Фоновый рисунок" />
+
     </com.nv95.fbchat.components.preferences.PreferenceCategoryCompat>
 
     <com.nv95.fbchat.components.preferences.PreferenceCategoryCompat

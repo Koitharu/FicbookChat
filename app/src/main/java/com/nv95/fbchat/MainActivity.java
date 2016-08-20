@@ -5,10 +5,12 @@ import android.content.ComponentName;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.content.SharedPreferences;
 import android.content.res.ColorStateList;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
@@ -33,8 +35,8 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.nv95.fbchat.components.EndlessHeaderedAdapter;
+import com.nv95.fbchat.components.WallpaperView;
 import com.nv95.fbchat.components.recycler.GridRecyclerView;
-import com.nv95.fbchat.components.recycler.SmartItemAnimator;
 import com.nv95.fbchat.core.AccountStore;
 import com.nv95.fbchat.core.ChatCallback;
 import com.nv95.fbchat.core.ChatMessage;
@@ -71,6 +73,7 @@ public class MainActivity extends BaseAppActivity implements TextWatcher, Servic
     private FloatingActionButton mFabSend;
     private EditText mEditTextMessage;
     private ImageView mImageViewPower;
+    private WallpaperView mWallpaperView;
     private DrawerLayout mDrawerLayout;
     private ImageButton mImageButtonEmoji;
     private ActionBarDrawerToggle mToggle;
@@ -87,6 +90,7 @@ public class MainActivity extends BaseAppActivity implements TextWatcher, Servic
         mRecyclerView = (RecyclerView) findViewById(R.id.recyclerView);
         mRecyclerViewEmoji = (GridRecyclerView) findViewById(R.id.recyclerViewEmoji);
         mProgressBar = (ProgressBar) findViewById(R.id.progressBar);
+        mWallpaperView = (WallpaperView) findViewById(R.id.wallpaper);
         mNavigationView = (NavigationView) findViewById(R.id.navigationView);
         mEditTextMessage = (EditText) findViewById(R.id.editMessage);
         mImageButtonEmoji = (ImageButton) findViewById(R.id.buttonEmoji);
@@ -96,7 +100,6 @@ public class MainActivity extends BaseAppActivity implements TextWatcher, Servic
         setSupportActionBar(toolbar);
         mAdapter = new ChatMessagesAdapter(mRecyclerView, this);
         mRecyclerView.setAdapter(mAdapter);
-        mRecyclerView.setItemAnimator(new SmartItemAnimator());
         mFabSend.setOnClickListener(this);
         mToggle = new ActionBarDrawerToggle(this, mDrawerLayout, toolbar, R.string.drawer_open, R.string.drawer_close) {
             @Override
@@ -137,6 +140,8 @@ public class MainActivity extends BaseAppActivity implements TextWatcher, Servic
         mProgressDialog.setButton(DialogInterface.BUTTON_NEGATIVE, getString(android.R.string.cancel), this);
         mProgressDialog.setOnShowListener(new ThemeUtils.DialogPainter());
         mProgressDialog.show();
+
+        mWallpaperView.setWallpaper(PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString("wallpaper", ""));
 
         Intent serviceIntent = new Intent(this, ChatService.class);
         startService(serviceIntent);
@@ -499,6 +504,15 @@ public class MainActivity extends BaseAppActivity implements TextWatcher, Servic
                     mEditTextMessage.getText().clear();
                 }
                 break;
+        }
+    }
+
+    @Override
+    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String s) {
+        if ("wallpaper".equals(s)) {
+            mWallpaperView.setWallpaper(sharedPreferences.getString("wallpaper", ""));
+        } else {
+            super.onSharedPreferenceChanged(sharedPreferences, s);
         }
     }
 

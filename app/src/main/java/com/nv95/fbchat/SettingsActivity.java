@@ -3,6 +3,7 @@ package com.nv95.fbchat;
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.preference.ListPreference;
 import android.preference.Preference;
@@ -13,14 +14,21 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
+import com.nv95.fbchat.components.preferences.ImagePreference;
 import com.nv95.fbchat.core.AccountStore;
+import com.nv95.fbchat.utils.MediaUtils;
 import com.nv95.fbchat.utils.PreferencesUtils;
+import com.soundcloud.android.crop.Crop;
+
+import java.io.File;
 
 /**
  * Created by nv95 on 13.08.16.
  */
 
 public class SettingsActivity extends BaseAppActivity implements Preference.OnPreferenceChangeListener, Preference.OnPreferenceClickListener {
+
+    private PreferenceFragment mPrefFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,10 +40,10 @@ public class SettingsActivity extends BaseAppActivity implements Preference.OnPr
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
 
-        PrefFragment pf = new PrefFragment();
-        pf.setArguments(getIntent().getExtras());
+        mPrefFragment = new PrefFragment();
+        mPrefFragment.setArguments(getIntent().getExtras());
         getFragmentManager().beginTransaction()
-                .add(R.id.content, pf)
+                .add(R.id.content, mPrefFragment)
                 .commit();
     }
 
@@ -52,6 +60,9 @@ public class SettingsActivity extends BaseAppActivity implements Preference.OnPr
         switch (preference.getKey()) {
             case "dark":
                 ChatApp.getApplicationPalette().setDark((Boolean) o);
+                requestRestart();
+                return true;
+            case "debug":
                 requestRestart();
                 return true;
             default:
@@ -84,11 +95,35 @@ public class SettingsActivity extends BaseAppActivity implements Preference.OnPr
                         .create()
                         .show();
                 return true;
-            case "debug":
-                requestRestart();
-                return true;
+            case "wallpaper":
+                Crop.pickImage(this);
             default:
                 return false;
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        switch (requestCode) {
+            case Crop.REQUEST_PICK:
+                if (resultCode == RESULT_OK) {
+                    String f = MediaUtils.getImageFile(this, data.getData());
+                    f = f.length() == 0 ? "cropped" : new File(f).getName();
+                    Uri destination = Uri.fromFile(new File(getExternalCacheDir(), f));
+                    Crop.of(data.getData(), destination)
+                            .withAspect(getResources().getDisplayMetrics().widthPixels,
+                                    getResources().getDisplayMetrics().heightPixels)
+                            .start(this);
+                }
+                break;
+            case Crop.REQUEST_CROP:
+                if (resultCode == RESULT_OK) {
+                    ImagePreference preference = (ImagePreference) mPrefFragment.findPreference("wallpaper");
+                    preference.onActivityResult(requestCode, resultCode, data);
+                }
+                break;
+            default:
+                super.onActivityResult(requestCode, resultCode, data);
         }
     }
 
@@ -108,9 +143,11 @@ public class SettingsActivity extends BaseAppActivity implements Preference.OnPr
                 findPreference("dark").setOnPreferenceChangeListener((Preference.OnPreferenceChangeListener) activity);
                 findPreference("logout").setOnPreferenceClickListener((Preference.OnPreferenceClickListener) activity);
                 findPreference("logout").setSummary(AccountStore.getLogin(activity));
-                findPreference("debug").setOnPreferenceClickListener((Preference.OnPreferenceClickListener) activity);
+                findPreference("debug").setOnPreferenceChangeListener((Preference.OnPreferenceChangeListener) activity);
                 PreferencesUtils.bindPreferenceSummary((ListPreference) findPreference("notify.popup"));
                 PreferencesUtils.bindPreferenceSummary((RingtonePreference) findPreference("notify.sound"));
+                findPreference("wallpaper").setOnPreferenceClickListener((Preference.OnPreferenceClickListener) activity);
+                PreferencesUtils.bindPreferenceSummary((ImagePreference) findPreference("wallpaper"));
             }
         }
     }
