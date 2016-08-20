@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <com.nv95.fbchat.components.preferences.PreferenceCategoryCompat
         android:title="Внешний вид">
@@ -14,6 +15,31 @@
             android:title="Тёмная тема"
             android:defaultValue="false"
             android:summary="Использовать тёмную тему для приложения" />
+
+    </com.nv95.fbchat.components.preferences.PreferenceCategoryCompat>
+
+    <com.nv95.fbchat.components.preferences.PreferenceCategoryCompat
+        android:title="Уведомления">
+
+        <com.nv95.fbchat.components.preferences.ListPreferenceCompat
+            android:key="notify.popup"
+            android:defaultValue="0"
+            android:entries="@array/popup_modes"
+            android:entryValues="@array/popup_modes_values"
+            android:title="Всплывающие уведомления" />
+
+        <com.nv95.fbchat.components.preferences.RingtonePreferenceCompat
+            android:key="notify.sound"
+            android:defaultValue=""
+            android:title="Звук при ответе"
+            android:ringtoneType="notification"
+            android:showDefault="true"
+            android:showSilent="true" />
+
+        <com.nv95.fbchat.components.preferences.CheckPreferenceCompat
+            android:key="notify.vibrate"
+            android:defaultValue="false"
+            android:title="Вибрация при ответе" />
 
     </com.nv95.fbchat.components.preferences.PreferenceCategoryCompat>
 

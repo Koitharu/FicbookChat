@@ -22,4 +22,14 @@
         <item>168</item>
         <item>336</item>
     </integer-array>
+    <string-array name="popup_modes">
+        <item>Не показывать</item>
+        <item>Только ответы</item>
+        <item>Все сообщения</item>
+    </string-array>
+    <string-array name="popup_modes_values">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+    </string-array>
 </resources>

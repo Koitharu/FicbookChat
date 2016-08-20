@@ -21,6 +21,7 @@ public class ChatMessage {
     public final CharSequence message;
     public final String login;
     public final long timestamp;
+    private boolean mMentioned = false;
 
     public ChatMessage(String login, CharSequence message, long timestamp) {
         this.message = message;
@@ -28,15 +29,8 @@ public class ChatMessage {
         this.login = login;
     }
 
-    @Deprecated
-    public ChatMessage(JSONObject jo) throws JSONException {
-        message = jo.getString("message");
-        timestamp = jo.getLong("timestamp");
-        login = jo.getString("login");
-    }
-
-    public ChatMessage(Context context, JSONObject jo) throws JSONException {
-        message = SpanUtils.makeSpans(context, jo.getString("message"));
+    public ChatMessage(Context context, JSONObject jo, String myLogin) throws JSONException {
+        message = SpanUtils.makeSpans(context, jo.getString("message"), myLogin);
         timestamp = jo.getLong("timestamp");
         login = jo.getString("login");
     }
@@ -46,5 +40,9 @@ public class ChatMessage {
         message = event;
         login = user;
         timestamp = System.currentTimeMillis();
+    }
+
+    public static boolean hasMention(CharSequence message, String myLogin) {
+        return myLogin != null && message.toString().contains("@" + myLogin.replace(" ", "\u00A0"));
     }
 }

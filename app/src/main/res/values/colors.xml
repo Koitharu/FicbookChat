@@ -6,4 +6,6 @@
     <color name="black_60">#64000000</color>
     <color name="white_60">#64FFFFFF</color>
     <color name="gray_60">#64757575</color>
+    <color name="black_80">#c8000000</color>
+    <color name="white_80">#c8ffffff</color>
 </resources>

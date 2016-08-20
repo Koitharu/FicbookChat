@@ -7,12 +7,15 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.RectF;
+import android.graphics.Typeface;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.style.ImageSpan;
+import android.text.style.StyleSpan;
 
 import com.nv95.fbchat.ChatApp;
 import com.nv95.fbchat.R;
@@ -57,7 +60,7 @@ public class SpanUtils {
         return ss;
     }
 
-    public static Spanned makeSpans(Context context, String source) {
+    public static Spanned makeSpans(Context context, String source, @Nullable String myLogin) {
         SpannableString ss = new SpannableString(source);
         char c;
         for (int i=0;i<ss.length()-1;i++) {
@@ -67,8 +70,13 @@ public class SpanUtils {
                 while (to < ss.length() && ss.charAt(to) != ' ' && ss.charAt(to) != '\n') {
                     to++;
                 }
-                ss.setSpan(getUserSpan(context, ss.subSequence(i+1,to).toString().replace("\u00A0", " ")),
+                String nickname = ss.subSequence(i+1,to).toString().replace("\u00A0", " ");
+                ss.setSpan(getUserSpan(context, nickname),
                         i, to, Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
+                if (myLogin != null && myLogin.equals(nickname)) {
+                    ss.setSpan(new StyleSpan(Typeface.BOLD),
+                            i, to, Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
+                }
             } if (EmojiCompat.isEmoji(c)) {
                 int ind = EmojiCompat.indexOf(c, ss.charAt(i+1));
                 if (ind != -1) {

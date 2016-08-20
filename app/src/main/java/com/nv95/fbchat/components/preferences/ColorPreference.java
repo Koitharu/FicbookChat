@@ -79,7 +79,7 @@ public class ColorPreference extends Preference implements DialogInterface.OnCli
         mDialog.show();
     }
 
-    public void setValue(int value) {
+    private void setValue(int value) {
         // Always persist/notify the first time.
         final boolean changed = mValue != value;
         if (changed || !mValueSet) {

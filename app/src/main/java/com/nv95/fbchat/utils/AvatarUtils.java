@@ -63,7 +63,7 @@ public class AvatarUtils {
                         .showImageForEmptyUri(R.drawable.ic_avatar_holder)
                         .showImageOnFail(R.drawable.ic_avatar_holder)
                         .showImageOnLoading(R.drawable.ic_avatar_holder)
-                        .displayer(new CircleBitmapDisplayer(Color.WHITE, LayoutUtils.DpToPx(imageView.getResources(), 1)))
+                        .displayer(new CircleBitmapDisplayer(Color.WHITE, LayoutUtils.DpToPx(imageView.getResources(), 0.5f)))
                         .build();
             }
         }

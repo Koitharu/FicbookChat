@@ -4,14 +4,17 @@ import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
+import android.preference.RingtonePreference;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
 import com.nv95.fbchat.core.AccountStore;
+import com.nv95.fbchat.utils.PreferencesUtils;
 
 /**
  * Created by nv95 on 13.08.16.
@@ -106,6 +109,8 @@ public class SettingsActivity extends BaseAppActivity implements Preference.OnPr
                 findPreference("logout").setOnPreferenceClickListener((Preference.OnPreferenceClickListener) activity);
                 findPreference("logout").setSummary(AccountStore.getLogin(activity));
                 findPreference("debug").setOnPreferenceClickListener((Preference.OnPreferenceClickListener) activity);
+                PreferencesUtils.bindPreferenceSummary((ListPreference) findPreference("notify.popup"));
+                PreferencesUtils.bindPreferenceSummary((RingtonePreference) findPreference("notify.sound"));
             }
         }
     }

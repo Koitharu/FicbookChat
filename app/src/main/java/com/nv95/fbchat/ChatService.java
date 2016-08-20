@@ -10,12 +10,14 @@ import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v7.app.NotificationCompat;
 import android.text.Html;
+import android.util.Log;
 
 import com.nv95.fbchat.core.AccountStore;
 import com.nv95.fbchat.core.ChatCallback;
 import com.nv95.fbchat.core.ChatMessage;
 import com.nv95.fbchat.core.FbChat;
 import com.nv95.fbchat.core.Rooms;
+import com.nv95.fbchat.utils.NotificationHelper;
 import com.nv95.fbchat.utils.SpanUtils;
 import com.nv95.fbchat.utils.TimestampUtils;
 
@@ -49,12 +51,15 @@ public class ChatService extends Service implements FbChat.ChatCallback {
     private int mCurrentOnline;
     private String mMyLogin;
     private int mPower;
+    private NotificationHelper mNotifyHelper;
+    private boolean mBackgroundMode;
 
     @Override
     public void onCreate() {
         super.onCreate();
         mPower = 0;
         mCurrentOnline = 0;
+        mBackgroundMode = false;
         mMyLogin = AccountStore.getLogin(this);
         mNotificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         mNotificationBuilder = new NotificationCompat.Builder(this);
@@ -65,6 +70,8 @@ public class ChatService extends Service implements FbChat.ChatCallback {
                 PendingIntent.getService(this, 1, new Intent(this, ChatService.class).putExtra("action", "exit"), 0));
         mNotificationBuilder.setContentText(getString(R.string.connecting));
         mCurrentRoom = null;
+        mNotifyHelper = new NotificationHelper(this);
+        PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).registerOnSharedPreferenceChangeListener(mNotifyHelper);
         boolean debug = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getBoolean("debug", false);
         mChat = new FbChat(debug ? DEBUG_URL : MAIN_URL, this);
         mChat.connect();
@@ -74,6 +81,7 @@ public class ChatService extends Service implements FbChat.ChatCallback {
     @Override
     public void onDestroy() {
         mCallback = null;
+        PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).unregisterOnSharedPreferenceChangeListener(mNotifyHelper);
         mNotificationBuilder = null;
         mChat.disconnect();
         stopForeground(true);
@@ -183,7 +191,7 @@ public class ChatService extends Service implements FbChat.ChatCallback {
                     JSONArray ja = message.getJSONArray("messages");
                     ChatMessage cm;
                     for (int i = 0; i < ja.length(); i++) {
-                        cm = new ChatMessage(this, ja.getJSONObject(i));
+                        cm = new ChatMessage(this, ja.getJSONObject(i), mMyLogin);
                         cm.type = mMyLogin.equals(cm.login) ? ChatMessage.MSG_MY : ChatMessage.MSG_NORMAL;
                         lst.add(cm);
                     }
@@ -198,12 +206,15 @@ public class ChatService extends Service implements FbChat.ChatCallback {
                             if (message.getString("room_name").equals(mCurrentRoom)) {
                                 ChatMessage cm = new ChatMessage(
                                         message.getString("user"),
-                                        SpanUtils.makeSpans(this, message.getString("message")),
+                                        SpanUtils.makeSpans(this, message.getString("message"), mMyLogin),
                                         message.getLong("time")
                                 );
                                 cm.type = mMyLogin.equals(cm.login) ? ChatMessage.MSG_MY : ChatMessage.MSG_NORMAL;
                                 if (mCallback != null) {
                                     mCallback.onMessageReceived(cm);
+                                }
+                                if (mBackgroundMode) {
+                                    mNotifyHelper.notify(cm, ChatMessage.hasMention(cm.message, mMyLogin));
                                 }
                             }
                             break;
@@ -430,6 +441,11 @@ public class ChatService extends Service implements FbChat.ChatCallback {
 
         public int getCurrentOnline() {
             return mCurrentOnline;
+        }
+
+        public void setBackground(boolean isBackground) {
+            mBackgroundMode = isBackground;
+            Log.d("CHS", "Background: " + isBackground);
         }
     }
 }

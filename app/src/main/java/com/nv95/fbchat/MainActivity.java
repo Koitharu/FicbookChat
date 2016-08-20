@@ -174,6 +174,22 @@ public class MainActivity extends BaseAppActivity implements TextWatcher, Servic
     }
 
     @Override
+    protected void onStop() {
+        if (mChatBinder != null) {
+            mChatBinder.setBackground(true);
+        }
+        super.onStop();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        if (mChatBinder != null) {
+            mChatBinder.setBackground(false);
+        }
+    }
+
+    @Override
     protected void onDestroy() {
         if (mProgressDialog != null) {
             mProgressDialog.dismiss();
