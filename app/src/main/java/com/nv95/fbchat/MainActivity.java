@@ -45,6 +45,7 @@ import com.nv95.fbchat.core.Rooms;
 import com.nv95.fbchat.core.emoji.EmojiAdapter;
 import com.nv95.fbchat.core.emoji.OnEmojiSelectListener;
 import com.nv95.fbchat.dialogs.AdminMenuDialog;
+import com.nv95.fbchat.dialogs.EditTextDialog;
 import com.nv95.fbchat.dialogs.LoginDialog;
 import com.nv95.fbchat.dialogs.OnUserClickListener;
 import com.nv95.fbchat.dialogs.UserListDialog;
@@ -56,6 +57,7 @@ import com.nv95.fbchat.utils.LayoutUtils;
 import com.nv95.fbchat.utils.SpanUtils;
 import com.nv95.fbchat.utils.ThemeUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -397,7 +399,7 @@ public class MainActivity extends BaseAppActivity implements TextWatcher, Servic
 
     @Override
     public void onAlertMessage(String message, boolean error, boolean quit) {
-        if (quit && mProgressDialog != null) {
+        if (mProgressDialog != null) {
             mProgressDialog.dismiss();
             mProgressDialog = null;
         }
@@ -434,6 +436,23 @@ public class MainActivity extends BaseAppActivity implements TextWatcher, Servic
     }
 
     @Override
+    public void onSearchResult(ArrayList<ChatMessage> messages, String query) {
+        if (mProgressDialog == null) {
+            return;
+        }
+        mProgressDialog.dismiss();
+        mProgressDialog = null;
+        if (messages.size() == 0) {
+            onAlertMessage(getString(R.string.nothing_found, query), false, false);
+        } else {
+            startActivity(new Intent(this, SearchResultActivity.class)
+                    .putParcelableArrayListExtra("messages", messages)
+                    .putExtra("query", query)
+            );
+        }
+    }
+
+    @Override
     public void onLogin(String email, String password) {
         mProgressDialog = new ProgressDialog(this);
         mProgressDialog.setIndeterminate(true);
@@ -458,6 +477,20 @@ public class MainActivity extends BaseAppActivity implements TextWatcher, Servic
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+            case R.id.action_search:
+                new EditTextDialog(this, R.string.search, new EditTextDialog.OnTextChangedListener() {
+                    @Override
+                    public void onTextChanged(String newText) {
+                        mProgressDialog = new ProgressDialog(MainActivity.this);
+                        mProgressDialog.setIndeterminate(true);
+                        mProgressDialog.setMessage(getString(R.string.loading));
+                        mProgressDialog.setCancelable(true);
+                        mProgressDialog.setOnCancelListener(MainActivity.this);
+                        mProgressDialog.show();
+                        mChatBinder.search(newText);
+                    }
+                }).show(R.string.enter_query, null);
+                break;
             case R.id.action_settings:
                 startActivityForResult(new Intent(this, SettingsActivity.class), REQUEST_SETTINGS);
                 break;

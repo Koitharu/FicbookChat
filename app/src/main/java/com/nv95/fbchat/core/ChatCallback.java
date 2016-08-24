@@ -1,5 +1,6 @@
 package com.nv95.fbchat.core;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -26,4 +27,6 @@ public interface ChatCallback {
     void onUserCountChanged(int count);
 
     void onQuitByUser();
+
+    void onSearchResult(ArrayList<ChatMessage> messages, String query);
 }

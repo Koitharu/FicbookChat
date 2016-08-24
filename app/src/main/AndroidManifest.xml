@@ -25,6 +25,8 @@
         <service android:name="com.nv95.fbchat.ChatService" />
         <activity android:name="com.nv95.fbchat.SettingsActivity"
             android:label="@string/settings" />
+        <activity android:name="com.nv95.fbchat.SearchResultActivity"
+            android:label="@string/search_results" />
         <activity android:name="com.soundcloud.android.crop.CropImageActivity" />
     </application>
 

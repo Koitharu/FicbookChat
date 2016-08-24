@@ -222,12 +222,27 @@ public class ChatService extends Service implements FbChat.ChatCallback {
                         case "participants": {
                             JSONArray ja = message.getJSONArray("participants");
                             List<String> pcp = new ArrayList<>(ja.length());
-                            for (int i=0;i<ja.length();i++) {
+                            for (int i = 0; i < ja.length(); i++) {
                                 pcp.add(ja.getString(i));
                             }
                             if (mCallback != null) {
                                 mCallback.onOnlineListReceived(message.getString("room_name"), pcp);
                             }
+                            break;
+                        }
+                        case "search": {
+                            ArrayList<ChatMessage> lst = new ArrayList<>();
+                            JSONArray ja = message.getJSONArray("history");
+                            ChatMessage cm;
+                            for (int i = 0; i < ja.length(); i++) {
+                                cm = new ChatMessage(this, ja.getJSONObject(i), mMyLogin);
+                                cm.type = mMyLogin.equals(cm.login) ? ChatMessage.MSG_MY : ChatMessage.MSG_NORMAL;
+                                lst.add(cm);
+                            }
+                            if (mCallback != null) {
+                                mCallback.onSearchResult(lst, message.getString("query"));
+                            }
+                            break;
                         }
                     }
 
@@ -418,6 +433,21 @@ public class ChatService extends Service implements FbChat.ChatCallback {
                 if (hours != 0) {
                     jo.put("duration", (long)(hours * TimestampUtils.HOUR));
                 }
+                mChat.send(jo);
+                return true;
+            } catch (JSONException e) {
+                e.printStackTrace();
+                return false;
+            }
+        }
+
+        public boolean search(String query) {
+            try {
+                JSONObject jo = new JSONObject();
+                jo.put("type", "chat");
+                jo.put("action", "search");
+                jo.put("room_name", mCurrentRoom);
+                jo.put("query", query);
                 mChat.send(jo);
                 return true;
             } catch (JSONException e) {
