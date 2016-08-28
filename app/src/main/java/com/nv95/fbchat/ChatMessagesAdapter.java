@@ -19,6 +19,7 @@ import com.nv95.fbchat.utils.AvatarUtils;
 import com.nv95.fbchat.utils.DayNightPalette;
 import com.nv95.fbchat.utils.TimestampUtils;
 
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -113,13 +114,21 @@ public class ChatMessagesAdapter extends EndlessHeaderedAdapter<ChatMessagesAdap
     }
 
     public void appendSingleMessage(ChatMessage msg) {
-        mDataset.add(0, msg);
+        mDataset.addFirst(msg);
         notifyItemInserted(getHeadersCount());
     }
 
     @Nullable
     public ChatMessage getLatestMessage() {
-        return mDataset.getLast();
+        Iterator<ChatMessage> it = mDataset.descendingIterator();
+        ChatMessage cm;
+        while(it.hasNext()) {
+            cm = it.next();
+            if (cm.type == ChatMessage.MSG_NORMAL || cm.type == ChatMessage.MSG_MY) {
+                return cm;
+            }
+        }
+        return null;
     }
 
     private static class MessageHolder extends ChatMessagesAdapter.MessageHolderAbs implements
