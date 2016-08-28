@@ -84,7 +84,14 @@ public class EmojiCompat {
                     '\uDCA4',
                     '\uDE02',
                     '\uDE1A',
-                    '\uDFB1'
+                    '\uDFB1',
+                    '\uDD99',
+                    '\uDD98',
+                    '\uDD97',
+                    '\uDD96',
+                    '\uDD92',
+                    '\uDD94',
+                    '\uDD91'
             }
     };
 
@@ -132,7 +139,7 @@ public class EmojiCompat {
             e.printStackTrace();
         }
         Bitmap src = BitmapFactory.decodeStream(in, null, null);
-        Bitmap res = Bitmap.createScaledBitmap(src, size, size, false);
+        Bitmap res = Bitmap.createScaledBitmap(src, size, size, true);
         src.recycle();
         return res;
     }
