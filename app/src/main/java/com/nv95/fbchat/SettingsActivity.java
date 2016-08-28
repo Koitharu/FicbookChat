@@ -12,6 +12,7 @@ import android.preference.RingtonePreference;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.view.MenuItem;
 
 import com.nv95.fbchat.components.preferences.ImagePreference;
@@ -108,8 +109,8 @@ public class SettingsActivity extends BaseAppActivity implements Preference.OnPr
             case Crop.REQUEST_PICK:
                 if (resultCode == RESULT_OK) {
                     String f = MediaUtils.getImageFile(this, data.getData());
-                    f = f.length() == 0 ? "cropped" : new File(f).getName();
-                    Uri destination = Uri.fromFile(new File(getExternalCacheDir(), f));
+                    f = TextUtils.isEmpty(f) ? String.valueOf(System.currentTimeMillis()) : new File(f).getName();
+                    Uri destination = Uri.fromFile(new File(getExternalFilesDir("wallpaper"), f));
                     Crop.of(data.getData(), destination)
                             .withAspect(getResources().getDisplayMetrics().widthPixels,
                                     getResources().getDisplayMetrics().heightPixels)

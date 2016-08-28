@@ -19,6 +19,7 @@ import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nv95.fbchat.ChatApp;
 import com.nv95.fbchat.R;
+import com.nv95.fbchat.utils.MediaUtils;
 import com.soundcloud.android.crop.Crop;
 
 import java.io.File;
@@ -27,7 +28,7 @@ import java.io.File;
  * Created by nv95 on 20.08.16.
  */
 
-public class ImagePreference extends Preference implements PreferenceManager.OnActivityResultListener, View.OnClickListener {
+public class ImagePreference extends Preference implements PreferenceManager.OnActivityResultListener {
 
     public static final int REQUEST_PICK = 1212;
 
@@ -63,7 +64,13 @@ public class ImagePreference extends Preference implements PreferenceManager.OnA
                 .inflate(R.layout.pref_img, parent, false);
         mImageView = (ImageView) layout.findViewById(R.id.imageView);
         mImageViewClear = (ImageView) layout.findViewById(R.id.imageViewClear);
-        mImageViewClear.setOnClickListener(this);
+        mImageViewClear.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                setValue("");
+                MediaUtils.cleanDir(view.getContext().getExternalFilesDir("wallpaper"));
+            }
+        });
         return layout;
     }
 
@@ -110,10 +117,5 @@ public class ImagePreference extends Preference implements PreferenceManager.OnA
     @Nullable
     public File getFile() {
         return TextUtils.isEmpty(mValue) ? null : new File(mValue);
-    }
-
-    @Override
-    public void onClick(View view) {
-        setValue("");
     }
 }
