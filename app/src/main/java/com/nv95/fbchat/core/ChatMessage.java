@@ -21,7 +21,7 @@ public class ChatMessage implements Parcelable {
     public static final int MSG_EVENT = 2;
 
     public int type;
-    public final CharSequence message;
+    public CharSequence message;
     public final String login;
     public final long timestamp;
     private boolean mMentioned = false;

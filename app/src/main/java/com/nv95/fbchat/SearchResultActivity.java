@@ -4,6 +4,9 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.style.BackgroundColorSpan;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -15,6 +18,7 @@ import com.nv95.fbchat.core.ChatMessage;
 import com.nv95.fbchat.utils.AutoLinkMovement;
 import com.nv95.fbchat.utils.AvatarUtils;
 import com.nv95.fbchat.utils.DayNightPalette;
+import com.nv95.fbchat.utils.SpanUtils;
 
 import java.util.List;
 
@@ -34,8 +38,12 @@ public class SearchResultActivity extends BaseAppActivity {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
-        setSubtitle(getIntent().getStringExtra("query"));
+        String query = getIntent().getStringExtra("query");
+        setSubtitle(query);
         List<ChatMessage> messages = getIntent().getParcelableArrayListExtra("messages");
+        for (ChatMessage o : messages) {
+            o.message = makeSpans(o.message.toString(), query.toLowerCase());
+        }
         recyclerView.setAdapter(new SearchResultsAdapter(messages));
     }
 
@@ -45,6 +53,19 @@ public class SearchResultActivity extends BaseAppActivity {
             finish();
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private CharSequence makeSpans(String message, String what) {
+        CharSequence cs = SpanUtils.makeSpans(this, message, null);
+        int color = ChatApp.getApplicationPalette().getGrayColor();
+        SpannableString ss = new SpannableString(cs);
+        for (int i=0;i<ss.length() - what.length() + 1;i++) {
+            if (ss.subSequence(i, i + what.length()).toString().toLowerCase().equals(what)) {
+                ss.setSpan(new BackgroundColorSpan(color), i, i + what.length(), Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
+                i += what.length();
+            }
+        }
+        return ss;
     }
 
     private static class SearchResultsAdapter extends RecyclerView.Adapter<SimpleMessageHolder> {
