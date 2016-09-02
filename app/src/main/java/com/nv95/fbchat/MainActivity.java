@@ -15,6 +15,7 @@ import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.Snackbar;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
@@ -121,6 +122,15 @@ public class MainActivity extends BaseAppActivity implements TextWatcher, Servic
         mImageViewAvatar = (ImageView) v.findViewById(R.id.imageViewAvatar);
         mImageButtonEmoji.setOnClickListener(this);
         mImageViewPower.setOnClickListener(this);
+        mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                if (mSnackbar != null && LayoutUtils.findFirstVisibleItemPosition(mRecyclerView) <= 2) {
+                    mSnackbar.dismiss();
+                }
+            }
+        });
 
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
@@ -382,6 +392,8 @@ public class MainActivity extends BaseAppActivity implements TextWatcher, Servic
         mAdapter.appendSingleMessage(message);
         if (LayoutUtils.findFirstVisibleItemPosition(mRecyclerView) <= 2) {
             mRecyclerView.scrollToPosition(0);
+        } else {
+            updateBottomSnackbar();
         }
     }
 
@@ -607,5 +619,33 @@ public class MainActivity extends BaseAppActivity implements TextWatcher, Servic
             count = 1;
         }
         return count;
+    }
+
+    @Nullable
+    private Snackbar mSnackbar = null;
+    private int mCounter = 0;
+
+    public void updateBottomSnackbar() {
+        mCounter++;
+        if (mSnackbar == null) {
+            mSnackbar = Snackbar.make(mRecyclerView, getResources().getQuantityString(R.plurals.new_messages, mCounter, mCounter), Snackbar.LENGTH_INDEFINITE);
+            mSnackbar.setAction(R.string.down, new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mRecyclerView.scrollToPosition(0);
+                }
+            });
+            mSnackbar.setCallback(new Snackbar.Callback() {
+                @Override
+                public void onDismissed(Snackbar snackbar, int event) {
+                    mSnackbar = null;
+                    mCounter = 0;
+                    super.onDismissed(snackbar, event);
+                }
+            });
+            mSnackbar.show();
+        } else {
+            mSnackbar.setText(getResources().getQuantityString(R.plurals.new_messages, mCounter, mCounter));
+        }
     }
 }
