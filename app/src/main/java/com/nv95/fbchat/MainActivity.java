@@ -167,6 +167,8 @@ public class MainActivity extends BaseAppActivity implements TextWatcher, Servic
         if (requestCode == REQUEST_SETTINGS && resultCode == RESULT_OK) {
             if (data.hasExtra("restart") && data.getBooleanExtra("restart", false)) {
                 ChatApp.restart(this);
+            } else {
+                mWallpaperView.setWallpaper(PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString("wallpaper", ""));
             }
         }
     }

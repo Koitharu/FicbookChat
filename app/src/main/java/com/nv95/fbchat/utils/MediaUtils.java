@@ -33,6 +33,9 @@ public class MediaUtils {
     }
 
     public static void cleanDir(File f) {
+        if (f == null) {
+            return;
+        }
         File[] lst = f.listFiles();
         if (lst == null) {
             return;

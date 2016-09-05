@@ -4,7 +4,6 @@ import android.annotation.TargetApi;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
-import android.graphics.Paint;
 import android.graphics.RectF;
 import android.os.Build;
 import android.support.annotation.Nullable;
@@ -26,7 +25,6 @@ public class WallpaperView extends View {
     @Nullable
     private Bitmap mWallpaper = null;
     private String mWallpaperFile = null;
-    private final Paint mPaint = new Paint();
     @Nullable
     private ImageSize mImageSize = null;
     private static final RectF mDestRect = new RectF();
