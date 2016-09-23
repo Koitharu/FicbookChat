@@ -55,6 +55,8 @@
     <string name="nothing_found" formatted="false">По запросу \"%s\" ничего не найдено</string>
     <string name="search_results">результаты поиска</string>
     <string name="down">Вниз</string>
+    <string name="no_connection">Нет подключения к сети</string>
+    <string name="retry">Повторить</string>
     <plurals name="new_messages">
         <item quantity="one">%d новое сообщение</item>
         <item quantity="many">%d новых сообщений</item>

@@ -1,5 +1,8 @@
 package com.nv95.fbchat.core.ficbook;
 
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.text.TextUtils;
 
 import java.io.BufferedReader;
@@ -65,5 +68,11 @@ public class FicbookConnection {
         } catch (UnsupportedEncodingException e) {
             return "";
         }
+    }
+
+    public static boolean checkConnection(Context context) {
+        ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo ni = cm.getActiveNetworkInfo();
+        return ni != null && ni.isAvailable() && ni.isConnected();
     }
 }

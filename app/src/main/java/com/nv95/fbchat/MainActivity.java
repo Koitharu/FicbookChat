@@ -45,6 +45,7 @@ import com.nv95.fbchat.core.ChatMessage;
 import com.nv95.fbchat.core.Rooms;
 import com.nv95.fbchat.core.emoji.EmojiAdapter;
 import com.nv95.fbchat.core.emoji.OnEmojiSelectListener;
+import com.nv95.fbchat.core.ficbook.FicbookConnection;
 import com.nv95.fbchat.dialogs.AdminMenuDialog;
 import com.nv95.fbchat.dialogs.EditTextDialog;
 import com.nv95.fbchat.dialogs.LoginDialog;
@@ -144,7 +145,25 @@ public class MainActivity extends BaseAppActivity implements TextWatcher, Servic
         mRecyclerViewEmoji.setAdapter(adapter);
         mEditTextMessage.addTextChangedListener(this);
         mAdapter.setOnLoadMoreListener(this);
+        mWallpaperView.setWallpaper(PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString("wallpaper", ""));
 
+        doConnect();
+    }
+
+    private void doConnect() {
+        if (!FicbookConnection.checkConnection(this)) {
+            new AlertDialog.Builder(this)
+                    .setMessage(R.string.no_connection)
+                    .setPositiveButton(R.string.retry, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            doConnect();
+                        }
+                    })
+                    .setNegativeButton(R.string.exit, this)
+                    .create().show();
+            return;
+        }
         mProgressDialog = new ProgressDialog(this);
         mProgressDialog.setIndeterminate(true);
         mProgressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
@@ -154,7 +173,6 @@ public class MainActivity extends BaseAppActivity implements TextWatcher, Servic
         mProgressDialog.setOnShowListener(new ThemeUtils.DialogPainter());
         mProgressDialog.show();
 
-        mWallpaperView.setWallpaper(PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString("wallpaper", ""));
 
         Intent serviceIntent = new Intent(this, ChatService.class);
         startService(serviceIntent);
@@ -482,7 +500,9 @@ public class MainActivity extends BaseAppActivity implements TextWatcher, Servic
     public void onClick(DialogInterface dialogInterface, int i) {
         switch (i) {
             case DialogInterface.BUTTON_NEGATIVE:
-                mChatBinder.terminate();
+                if (mChatBinder != null) {
+                    mChatBinder.terminate();
+                }
                 finish();
                 break;
         }
