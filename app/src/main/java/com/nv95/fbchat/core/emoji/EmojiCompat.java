@@ -91,7 +91,9 @@ public class EmojiCompat {
                     '\uDD96',
                     '\uDD92',
                     '\uDD94',
-                    '\uDD91'
+                    '\uDD91',
+                    '\uDFAF',
+                    '\uDF75'
             }
     };
 
