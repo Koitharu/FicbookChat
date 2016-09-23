@@ -52,6 +52,10 @@ public class AvatarUtils {
         new LoadAvatarTask(imageView).executeOnExecutor(mExecutor, nickname);
     }
 
+    public static void clearLinksCache() {
+        mCache.clear();
+    }
+
     private static class LoadAvatarTask extends AsyncTask<String,Void,String> {
 
         private final ImageView mImageView;

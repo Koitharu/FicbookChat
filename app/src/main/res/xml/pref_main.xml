@@ -65,6 +65,10 @@
     <com.nv95.fbchat.components.preferences.PreferenceCategoryCompat
         android:title="Служебное">
 
+        <com.nv95.fbchat.components.preferences.PreferenceCompat
+            android:key="ccache"
+            android:title="Очистить кэш" />
+
         <com.nv95.fbchat.components.preferences.CheckPreferenceCompat
             android:key="debug"
             android:defaultValue="false"

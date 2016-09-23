@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.ListPreference;
 import android.preference.Preference;
@@ -15,8 +16,10 @@ import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.MenuItem;
 
+import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nv95.fbchat.components.preferences.ImagePreference;
 import com.nv95.fbchat.core.AccountStore;
+import com.nv95.fbchat.utils.AvatarUtils;
 import com.nv95.fbchat.utils.MediaUtils;
 import com.nv95.fbchat.utils.PreferencesUtils;
 import com.soundcloud.android.crop.Crop;
@@ -98,6 +101,10 @@ public class SettingsActivity extends BaseAppActivity implements Preference.OnPr
                 return true;
             case "wallpaper":
                 Crop.pickImage(this);
+                return true;
+            case "ccache":
+                new CacheClearTask(preference).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+                return true;
             default:
                 return false;
         }
@@ -152,8 +159,66 @@ public class SettingsActivity extends BaseAppActivity implements Preference.OnPr
                 PreferencesUtils.bindPreferenceSummary((ListPreference) findPreference("notify.popup"));
                 PreferencesUtils.bindPreferenceSummary((RingtonePreference) findPreference("notify.sound"));
                 findPreference("wallpaper").setOnPreferenceClickListener((Preference.OnPreferenceClickListener) activity);
+                findPreference("ccache").setOnPreferenceClickListener((Preference.OnPreferenceClickListener) activity);
                 PreferencesUtils.bindPreferenceSummary((ImagePreference) findPreference("wallpaper"));
             }
+
+            new AsyncTask<Void, Void, Float>() {
+
+                @Override
+                protected void onPreExecute() {
+                    super.onPreExecute();
+                    findPreference("ccache").setSummary(R.string.size_calculating);
+                }
+
+                @Override
+                protected Float doInBackground(Void... params) {
+                    try {
+                        return com.nv95.fbchat.utils.StorageUtils.dirSize(getActivity().getExternalCacheDir()) / 1048576f;
+                    } catch (Exception e) {
+                        return null;
+                    }
+                }
+
+                @Override
+                protected void onPostExecute(Float aFloat) {
+                    super.onPostExecute(aFloat);
+                    Preference preference = findPreference("ccache");
+                    if (preference != null) {
+                        preference.setSummary(String.format(preference.getContext().getString(R.string.cache_size),
+                                aFloat == null ? 0 : aFloat));
+                    }
+                }
+            }.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+        }
+    }
+
+    private static class CacheClearTask extends AsyncTask<Void, Void, Void> {
+        private Preference preference;
+
+        public CacheClearTask(Preference preference) {
+            this.preference = preference;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            preference.setSummary(R.string.cache_clearing);
+            super.onPreExecute();
+        }
+
+        @Override
+        protected Void doInBackground(Void... params) {
+            AvatarUtils.clearLinksCache();
+            ImageLoader.getInstance().getMemoryCache().clear();
+            com.nv95.fbchat.utils.StorageUtils.removeDir(preference.getContext().getCacheDir());
+            com.nv95.fbchat.utils.StorageUtils.removeDir(preference.getContext().getExternalCacheDir());
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            preference.setSummary(String.format(preference.getContext().getString(R.string.cache_size), 0f));
+            super.onPostExecute(aVoid);
         }
     }
 }
