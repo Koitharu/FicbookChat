@@ -1,6 +1,5 @@
 package com.nv95.fbchat.utils;
 
-import android.media.Ringtone;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.preference.EditTextPreference;
@@ -66,14 +65,14 @@ public class PreferencesUtils {
 
     public static void bindPreferenceSummary(RingtonePreference ringtonePreference) {
         String rtUri = ringtonePreference.getSharedPreferences().getString(ringtonePreference.getKey(), "");
-        Ringtone rt = RingtoneManager.getRingtone(ringtonePreference.getContext(), Uri.parse(rtUri));
-        String summ = rt == null ? ringtonePreference.getContext().getString(R.string.no_sound) : rt.getTitle(ringtonePreference.getContext());
+        String summ = TextUtils.isEmpty(rtUri) ? ringtonePreference.getContext().getString(R.string.no_sound)
+                : RingtoneManager.getRingtone(ringtonePreference.getContext(), Uri.parse(rtUri)).getTitle(ringtonePreference.getContext());
         ringtonePreference.setSummary(summ);
         ringtonePreference.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
             @Override
             public boolean onPreferenceChange(Preference preference, Object newValue) {
-                Ringtone rt = RingtoneManager.getRingtone(preference.getContext(), Uri.parse((String) newValue));
-                String summ = rt == null ? preference.getContext().getString(R.string.no_sound) : rt.getTitle(preference.getContext());
+                String summ = TextUtils.isEmpty((String)newValue) ? preference.getContext().getString(R.string.no_sound)
+                        : RingtoneManager.getRingtone(preference.getContext(), Uri.parse((String) newValue)).getTitle(preference.getContext());
                 preference.setSummary(summ);
                 return true;
             }
