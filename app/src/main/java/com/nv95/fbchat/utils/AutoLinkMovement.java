@@ -11,6 +11,10 @@ import android.text.method.Touch;
 import android.text.style.URLSpan;
 import android.view.MotionEvent;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.nv95.fbchat.ImageOpenTask;
+import com.nv95.fbchat.R;
 
 /**
  * Created by nv95 on 15.08.16.
@@ -69,10 +73,14 @@ public class AutoLinkMovement extends LinkMovementMethod {
     }
 
     private void processLink(Context context, String url) {
-        try{
-            context.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url)));
-        } catch (Exception e) {
-
+        if (ImageOpenTask.isImageUrl(url)) {
+            new ImageOpenTask(context, url).start();
+        } else {
+            try {
+                context.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url)));
+            } catch (Exception e) {
+                Toast.makeText(context, R.string.unable_open_link, Toast.LENGTH_SHORT).show();
+            }
         }
     }
 }

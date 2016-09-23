@@ -57,6 +57,8 @@
     <string name="down">Вниз</string>
     <string name="no_connection">Нет подключения к сети</string>
     <string name="retry">Повторить</string>
+    <string name="loading_image">Загрузка изображения…</string>
+    <string name="unable_open_link">Не удалось открыть ссылку</string>
     <plurals name="new_messages">
         <item quantity="one">%d новое сообщение</item>
         <item quantity="many">%d новых сообщений</item>
