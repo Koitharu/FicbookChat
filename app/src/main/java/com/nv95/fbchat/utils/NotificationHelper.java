@@ -41,7 +41,7 @@ public class NotificationHelper implements SharedPreferences.OnSharedPreferenceC
         mPopupNotification = Integer.parseInt(prefs.getString("notify.popup", String.valueOf(POPUP_ME_ONLY)));
         mVibration = prefs.getBoolean("notify.vibrate", false);
         String sound = prefs.getString("notify.sound", "");
-        mSound = RingtoneManager.getRingtone(mContext, Uri.parse(sound));
+        mSound = TextUtils.isEmpty(sound) ? null : RingtoneManager.getRingtone(mContext, Uri.parse(sound));
     }
 
     @Override
