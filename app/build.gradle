@@ -2,14 +2,14 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 24
-    buildToolsVersion "24.0.2"
+    buildToolsVersion "24.0.3"
     useLibrary 'org.apache.http.legacy'
     defaultConfig {
         applicationId "com.nv95.fbchat"
         minSdkVersion 15
         targetSdkVersion 24
-        versionCode 104
-        versionName "4.0_239"
+        versionCode 105
+        versionName "4.0_810"
     }
     buildTypes {
         release {
