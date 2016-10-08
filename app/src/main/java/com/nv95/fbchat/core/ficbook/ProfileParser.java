@@ -46,9 +46,9 @@ public class ProfileParser {
 
     @WorkerThread
     public static ProfileParser fromName(String username) {
-        JSONObject jo = null;
         try {
-            jo = new JSONObject(FicbookConnection.post("/ajax/user_info", "nickname", username));
+            JSONObject jo = new JSONObject(FicbookConnection.post("/ajax/user_info", "nickname", username));
+            jo = jo.getJSONObject("data");
             String s = jo.getString("link_to_profile");
             return new ProfileParser("https://ficbook.net" + s);
         } catch (JSONException e) {
