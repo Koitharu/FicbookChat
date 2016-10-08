@@ -37,6 +37,7 @@ public class AvatarUtils {
         }
         try {
             JSONObject jo = new JSONObject(FicbookConnection.post("/ajax/user_info", "nickname", nickname));
+            jo = jo.getJSONObject("data");
             String s = jo.getString("avatar_path");
             s = FicbookConnection.fixUrl(s);
             mCache.put(nickname, s);
