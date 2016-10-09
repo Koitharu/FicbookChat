@@ -62,6 +62,9 @@
     <string name="size_calculating">Вычислние размера…</string>
     <string name="cache_size" formatted="false">Размер: %.2f Мб</string>
     <string name="cache_clearing">Очистка кэша…</string>
+    <string name="loading_image_progress">Загрузка: %d%%</string>
+    <string name="swype_to_close">Закрыть</string>
+    <string name="fail_load">Не удалось загрузить</string>
     <plurals name="new_messages">
         <item quantity="one">%d новое сообщение</item>
         <item quantity="many">%d новых сообщений</item>

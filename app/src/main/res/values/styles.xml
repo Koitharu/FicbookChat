@@ -17,7 +17,19 @@
         <item name="windowActionModeOverlay">true</item>
     </style>
 
+    <style name="AppTheme.Transparent" parent="AppTheme.Dark">
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowAnimationStyle">@style/QuickAlphaAnimation</item>
+    </style>
+
     <style name="ItemTextAppearance">
         <item name="android:ellipsize">end</item>
     </style>
+
+    <style name="QuickAlphaAnimation">
+        <item name="android:windowEnterAnimation">@anim/quick_show</item>
+        <item name="android:windowExitAnimation">@anim/quick_hide</item>
+    </style>
+
 </resources>

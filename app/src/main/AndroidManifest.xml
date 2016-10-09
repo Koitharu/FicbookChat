@@ -29,6 +29,8 @@
             android:label="@string/settings" />
         <activity android:name="com.nv95.fbchat.SearchResultActivity"
             android:label="@string/search_results" />
+        <activity android:name=".ImageViewActivity"
+            android:theme="@style/AppTheme.Transparent" android:label=""/>
         <activity android:name="com.soundcloud.android.crop.CropImageActivity" />
     </application>
 
