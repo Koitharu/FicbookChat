@@ -10,7 +10,6 @@ import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v7.app.NotificationCompat;
 import android.text.Html;
-import android.util.Log;
 
 import com.nv95.fbchat.core.AccountStore;
 import com.nv95.fbchat.core.ChatCallback;
@@ -51,6 +50,7 @@ public class ChatService extends Service implements FbChat.ChatCallback {
     private int mCurrentOnline;
     private String mMyLogin;
     private int mPower;
+    private int mNewMessages;
     private NotificationHelper mNotifyHelper;
     private boolean mBackgroundMode;
 
@@ -58,6 +58,7 @@ public class ChatService extends Service implements FbChat.ChatCallback {
     public void onCreate() {
         super.onCreate();
         mPower = 0;
+        mNewMessages = 0;
         mCurrentOnline = 0;
         mBackgroundMode = false;
         mMyLogin = AccountStore.getLogin(this);
@@ -215,6 +216,13 @@ public class ChatService extends Service implements FbChat.ChatCallback {
                                 }
                                 if (mBackgroundMode) {
                                     mNotifyHelper.notify(cm, ChatMessage.hasMention(cm.message, mMyLogin));
+                                    mNewMessages++;
+                                    if (mNotificationBuilder != null) {
+                                        mNotificationBuilder.setContentText(
+                                                getResources().getQuantityString(R.plurals.new_messages, mNewMessages, mNewMessages)
+                                        );
+                                        mNotificationManager.notify(NOTIFY_ID, mNotificationBuilder.build());
+                                    }
                                 }
                             }
                             break;
@@ -475,7 +483,11 @@ public class ChatService extends Service implements FbChat.ChatCallback {
 
         public void setBackground(boolean isBackground) {
             mBackgroundMode = isBackground;
-            Log.d("CHS", "Background: " + isBackground);
+            mNewMessages = 0;
+            if (mNotificationBuilder != null && mChat.isConnected()) {
+                mNotificationBuilder.setContentText(getString(R.string.online));
+                mNotificationManager.notify(NOTIFY_ID, mNotificationBuilder.build());
+            }
         }
     }
 }
