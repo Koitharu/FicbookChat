@@ -1,5 +1,7 @@
 package com.nv95.fbchat.utils;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.content.res.Resources;
@@ -130,5 +132,24 @@ public class LayoutUtils {
         } else {
             return Gravity.NO_GRAVITY;
         }
+    }
+
+    public static void crossFade(final View toHide, View toShow) {
+        int duration = toHide.getResources().getInteger(android.R.integer.config_shortAnimTime);
+        toShow.setAlpha(0f);
+        toShow.setVisibility(View.VISIBLE);
+        toShow.animate()
+                .alpha(1f)
+                .setDuration(duration)
+                .setListener(null);
+        toHide.animate()
+                .alpha(0f)
+                .setDuration(duration)
+                .setListener(new AnimatorListenerAdapter() {
+                    @Override
+                    public void onAnimationEnd(Animator animation) {
+                        toHide.setVisibility(View.GONE);
+                    }
+                });
     }
 }

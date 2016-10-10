@@ -13,7 +13,6 @@ import android.view.MotionEvent;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.nv95.fbchat.ImageOpenTask;
 import com.nv95.fbchat.ImageViewActivity;
 import com.nv95.fbchat.R;
 
@@ -74,10 +73,7 @@ public class AutoLinkMovement extends LinkMovementMethod {
     }
 
     private void processLink(Context context, String url) {
-        if (ImageOpenTask.isImageUrl(url)) {
-            ImageViewActivity.show(context, url);
-            //new ImageOpenTask(context, url).start();
-        } else {
+        if (!ImageViewActivity.show(context, url)) {
             try {
                 context.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url)));
             } catch (Exception e) {

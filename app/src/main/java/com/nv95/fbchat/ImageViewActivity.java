@@ -5,12 +5,15 @@ import android.animation.ValueAnimator;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.annotation.ColorRes;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -22,12 +25,15 @@ import android.view.View;
 import android.view.Window;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.davemorrissey.labs.subscaleview.ImageSource;
 import com.davemorrissey.labs.subscaleview.SubsamplingScaleImageView;
 import com.nv95.fbchat.components.SwipeToCloseLayout;
+import com.nv95.fbchat.utils.LayoutUtils;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -71,7 +77,7 @@ public class ImageViewActivity extends AppCompatActivity implements View.OnClick
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        //getMenuInflater().inflate(R.menu.picture, menu);
+        getMenuInflater().inflate(R.menu.image, menu);
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -90,15 +96,31 @@ public class ImageViewActivity extends AppCompatActivity implements View.OnClick
             case android.R.id.home:
                 finish();
                 return true;
+            case R.id.action_save:
+                saveImage(new File(getTempImageDir(ImageViewActivity.this), mUrl.hashCode() + "." + fileExtFromUrl(mUrl)));
+                return true;
+            case R.id.action_browser:
+                Intent intent = new Intent(Intent.ACTION_VIEW);
+                intent.setData(Uri.parse(mUrl));
+                try {
+                    startActivity(intent);
+                } catch (Exception e) {
+                    Toast.makeText(this, R.string.unable_open_link, Toast.LENGTH_SHORT).show();
+                }
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
     }
 
-    public static void show(Context context, String url) {
+    public static boolean show(Context context, String url) {
+        if (!isImageUrl(url)) {
+            return false;
+        }
         Intent intent = new Intent(context, ImageViewActivity.class);
         intent.putExtra("url", url);
         context.startActivity(intent);
+        return true;
     }
 
     private boolean mToolbarVisible = false;
@@ -330,58 +352,74 @@ public class ImageViewActivity extends AppCompatActivity implements View.OnClick
             super.onPostExecute(file);
             mTask = null;
             if (file != null) {
-                mProgressBlock.setVisibility(View.GONE);
-                mSsiv.setImage(ImageSource.uri(Uri.fromFile(file)));
+                mSsiv.setImage(ImageSource.uri(Uri.fromFile(file)).tilingEnabled());
+                LayoutUtils.crossFade(mProgressBlock, mSsiv);
             } else {
                 mProgressBar.setVisibility(View.GONE);
                 mTextView.setText(R.string.fail_load);
             }
-            /*Intent intent = new Intent(Intent.ACTION_VIEW);
-            if (file == null) {
-                intent.setData(Uri.parse(mUrl));
-            } else {
-                intent.setDataAndType(Uri.fromFile(file), "image/*");
-            }
-            try {
-                startActivity(intent);
-            } catch (Exception e) {
-                Toast.makeText(context, R.string.unable_open_link, Toast.LENGTH_SHORT).show();
-            }*/
         }
+    }
 
-        @Nullable
-        public File getTempImageDir(Context context) {
-            File f = context.getExternalCacheDir();
-            if (f == null) {
-                f = context.getCacheDir();
-            }
-            if (f == null) {
-                return null;
-            }
-            f = new File(f, "img");
-            if (f.exists() || f.mkdir()) {
-                return f;
-            } else {
-                return null;
-            }
+    @Nullable
+    static File getTempImageDir(Context context) {
+        File f = context.getExternalCacheDir();
+        if (f == null) {
+            f = context.getCacheDir();
         }
-
-        public String fileNameFromUrl(String url) {
-            return url.substring(url.lastIndexOf('/')+1, url.length());
+        if (f == null) {
+            return null;
         }
-
-        public String fileExtFromUrl(String url) {
-            return url.substring(url.lastIndexOf('.')+1, url.length());
+        f = new File(f, "img");
+        if (f.exists() || f.mkdir()) {
+            return f;
+        } else {
+            return null;
         }
+    }
 
-        public boolean isImageUrl(String url) {
-            try {
-                String ext = fileExtFromUrl(url);
-                ext = ext.toLowerCase();
-                return ext.equals("png") || ext.equals("jpg") || ext.equals("jpeg") || ext.equals("bmp");
-            } catch (Exception e) {
-                return false;
+    static String fileNameFromUrl(String url) {
+        return url.substring(url.lastIndexOf('/')+1, url.length());
+    }
+
+    static String fileExtFromUrl(String url) {
+        return url.substring(url.lastIndexOf('.')+1, url.length());
+    }
+
+    private static boolean isImageUrl(String url) {
+        try {
+            String ext = fileExtFromUrl(url);
+            ext = ext.toLowerCase();
+            return ext.equals("png") || ext.equals("jpg") || ext.equals("jpeg") || ext.equals("bmp");
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    private void saveImage(File file) {
+        File dest = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), file.getName());
+        try {
+            InputStream in = new FileInputStream(file);
+            OutputStream out = new FileOutputStream(dest);
+            byte[] buf = new byte[1024];
+            int len;
+            while ((len = in.read(buf)) > 0) {
+                out.write(buf, 0, len);
             }
+            in.close();
+            out.close();
+            MediaScannerConnection.scanFile(ImageViewActivity.this,
+                    new String[]{dest.getPath()}, null,
+                    new MediaScannerConnection.OnScanCompletedListener() {
+                        @Override
+                        public void onScanCompleted(String path, Uri uri) {
+                            //....
+                        }
+                    });
+            Snackbar.make(mSsiv, R.string.image_saved, Snackbar.LENGTH_LONG)
+                    .show();
+        } catch (IOException e) {
+            Snackbar.make(mSsiv, R.string.unable_open_link, Snackbar.LENGTH_SHORT).show();
         }
     }
 }
