@@ -49,8 +49,17 @@ public class AvatarUtils {
 
     @MainThread
     public static void assignAvatarTo(ImageView imageView, String nickname) {
+        if (isAlreadyAssigned(imageView, nickname)) {
+            return;
+        }
         imageView.setImageResource(R.drawable.ic_avatar_holder);
+        imageView.setTag(nickname);
         new LoadAvatarTask(imageView).executeOnExecutor(mExecutor, nickname);
+    }
+
+    public static boolean isAlreadyAssigned(ImageView imageView, String nickname) {
+        Object o = imageView.getTag();
+        return (o != null && o instanceof String && o.equals(nickname));
     }
 
     public static void clearLinksCache() {
