@@ -37,6 +37,12 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.UserHo
         ), mClickListener);
     }
 
+    public void updateList(List<String> newDataset) {
+        mDataset.clear();
+        mDataset.addAll(newDataset);
+        notifyDataSetChanged();
+    }
+
     @Override
     public int getItemCount() {
         return mDataset.size();

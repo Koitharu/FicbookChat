@@ -187,6 +187,12 @@ public class ChatService extends Service implements FbChat.ChatCallback {
                     }
                     break;
                 }
+                case "room": {
+                    if (mCallback != null && "about".equals(message.getString("object"))) {
+                        mCallback.onRoomInfo(message.getString("about"));
+                    }
+                    break;
+                }
                 case "history": {
                     ArrayList<ChatMessage> lst = new ArrayList<>();
                     JSONArray ja = message.getJSONArray("messages");

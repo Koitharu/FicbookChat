@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
@@ -25,6 +26,7 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -50,7 +52,6 @@ import com.nv95.fbchat.dialogs.AdminMenuDialog;
 import com.nv95.fbchat.dialogs.EditTextDialog;
 import com.nv95.fbchat.dialogs.LoginDialog;
 import com.nv95.fbchat.dialogs.OnUserClickListener;
-import com.nv95.fbchat.dialogs.UserListDialog;
 import com.nv95.fbchat.dialogs.UserPreviewDialog;
 import com.nv95.fbchat.utils.AvatarUtils;
 import com.nv95.fbchat.utils.CloseHelper;
@@ -70,6 +71,7 @@ public class MainActivity extends BaseAppActivity implements TextWatcher, Servic
     private static final int REQUEST_SETTINGS = 238;
 
     private RecyclerView mRecyclerView;
+    private RecyclerView mRecyclerViewUsers;
     private GridRecyclerView mRecyclerViewEmoji;
     private ImageView mImageViewAvatar;
     private TextView mTextViewLogin;
@@ -83,6 +85,8 @@ public class MainActivity extends BaseAppActivity implements TextWatcher, Servic
     private ImageButton mImageButtonEmoji;
     private ActionBarDrawerToggle mToggle;
     private ChatMessagesAdapter mAdapter;
+    private UserListAdapter mUsersAdapter;
+    private TextView mTextViewAbout;
     @Nullable
     private ProgressDialog mProgressDialog;
     @Nullable
@@ -101,6 +105,8 @@ public class MainActivity extends BaseAppActivity implements TextWatcher, Servic
         mImageButtonEmoji = (ImageButton) findViewById(R.id.buttonEmoji);
         mFabSend = (FloatingActionButton) findViewById(R.id.fabSend);
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer);
+        mTextViewAbout = (TextView) findViewById(R.id.textViewAbout);
+        mRecyclerViewUsers = (RecyclerView) findViewById(R.id.recyclerViewUsers);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         mAdapter = new ChatMessagesAdapter(mRecyclerView, this);
@@ -110,7 +116,11 @@ public class MainActivity extends BaseAppActivity implements TextWatcher, Servic
             @Override
             public void onDrawerOpened(View drawerView) {
                 if (mChatBinder != null) {
-                    mChatBinder.requestRooms();
+                    if (drawerView instanceof CoordinatorLayout) {
+                        mChatBinder.requestRoomMembers(null);
+                    } else {
+                        mChatBinder.requestRooms();
+                    }
                 }
                 super.onDrawerOpened(drawerView);
             }
@@ -137,6 +147,10 @@ public class MainActivity extends BaseAppActivity implements TextWatcher, Servic
         if (actionBar != null) {
             actionBar.setHomeButtonEnabled(true);
         }
+
+        mUsersAdapter = new UserListAdapter(new ArrayList<String>(), this);
+        mRecyclerViewUsers.setLayoutManager(new GridLayoutManager(this, 3));
+        mRecyclerViewUsers.setAdapter(mUsersAdapter);
 
         EmojiAdapter adapter = new EmojiAdapter(this);
         GridLayoutManager lm = new GridLayoutManager(this, getOptimalColumnsCountTablet(this, getResources().getDimensionPixelSize(R.dimen.emoji_size_large)));
@@ -265,13 +279,7 @@ public class MainActivity extends BaseAppActivity implements TextWatcher, Servic
         switch (item.getItemId()) {
             case R.id.action_online:
                 if (mChatBinder != null) {
-                    mProgressDialog = new ProgressDialog(this);
-                    mProgressDialog.setIndeterminate(true);
-                    mProgressDialog.setMessage(getString(R.string.loading));
-                    mProgressDialog.setCancelable(true);
-                    mProgressDialog.setOnCancelListener(this);
-                    mProgressDialog.show();
-                    mChatBinder.requestRoomMembers(null);
+                    mDrawerLayout.openDrawer(GravityCompat.END);
                 }
                 return true;
             default:
@@ -450,10 +458,8 @@ public class MainActivity extends BaseAppActivity implements TextWatcher, Servic
 
     @Override
     public void onOnlineListReceived(String room, List<String> participants) {
-        if (mProgressDialog != null) {
-            mProgressDialog.dismiss();
-            mProgressDialog = null;
-            new UserListDialog(this).setOnUserClickListener(this).show(participants);
+        if (mDrawerLayout.isDrawerOpen(GravityCompat.END)) {
+            mUsersAdapter.updateList(participants);
         }
     }
 
@@ -482,6 +488,11 @@ public class MainActivity extends BaseAppActivity implements TextWatcher, Servic
                     .putExtra("query", query)
             );
         }
+    }
+
+    @Override
+    public void onRoomInfo(String about) {
+        mTextViewAbout.setText(TextUtils.isEmpty(about) ? getString(R.string.no_description) : about);
     }
 
     @Override
@@ -624,6 +635,7 @@ public class MainActivity extends BaseAppActivity implements TextWatcher, Servic
         if (isLongClick) {
             new UserPreviewDialog(this, mChatBinder).show(nickname);
         } else {
+            mDrawerLayout.closeDrawer(GravityCompat.END);
             mEditTextMessage.getText().insert(0,  " ");
             mEditTextMessage.getText().insert(0, SpanUtils.getUserString(this, nickname));
         }

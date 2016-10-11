@@ -20,6 +20,7 @@ import java.util.List;
  * Created by nv95 on 12.08.16.
  */
 
+@Deprecated
 public class UserListDialog implements View.OnClickListener, OnUserClickListener {
 
     private final Dialog mDialog;

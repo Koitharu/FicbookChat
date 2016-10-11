@@ -29,4 +29,6 @@ public interface ChatCallback {
     void onQuitByUser();
 
     void onSearchResult(ArrayList<ChatMessage> messages, String query);
+
+    void onRoomInfo(String about);
 }
