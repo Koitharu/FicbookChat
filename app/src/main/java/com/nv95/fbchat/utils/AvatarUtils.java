@@ -1,5 +1,6 @@
 package com.nv95.fbchat.utils;
 
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.support.annotation.MainThread;
@@ -8,7 +9,10 @@ import android.widget.ImageView;
 
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.assist.LoadedFrom;
 import com.nostra13.universalimageloader.core.display.CircleBitmapDisplayer;
+import com.nostra13.universalimageloader.core.display.FadeInBitmapDisplayer;
+import com.nostra13.universalimageloader.core.imageaware.ImageAware;
 import com.nv95.fbchat.ChatApp;
 import com.nv95.fbchat.R;
 import com.nv95.fbchat.core.ficbook.FicbookConnection;
@@ -77,7 +81,7 @@ public class AvatarUtils {
                         .showImageForEmptyUri(R.drawable.ic_avatar_holder)
                         .showImageOnFail(R.drawable.ic_avatar_holder)
                         .showImageOnLoading(R.drawable.ic_avatar_holder)
-                        .displayer(new CircleBitmapDisplayer(Color.WHITE, LayoutUtils.DpToPx(imageView.getResources(), 0.5f)))
+                        .displayer(new CircleFadeDisplayer(Color.WHITE, LayoutUtils.DpToPx(imageView.getResources(), 0.5f)))
                         .build();
             }
         }
@@ -91,6 +95,23 @@ public class AvatarUtils {
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
             ImageLoader.getInstance().displayImage(s, mImageView, mOptions);
+        }
+    }
+
+
+
+    static class CircleFadeDisplayer extends CircleBitmapDisplayer {
+
+        public CircleFadeDisplayer(Integer strokeColor, float strokeWidth) {
+            super(strokeColor, strokeWidth);
+        }
+
+        @Override
+        public void display(Bitmap bitmap, ImageAware imageAware, LoadedFrom loadedFrom) {
+            super.display(bitmap, imageAware, loadedFrom);
+            if (loadedFrom != LoadedFrom.MEMORY_CACHE) {
+                FadeInBitmapDisplayer.animate(imageAware.getWrappedView(), 500);
+            }
         }
     }
 }
