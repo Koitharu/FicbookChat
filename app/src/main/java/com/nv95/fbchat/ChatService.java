@@ -47,6 +47,7 @@ public class ChatService extends Service implements FbChat.ChatCallback {
     private ChatCallback mCallback;
     @Nullable
     private String mCurrentRoom;
+    private String mCurrentRoomAbout;
     private int mCurrentOnline;
     private String mMyLogin;
     private int mPower;
@@ -61,6 +62,7 @@ public class ChatService extends Service implements FbChat.ChatCallback {
         mNewMessages = 0;
         mCurrentOnline = 0;
         mBackgroundMode = false;
+        mCurrentRoomAbout = null;
         mMyLogin = AccountStore.getLogin(this);
         mNotificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         mNotificationBuilder = new NotificationCompat.Builder(this);
@@ -189,7 +191,7 @@ public class ChatService extends Service implements FbChat.ChatCallback {
                 }
                 case "room": {
                     if (mCallback != null && "about".equals(message.getString("object"))) {
-                        mCallback.onRoomInfo(message.getString("about"));
+                        mCallback.onRoomInfo(mCurrentRoomAbout = message.getString("about"));
                     }
                     break;
                 }
@@ -493,6 +495,30 @@ public class ChatService extends Service implements FbChat.ChatCallback {
             if (mNotificationBuilder != null && mChat.isConnected()) {
                 mNotificationBuilder.setContentText(getString(R.string.online));
                 mNotificationManager.notify(NOTIFY_ID, mNotificationBuilder.build());
+            }
+        }
+
+        @Nullable
+        public String getCurrentRoomDescription() {
+            return mCurrentRoomAbout;
+        }
+
+        public boolean setRoomDescription(@Nullable String room, String value) {
+            if (!isModer()) {
+                return false;
+            }
+            try {
+                JSONObject jo = new JSONObject();
+                jo.put("type", "administration");
+                jo.put("object", "room");
+                jo.put("action", "about");
+                jo.put("name", room == null ? mCurrentRoom : room);
+                jo.put("about", value);
+                mChat.send(jo);
+                return true;
+            } catch (JSONException e) {
+                e.printStackTrace();
+                return false;
             }
         }
     }

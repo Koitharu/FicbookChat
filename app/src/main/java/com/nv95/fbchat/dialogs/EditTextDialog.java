@@ -5,11 +5,14 @@ import android.content.DialogInterface;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 import android.support.v7.app.AlertDialog;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 
 import com.nv95.fbchat.R;
+import com.nv95.fbchat.utils.LayoutUtils;
 import com.nv95.fbchat.utils.ThemeUtils;
 
 /**
@@ -49,6 +52,15 @@ public class EditTextDialog implements DialogInterface.OnClickListener{
         if (s.length() != 0) {
             mListener.onTextChanged(s);
         }
+    }
+
+    public EditTextDialog multiline(int lines) {
+        mEditText.setInputType(EditorInfo.TYPE_TEXT_FLAG_IME_MULTI_LINE);
+        mEditText.setSingleLine(false);
+        mEditText.setImeOptions(EditorInfo.IME_FLAG_NO_ENTER_ACTION);
+        mEditText.setMinHeight(LayoutUtils.DpToPx(mDialog.getContext().getResources(), lines * 42));
+        mEditText.setGravity(Gravity.TOP);
+        return this;
     }
 
     public interface OnTextChangedListener {

@@ -50,8 +50,11 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.UserHo
 
     @Override
     public void onBindViewHolder(UserHolder holder, int position) {
-        holder.textView.setText(holder.nickname = mDataset.get(position));
-        AvatarUtils.assignAvatarTo(holder.imageView, mDataset.get(position));
+        if (!mDataset.get(position).equals(holder.nickname)) {
+            holder.nickname = mDataset.get(position);
+            holder.textView.setText(holder.nickname);
+            AvatarUtils.assignAvatarTo(holder.imageView, holder.nickname);
+        }
     }
 
     static class UserHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {

@@ -69,6 +69,7 @@
     <string name="save">Сохранить</string>
     <string name="image_saved">Изображение сохранено</string>
     <string name="no_description">Нет описания</string>
+    <string name="change_description">Изменить описание</string>
     <plurals name="new_messages">
         <item quantity="one">%d новое сообщение</item>
         <item quantity="many">%d новых сообщений</item>

@@ -26,6 +26,7 @@ public class AdminMenuDialog implements DialogInterface.OnClickListener {
         ArrayList<String> items = new ArrayList<>();
         if (chatBinder.isModer()) {
             items.add(activity.getString(R.string.create_room));
+            items.add(activity.getString(R.string.change_description));
         }
         if (chatBinder.isAdmin()) {
             items.add(activity.getString(R.string.remove_room));
@@ -50,7 +51,7 @@ public class AdminMenuDialog implements DialogInterface.OnClickListener {
     @Override
     public void onClick(DialogInterface dialogInterface, int i) {
         switch (i) {
-            case 0: //add room
+            case 0: //yes, it`s a magic numbers
                 new EditTextDialog(mDialog.getContext(), R.string.create_room, new EditTextDialog.OnTextChangedListener() {
                     @Override
                     public void onTextChanged(String newText) {
@@ -60,7 +61,18 @@ public class AdminMenuDialog implements DialogInterface.OnClickListener {
                     }
                 }).show(R.string.input_room_name, null);
                 break;
-            case 1: //remove room
+            case 1:
+                new EditTextDialog(mDialog.getContext(), R.string.change_description, new EditTextDialog.OnTextChangedListener() {
+                    @Override
+                    public void onTextChanged(String newText) {
+                        if (mBinder.setRoomDescription(null, newText)) {
+                            Toast.makeText(mDialog.getContext(), R.string.query_sent, Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                }).multiline(3)
+                        .show(R.string.no_description, mBinder.getCurrentRoomDescription());
+                break;
+            case 2:
                 AlertDialog d = new AlertDialog.Builder(mDialog.getContext())
                         .setNegativeButton(android.R.string.cancel, null)
                         .setMessage(mDialog.getContext().getString(R.string.remove_room_confirm, mBinder.getCurrentRoomName()))

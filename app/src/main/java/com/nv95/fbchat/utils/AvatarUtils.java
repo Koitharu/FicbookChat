@@ -53,17 +53,8 @@ public class AvatarUtils {
 
     @MainThread
     public static void assignAvatarTo(ImageView imageView, String nickname) {
-        if (isAlreadyAssigned(imageView, nickname)) {
-            return;
-        }
         imageView.setImageResource(R.drawable.ic_avatar_holder);
-        imageView.setTag(nickname);
         new LoadAvatarTask(imageView).executeOnExecutor(mExecutor, nickname);
-    }
-
-    public static boolean isAlreadyAssigned(ImageView imageView, String nickname) {
-        Object o = imageView.getTag();
-        return (o != null && o instanceof String && o.equals(nickname));
     }
 
     public static void clearLinksCache() {
@@ -81,7 +72,7 @@ public class AvatarUtils {
                         .showImageForEmptyUri(R.drawable.ic_avatar_holder)
                         .showImageOnFail(R.drawable.ic_avatar_holder)
                         .showImageOnLoading(R.drawable.ic_avatar_holder)
-                        .displayer(new CircleFadeDisplayer(Color.WHITE, LayoutUtils.DpToPx(imageView.getResources(), 0.5f)))
+                        .displayer(new CircleBitmapDisplayer(Color.WHITE, LayoutUtils.DpToPx(imageView.getResources(), 0.5f)))
                         .build();
             }
         }

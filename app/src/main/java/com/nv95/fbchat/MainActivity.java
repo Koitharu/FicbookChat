@@ -252,8 +252,8 @@ public class MainActivity extends BaseAppActivity implements TextWatcher, Servic
         }
         if (mChatBinder != null) {
             mChatBinder.terminate();
+            unbindService(this);
         }
-        unbindService(this);
         super.onDestroy();
     }
 
