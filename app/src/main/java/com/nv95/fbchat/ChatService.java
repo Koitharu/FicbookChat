@@ -191,7 +191,8 @@ public class ChatService extends Service implements FbChat.ChatCallback {
                 }
                 case "room": {
                     if (mCallback != null && "about".equals(message.getString("object"))) {
-                        mCallback.onRoomInfo(mCurrentRoomAbout = message.getString("about"));
+                        mCallback.onRoomInfo(mCurrentRoomAbout =
+                                message.isNull("about") ? getString(R.string.no_description) : message.getString("about"));
                     }
                     break;
                 }
@@ -362,6 +363,7 @@ public class ChatService extends Service implements FbChat.ChatCallback {
 
         public boolean joinRoom(String name) {
             try {
+                mCurrentOnline = -1;
                 mCurrentRoom = name;
                 getSharedPreferences("chat", MODE_PRIVATE)
                         .edit()

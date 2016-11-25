@@ -2,6 +2,7 @@ package com.nv95.fbchat.utils;
 
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 import com.nv95.fbchat.R;
@@ -15,7 +16,7 @@ public class CloseHelper {
     @Nullable
     private static Snackbar mSnackbar = null;
 
-    public static boolean tryClose(View view) {
+    public static boolean tryClose(final View view) {
         if (mSnackbar != null) {
             mSnackbar = null;
             return true;
@@ -28,6 +29,14 @@ public class CloseHelper {
                     super.onDismissed(snackbar, event);
                 }
             });
+            if (view instanceof RecyclerView && LayoutUtils.findFirstVisibleItemPosition((RecyclerView) view) <= 2) {
+                mSnackbar.setAction(R.string.down, new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        ((RecyclerView)view).scrollToPosition(0);
+                    }
+                });
+            }
             mSnackbar.show();
             return false;
         }

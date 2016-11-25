@@ -265,8 +265,9 @@ public class MainActivity extends BaseAppActivity implements TextWatcher, Servic
 
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
+        int online = mChatBinder != null ? mChatBinder.getCurrentOnline() : -1;
         menu.findItem(R.id.action_online).setIcon(
-                SpanUtils.getCounterIcon(this, String.valueOf(mChatBinder != null ? mChatBinder.getCurrentOnline() : 0))
+                SpanUtils.getCounterIcon(this, online > 0 ? String.valueOf(online) : "?")
         );
         return super.onPrepareOptionsMenu(menu);
     }
@@ -555,6 +556,7 @@ public class MainActivity extends BaseAppActivity implements TextWatcher, Servic
                 setSubtitle(item.getTitle().toString());
                 item.setChecked(true);
                 mChatBinder.joinRoom(item.getTitle().toString());
+                invalidateOptionsMenu();
         }
         return true;
     }
