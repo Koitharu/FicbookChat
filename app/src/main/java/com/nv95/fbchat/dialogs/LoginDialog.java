@@ -3,8 +3,10 @@ package com.nv95.fbchat.dialogs;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.DialogInterface;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
@@ -40,15 +42,20 @@ public class LoginDialog implements View.OnClickListener, DialogInterface.OnClic
         mButtonSignIn = (Button) view.findViewById(R.id.buttonSignIn);
         mTextViewError = (TextView) view.findViewById(R.id.textViewError);
         mAutoCompletteLogin.setAdapter(new UsersAdapter(activity));
-        mAutoCompletteLogin.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        mAutoCompletteLogin.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                mAutoCompletteLogin.setText(((TextView)view.findViewById(android.R.id.text1)).getText());
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                mEditTextPassword.requestFocus();
             }
-
+        });
+        mEditTextPassword.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_DONE) {
+                    onClick(mButtonSignIn);
+                    return true;
+                }
+                return false;
             }
         });
 
