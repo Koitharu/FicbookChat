@@ -71,6 +71,9 @@
     <string name="image_saved">Изображение сохранено</string>
     <string name="no_description">Нет описания</string>
     <string name="change_description">Изменить описание</string>
+    <string name="banned_list">Активные баны</string>
+    <string name="error">Произошла ошибка</string>
+    <string name="no_active_bans">Нет активных банов</string>
     <plurals name="new_messages">
         <item quantity="one">%d новое сообщение</item>
         <item quantity="many">%d новых сообщений</item>

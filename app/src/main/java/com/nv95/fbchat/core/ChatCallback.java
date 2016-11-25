@@ -1,5 +1,7 @@
 package com.nv95.fbchat.core;
 
+import com.nv95.fbchat.dialogs.BanLogDialog;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,4 +33,6 @@ public interface ChatCallback {
     void onSearchResult(ArrayList<ChatMessage> messages, String query);
 
     void onRoomInfo(String about);
+
+    void onActiveBans(BanLogDialog.BanLogItem[] bans);
 }

@@ -49,6 +49,7 @@ import com.nv95.fbchat.core.emoji.EmojiAdapter;
 import com.nv95.fbchat.core.emoji.OnEmojiSelectListener;
 import com.nv95.fbchat.core.ficbook.FicbookConnection;
 import com.nv95.fbchat.dialogs.AdminMenuDialog;
+import com.nv95.fbchat.dialogs.BanLogDialog;
 import com.nv95.fbchat.dialogs.EditTextDialog;
 import com.nv95.fbchat.dialogs.LoginDialog;
 import com.nv95.fbchat.dialogs.OnUserClickListener;
@@ -494,6 +495,11 @@ public class MainActivity extends BaseAppActivity implements TextWatcher, Servic
     @Override
     public void onRoomInfo(String about) {
         mTextViewAbout.setText(TextUtils.isEmpty(about) ? getString(R.string.no_description) : about);
+    }
+
+    @Override
+    public void onActiveBans(BanLogDialog.BanLogItem[] bans) {
+        new BanLogDialog(this, bans).show();
     }
 
     @Override

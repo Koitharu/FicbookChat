@@ -16,6 +16,7 @@ import com.nv95.fbchat.core.ChatCallback;
 import com.nv95.fbchat.core.ChatMessage;
 import com.nv95.fbchat.core.FbChat;
 import com.nv95.fbchat.core.Rooms;
+import com.nv95.fbchat.dialogs.BanLogDialog;
 import com.nv95.fbchat.utils.NotificationHelper;
 import com.nv95.fbchat.utils.SpanUtils;
 import com.nv95.fbchat.utils.TimestampUtils;
@@ -140,6 +141,24 @@ public class ChatService extends Service implements FbChat.ChatCallback {
                                 );
                             }
                             break;
+                    }
+                    break;
+                }
+                case "list": {
+                    switch (message.getString("object")) {
+                        case "bans":
+                            if (mCallback != null) {
+                                JSONArray list = message.getJSONArray("list");
+                                BanLogDialog.BanLogItem[] items = new BanLogDialog.BanLogItem[list.length()];
+                                for (int i = 0; i < items.length; i++) {
+                                    try {
+                                        items[i] = new BanLogDialog.BanLogItem(list.getJSONObject(i));
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+                                mCallback.onActiveBans(items);
+                            }
                     }
                     break;
                 }
@@ -519,6 +538,23 @@ public class ChatService extends Service implements FbChat.ChatCallback {
                 jo.put("subject", "about");
                 jo.put("room_name", room == null ? mCurrentRoom : room);
                 jo.put("about", value);
+                mChat.send(jo);
+                return true;
+            } catch (JSONException e) {
+                e.printStackTrace();
+                return false;
+            }
+        }
+
+        public boolean requestActiveBans() {
+            if (!isModer()) {
+                return false;
+            }
+            try {
+                JSONObject jo = new JSONObject();
+                jo.put("type", "administration");
+                jo.put("object", "bans");
+                jo.put("action", "get");
                 mChat.send(jo);
                 return true;
             } catch (JSONException e) {
