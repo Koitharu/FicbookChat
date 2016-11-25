@@ -55,9 +55,9 @@ public class EditTextDialog implements DialogInterface.OnClickListener{
     }
 
     public EditTextDialog multiline(int lines) {
-        mEditText.setInputType(EditorInfo.TYPE_TEXT_FLAG_IME_MULTI_LINE);
+        mEditText.setInputType(EditorInfo.TYPE_TEXT_FLAG_IME_MULTI_LINE | EditorInfo.TYPE_TEXT_FLAG_CAP_SENTENCES);
         mEditText.setSingleLine(false);
-        mEditText.setImeOptions(EditorInfo.IME_FLAG_NO_ENTER_ACTION);
+        mEditText.setImeOptions(EditorInfo.IME_FLAG_NO_ENTER_ACTION );
         mEditText.setMinHeight(LayoutUtils.DpToPx(mDialog.getContext().getResources(), lines * 42));
         mEditText.setGravity(Gravity.TOP);
         return this;

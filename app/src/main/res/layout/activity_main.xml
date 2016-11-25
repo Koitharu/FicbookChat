@@ -4,8 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/drawer"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:openDrawer="start">
+    android:layout_height="match_parent" >
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -77,36 +76,29 @@
                 android:padding="6dp"
                 android:src="@drawable/ic_insert_emoticon_black_24dp" />
 
-            <FrameLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+            <EditText
+                android:id="@+id/editMessage"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@android:color/transparent"
+                android:gravity="top"
+                android:hint="@string/input_message_text"
+                android:inputType="textMultiLine|textCapSentences|textLongMessage"
+                android:maxHeight="240dp"
+                android:padding="10dp" />
 
-                <EditText
-                    android:id="@+id/editMessage"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@android:color/transparent"
-                    android:gravity="top"
-                    android:hint="@string/input_message_text"
-                    android:inputType="textMultiLine|textCapSentences|textLongMessage"
-                    android:maxHeight="240dp"
-                    android:padding="10dp"
-                    android:paddingEnd="52dp"
-                    android:paddingRight="52dp" />
-
-                <android.support.design.widget.FloatingActionButton
-                    android:id="@+id/fabSend"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="bottom|end"
-                    android:layout_marginBottom="6dp"
-                    android:layout_marginEnd="6dp"
-                    android:layout_marginRight="6dp"
-                    android:src="@drawable/ic_send_white_16dp"
-                    android:visibility="gone"
-                    app:fabSize="mini" />
-
-            </FrameLayout>
+            <android.support.design.widget.FloatingActionButton
+                android:id="@+id/fabSend"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:layout_marginBottom="6dp"
+                android:layout_marginEnd="6dp"
+                android:layout_marginRight="6dp"
+                android:src="@drawable/ic_send_white_16dp"
+                android:visibility="invisible"
+                app:fabSize="mini" />
 
         </LinearLayout>
 

@@ -29,7 +29,7 @@ public class CloseHelper {
                     super.onDismissed(snackbar, event);
                 }
             });
-            if (view instanceof RecyclerView && LayoutUtils.findFirstVisibleItemPosition((RecyclerView) view) <= 2) {
+            if (view instanceof RecyclerView && LayoutUtils.findFirstVisibleItemPosition((RecyclerView) view) > 2) {
                 mSnackbar.setAction(R.string.down, new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {

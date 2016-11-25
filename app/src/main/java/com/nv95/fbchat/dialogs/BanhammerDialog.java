@@ -51,7 +51,7 @@ public class BanhammerDialog implements DialogInterface.OnClickListener {
     }
 
     public static void kikDialog(final Context context, final String username, final ChatService.ChatBinder binder) {
-        new AlertDialog.Builder(context)
+        /*new AlertDialog.Builder(context)
                 .setMessage(context.getString(R.string.kik_confirm, username))
                 .setNegativeButton(android.R.string.no, null)
                 .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
@@ -62,6 +62,13 @@ public class BanhammerDialog implements DialogInterface.OnClickListener {
                     }
                 })
                 .create()
-                .show();
+                .show();*/
+        new EditTextDialog(context, R.string.kik, new EditTextDialog.OnTextChangedListener() {
+            @Override
+            public void onTextChanged(String newText) {
+                binder.banhammer(username, 0, newText);
+                Toast.makeText(context, R.string.query_sent, Toast.LENGTH_SHORT).show();
+            }
+        }).show(R.string.reason, null);
     }
 }
