@@ -12,6 +12,7 @@
             android:id="@+id/autoCompleteLogin"
             android:hint="@string/login"
             android:lines="1"
+            android:minEms="10"
             android:inputType="textPersonName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
@@ -27,6 +28,7 @@
             android:id="@+id/editTextPassword"
             android:hint="@string/password"
             android:lines="1"
+            android:minEms="10"
             android:inputType="textPassword"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
