@@ -26,6 +26,7 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.UserHo
     public UserListAdapter(List<String> dataset, @Nullable OnUserClickListener listener) {
         mClickListener = listener;
         mDataset = dataset;
+        setHasStableIds(true);
     }
 
     @Override
@@ -41,6 +42,11 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.UserHo
         mDataset.clear();
         mDataset.addAll(newDataset);
         notifyDataSetChanged();
+    }
+
+    @Override
+    public long getItemId(int position) {
+        return mDataset.get(position).hashCode();
     }
 
     @Override
