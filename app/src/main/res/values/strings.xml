@@ -74,6 +74,7 @@
     <string name="banned_list">Активные баны</string>
     <string name="error">Произошла ошибка</string>
     <string name="no_active_bans">Нет активных банов</string>
+    <string name="defurl">ws://146.120.111.42:7070</string>
     <plurals name="new_messages">
         <item quantity="one">%d новое сообщение</item>
         <item quantity="many">%d новых сообщений</item>

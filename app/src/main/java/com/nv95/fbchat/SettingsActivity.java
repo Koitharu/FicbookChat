@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.EditTextPreference;
 import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
@@ -66,7 +67,7 @@ public class SettingsActivity extends BaseAppActivity implements Preference.OnPr
                 ChatApp.getApplicationPalette().setDark((Boolean) o);
                 requestRestart();
                 return true;
-            case "debug":
+            case "servip":
                 requestRestart();
                 return true;
             default:
@@ -155,12 +156,12 @@ public class SettingsActivity extends BaseAppActivity implements Preference.OnPr
                 findPreference("dark").setOnPreferenceChangeListener((Preference.OnPreferenceChangeListener) activity);
                 findPreference("logout").setOnPreferenceClickListener((Preference.OnPreferenceClickListener) activity);
                 findPreference("logout").setSummary(AccountStore.getLogin(activity));
-                findPreference("debug").setOnPreferenceChangeListener((Preference.OnPreferenceChangeListener) activity);
                 PreferencesUtils.bindPreferenceSummary((ListPreference) findPreference("notify.popup"));
                 PreferencesUtils.bindPreferenceSummary((RingtonePreference) findPreference("notify.sound"));
                 findPreference("wallpaper").setOnPreferenceClickListener((Preference.OnPreferenceClickListener) activity);
                 findPreference("ccache").setOnPreferenceClickListener((Preference.OnPreferenceClickListener) activity);
                 PreferencesUtils.bindPreferenceSummary((ImagePreference) findPreference("wallpaper"));
+                PreferencesUtils.bindPreferenceSummary((EditTextPreference) findPreference("servip"), (Preference.OnPreferenceChangeListener) activity);
             }
 
             new AsyncTask<Void, Void, Float>() {

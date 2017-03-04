@@ -6,6 +6,7 @@ import android.preference.EditTextPreference;
 import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.RingtonePreference;
+import android.support.annotation.Nullable;
 import android.text.TextUtils;
 
 import com.nv95.fbchat.R;
@@ -34,14 +35,14 @@ public class PreferencesUtils {
         });
     }
 
-    public static void bindPreferenceSummary(EditTextPreference editTextPreference) {
+    public static void bindPreferenceSummary(EditTextPreference editTextPreference, @Nullable final Preference.OnPreferenceChangeListener changeListener) {
         String summ = editTextPreference.getText();
         editTextPreference.setSummary(summ);
         editTextPreference.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
             @Override
             public boolean onPreferenceChange(Preference preference, Object newValue) {
                 preference.setSummary((String) newValue);
-                return true;
+                return changeListener == null || changeListener.onPreferenceChange(preference, newValue);
             }
         });
     }

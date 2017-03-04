@@ -69,11 +69,10 @@
             android:key="ccache"
             android:title="Очистить кэш" />
 
-        <com.nv95.fbchat.components.preferences.CheckPreferenceCompat
-            android:key="debug"
-            android:defaultValue="false"
-            android:summary="Исключительно для тестирования"
-            android:title="Резервное подключение" />
+        <com.nv95.fbchat.components.preferences.EditTextPreferenceCompat
+            android:key="servip"
+            android:defaultValue="@string/defurl"
+            android:title="Адрес сервера" />
 
     </com.nv95.fbchat.components.preferences.PreferenceCategoryCompat>
 

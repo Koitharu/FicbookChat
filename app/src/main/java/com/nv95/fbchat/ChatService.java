@@ -38,9 +38,6 @@ public class ChatService extends Service implements FbChat.ChatCallback {
     public static final int POWER_ADMIN = 1000;
     public static final int POWER_MODER = 100;
 
-    public static final String MAIN_URL = "ws://146.120.111.42:7070";
-    public static final String DEBUG_URL = "ws://146.120.111.42:9000";
-
     private NotificationManager mNotificationManager;
     private NotificationCompat.Builder mNotificationBuilder;
     private FbChat mChat;
@@ -76,8 +73,7 @@ public class ChatService extends Service implements FbChat.ChatCallback {
         mCurrentRoom = null;
         mNotifyHelper = new NotificationHelper(this);
         PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).registerOnSharedPreferenceChangeListener(mNotifyHelper);
-        boolean debug = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getBoolean("debug", false);
-        mChat = new FbChat(debug ? DEBUG_URL : MAIN_URL, this);
+        mChat = new FbChat(PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString("servip", getString(R.string.defurl)), this);
         mChat.connect();
         startForeground(NOTIFY_ID, mNotificationBuilder.build());
     }
