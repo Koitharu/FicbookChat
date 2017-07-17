@@ -9,7 +9,7 @@ android {
         minSdkVersion 15
         targetSdkVersion 26
         versionCode 112
-        versionName "4.0_417"
+        versionName "4.1_777"
     }
     buildTypes {
         release {
