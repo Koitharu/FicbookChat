@@ -70,6 +70,7 @@ public class MainActivity extends BaseAppActivity implements TextWatcher, Servic
         View.OnClickListener, EndlessHeaderedAdapter.OnLoadMoreListener, OnEmojiSelectListener, DialogInterface.OnCancelListener, OnUserClickListener {
 
     private static final int REQUEST_SETTINGS = 238;
+    private static final int REQUEST_SETTINGS_RESTART = 239;
 
     private RecyclerView mRecyclerView;
     private RecyclerView mRecyclerViewUsers;
@@ -203,6 +204,8 @@ public class MainActivity extends BaseAppActivity implements TextWatcher, Servic
             } else {
                 mWallpaperView.setWallpaper(PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString("wallpaper", ""));
             }
+        } else if (requestCode == REQUEST_SETTINGS_RESTART) {
+            ChatApp.restart(this);
         }
     }
 
@@ -454,6 +457,12 @@ public class MainActivity extends BaseAppActivity implements TextWatcher, Servic
                         MainActivity.this.finish();
                     }
                 } : null)
+                .setNeutralButton(R.string.settings, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        startActivityForResult(new Intent(MainActivity.this, SettingsActivity.class), REQUEST_SETTINGS_RESTART);
+                    }
+                })
                 .create()
                 .show();
     }
