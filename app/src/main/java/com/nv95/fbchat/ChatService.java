@@ -73,7 +73,11 @@ public class ChatService extends Service implements FbChat.ChatCallback {
         mCurrentRoom = null;
         mNotifyHelper = new NotificationHelper(this);
         PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).registerOnSharedPreferenceChangeListener(mNotifyHelper);
-        mChat = new FbChat(PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString("servip", getString(R.string.defurl)), this);
+        String server = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString("servip", getString(R.string.defurl));
+        if (server.trim().isEmpty()) {
+            server = getString(R.string.defurl);
+        }
+        mChat = new FbChat(server, this);
         mChat.connect();
         startForeground(NOTIFY_ID, mNotificationBuilder.build());
     }
