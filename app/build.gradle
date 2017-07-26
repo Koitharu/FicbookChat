@@ -8,8 +8,8 @@ android {
         applicationId "com.nv95.fbchat"
         minSdkVersion 15
         targetSdkVersion 26
-        versionCode 114
-        versionName "4.1_779"
+        versionCode 116
+        versionName "4.2_000"
     }
     buildTypes {
         release {
