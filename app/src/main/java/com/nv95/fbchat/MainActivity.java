@@ -523,7 +523,7 @@ public class MainActivity extends BaseAppActivity implements TextWatcher, Servic
                 startActivityForResult(new Intent(this, SettingsActivity.class), REQUEST_SETTINGS);
                 break;
             default:
-                if (!mChatBinder.isConnected()) {
+                if (!mChatBinder.isConnected() || item.getTitle().equals(mChatBinder.getCurrentRoomName())) {
                     mDrawerLayout.closeDrawer(GravityCompat.START);
                     return false;
                 }
