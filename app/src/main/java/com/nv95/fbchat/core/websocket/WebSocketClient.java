@@ -256,11 +256,11 @@ public class WebSocketClient {
     }
 
     public interface Listener {
-        public void onConnect();
-        public void onMessage(String message);
-        public void onMessage(byte[] data);
-        public void onDisconnect(int code, String reason);
-        public void onError(Exception error);
+        void onConnect();
+        void onMessage(String message);
+        void onMessage(byte[] data);
+        void onDisconnect(int code, String reason);
+        void onError(Exception error);
     }
 
     private SSLSocketFactory getSSLSocketFactory() throws NoSuchAlgorithmException, KeyManagementException {

@@ -1,6 +1,5 @@
 package com.nv95.fbchat;
 
-import android.app.ProgressDialog;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -9,14 +8,18 @@ import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.content.res.ColorStateList;
 import android.content.res.Configuration;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.preference.PreferenceManager;
+import android.support.annotation.DrawableRes;
 import android.support.annotation.Nullable;
+import android.support.annotation.StringRes;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
@@ -32,6 +35,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.SubMenu;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -67,7 +71,7 @@ import java.util.Random;
 
 public class MainActivity extends BaseAppActivity implements TextWatcher, ServiceConnection, ChatCallback,
         LoginDialog.OnLoginListener, DialogInterface.OnClickListener, NavigationView.OnNavigationItemSelectedListener,
-        View.OnClickListener, EndlessHeaderedAdapter.OnLoadMoreListener, OnEmojiSelectListener, DialogInterface.OnCancelListener, OnUserClickListener {
+        View.OnClickListener, EndlessHeaderedAdapter.OnLoadMoreListener, OnEmojiSelectListener, OnUserClickListener {
 
     private static final int REQUEST_SETTINGS = 238;
     private static final int REQUEST_SETTINGS_RESTART = 239;
@@ -77,7 +81,6 @@ public class MainActivity extends BaseAppActivity implements TextWatcher, Servic
     private GridRecyclerView mRecyclerViewEmoji;
     private ImageView mImageViewAvatar;
     private TextView mTextViewLogin;
-    private ProgressBar mProgressBar;
     private NavigationView mNavigationView;
     private FloatingActionButton mFabSend;
     private EditText mEditTextMessage;
@@ -89,27 +92,34 @@ public class MainActivity extends BaseAppActivity implements TextWatcher, Servic
     private ChatMessagesAdapter mAdapter;
     private UserListAdapter mUsersAdapter;
     private TextView mTextViewAbout;
-    @Nullable
-    private ProgressDialog mProgressDialog;
-    @Nullable
     private ChatService.ChatBinder mChatBinder;
+    //dialog
+    private View mDialogView;
+    private TextView mTextViewHolder;
+    private ImageView mImageViewIcon;
+    private ProgressBar mProgressBar;
+    private Button mButtonDismiss;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        mRecyclerView = (RecyclerView) findViewById(R.id.recyclerView);
-        mRecyclerViewEmoji = (GridRecyclerView) findViewById(R.id.recyclerViewEmoji);
-        mProgressBar = (ProgressBar) findViewById(R.id.progressBar);
-        mWallpaperView = (WallpaperView) findViewById(R.id.wallpaper);
-        mNavigationView = (NavigationView) findViewById(R.id.navigationView);
-        mEditTextMessage = (EditText) findViewById(R.id.editMessage);
-        mImageButtonEmoji = (ImageButton) findViewById(R.id.buttonEmoji);
-        mFabSend = (FloatingActionButton) findViewById(R.id.fabSend);
-        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer);
-        mTextViewAbout = (TextView) findViewById(R.id.textViewAbout);
-        mRecyclerViewUsers = (RecyclerView) findViewById(R.id.recyclerViewUsers);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        mRecyclerView = findViewById(R.id.recyclerView);
+        mRecyclerViewEmoji = findViewById(R.id.recyclerViewEmoji);
+        mDialogView = findViewById(R.id.dialog);
+        mTextViewHolder = findViewById(R.id.textViewHolder);
+        mImageViewIcon = findViewById(R.id.imageViewIcon);
+        mProgressBar = findViewById(R.id.progressBar);
+        mButtonDismiss = findViewById(R.id.buttonDismiss);
+        mWallpaperView = findViewById(R.id.wallpaper);
+        mNavigationView = findViewById(R.id.navigationView);
+        mEditTextMessage = findViewById(R.id.editMessage);
+        mImageButtonEmoji = findViewById(R.id.buttonEmoji);
+        mFabSend = findViewById(R.id.fabSend);
+        mDrawerLayout = findViewById(R.id.drawer);
+        mTextViewAbout = findViewById(R.id.textViewAbout);
+        mRecyclerViewUsers = findViewById(R.id.recyclerViewUsers);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         mAdapter = new ChatMessagesAdapter(mRecyclerView, this);
         mRecyclerView.setAdapter(mAdapter);
@@ -130,9 +140,9 @@ public class MainActivity extends BaseAppActivity implements TextWatcher, Servic
         mDrawerLayout.addDrawerListener(mToggle);
         mNavigationView.setNavigationItemSelectedListener(this);
         View v = mNavigationView.getHeaderView(0);
-        mImageViewPower = (ImageView) v.findViewById(R.id.imageViewPower);
-        mTextViewLogin = (TextView) v.findViewById(R.id.textViewLogin);
-        mImageViewAvatar = (ImageView) v.findViewById(R.id.imageViewAvatar);
+        mImageViewPower = v.findViewById(R.id.imageViewPower);
+        mTextViewLogin = v.findViewById(R.id.textViewLogin);
+        mImageViewAvatar = v.findViewById(R.id.imageViewAvatar);
         mImageButtonEmoji.setOnClickListener(this);
         mImageViewPower.setOnClickListener(this);
         mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -180,14 +190,8 @@ public class MainActivity extends BaseAppActivity implements TextWatcher, Servic
                     .create().show();
             return;
         }
-        mProgressDialog = new ProgressDialog(this);
-        mProgressDialog.setIndeterminate(true);
-        mProgressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-        mProgressDialog.setMessage(getString(R.string.connecting));
-        mProgressDialog.setCancelable(false);
-        mProgressDialog.setButton(DialogInterface.BUTTON_NEGATIVE, getString(android.R.string.cancel), this);
-        mProgressDialog.setOnShowListener(new ThemeUtils.DialogPainter());
-        mProgressDialog.show();
+
+        dialog(R.string.connecting, 0, true, false);
 
 
         Intent serviceIntent = new Intent(this, ChatService.class);
@@ -222,6 +226,7 @@ public class MainActivity extends BaseAppActivity implements TextWatcher, Servic
                 palette.getGrayColor(),
                 palette.getContrastColor()
         });
+        mButtonDismiss.setTextColor(palette.getAccentColor());
         mNavigationView.setItemTextColor(csl);
         mNavigationView.setItemIconTintList(csl);
         ThemeUtils.setDrawableCompat(
@@ -250,10 +255,7 @@ public class MainActivity extends BaseAppActivity implements TextWatcher, Servic
 
     @Override
     protected void onDestroy() {
-        if (mProgressDialog != null) {
-            mProgressDialog.dismiss();
-            mProgressDialog = null;
-        }
+        hideDialog();
         if (mChatBinder != null) {
             mChatBinder.terminate();
             unbindService(this);
@@ -308,6 +310,8 @@ public class MainActivity extends BaseAppActivity implements TextWatcher, Servic
     public void onBackPressed() {
         if (mDrawerLayout.isDrawerOpen(GravityCompat.START)) {
             mDrawerLayout.closeDrawer(GravityCompat.START);
+        } else if (mButtonDismiss.isShown()) {
+            hideDialog();
         } else if (mRecyclerViewEmoji.getVisibility() == View.VISIBLE) {
             onClick(mImageButtonEmoji);
         } else if (CloseHelper.tryClose(mRecyclerView)) {
@@ -352,10 +356,7 @@ public class MainActivity extends BaseAppActivity implements TextWatcher, Servic
     @Override
     public void onConnected() {
         if (!AccountStore.isAuthorized(this)) {
-            if (mProgressDialog != null) {
-                mProgressDialog.dismiss();
-                mProgressDialog = null;
-            }
+            hideDialog();
             new LoginDialog(this, this).show();
         } else {
             mChatBinder.signIn(
@@ -367,20 +368,14 @@ public class MainActivity extends BaseAppActivity implements TextWatcher, Servic
 
     @Override
     public void onAuthorizationFailed(String reason) {
-        if (mProgressDialog != null) {
-            mProgressDialog.dismiss();
-            mProgressDialog = null;
-        }
+        hideDialog();
         new LoginDialog(this,this).show(reason);
     }
 
     @Override
     public void onAuthorizationSuccessful(String login, String password, int power) {
         AccountStore.write(this, login, password);
-        if (mProgressDialog != null) {
-            mProgressDialog.dismiss();
-            mProgressDialog = null;
-        }
+        hideDialog();
         mTextViewLogin.setText(login);
         AvatarUtils.assignAvatarTo(mImageViewAvatar, login);
         mChatBinder.requestRooms();
@@ -433,7 +428,7 @@ public class MainActivity extends BaseAppActivity implements TextWatcher, Servic
     @Override
     public void onHistoryReceived(List<ChatMessage> history, String room) {
         if (room.equals(mChatBinder.getCurrentRoomName())) {
-            mProgressBar.setVisibility(View.GONE);
+            hideDialog();
             mAdapter.setLoadEnabled(history.size() != 0);
             if (mAdapter.appendHistory(history)) {
                 mRecyclerView.scrollToPosition(0);
@@ -444,27 +439,11 @@ public class MainActivity extends BaseAppActivity implements TextWatcher, Servic
 
     @Override
     public void onAlertMessage(String message, boolean error, boolean quit) {
-        if (mProgressDialog != null) {
-            mProgressDialog.dismiss();
-            mProgressDialog = null;
-        }
-        new AlertDialog.Builder(this).setCancelable(false)
-                .setMessage(message)
-                .setIcon(error ? android.R.drawable.ic_dialog_alert : android.R.drawable.ic_dialog_info)
-                .setPositiveButton(R.string.close, quit ? new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        MainActivity.this.finish();
-                    }
-                } : null)
-                .setNeutralButton(R.string.settings, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        startActivityForResult(new Intent(MainActivity.this, SettingsActivity.class), REQUEST_SETTINGS_RESTART);
-                    }
-                })
-                .create()
-                .show();
+        dialog(
+                message,
+                ContextCompat.getDrawable(this, error ? android.R.drawable.ic_dialog_alert : android.R.drawable.ic_dialog_info),
+                false, !quit
+        );
     }
 
     @Override
@@ -486,11 +465,10 @@ public class MainActivity extends BaseAppActivity implements TextWatcher, Servic
 
     @Override
     public void onSearchResult(ArrayList<ChatMessage> messages, String query) {
-        if (mProgressDialog == null) {
+        if (!isDialog()) {
             return;
         }
-        mProgressDialog.dismiss();
-        mProgressDialog = null;
+        hideDialog();
         if (messages.size() == 0) {
             onAlertMessage(getString(R.string.nothing_found, query), false, false);
         } else {
@@ -513,13 +491,7 @@ public class MainActivity extends BaseAppActivity implements TextWatcher, Servic
 
     @Override
     public void onLogin(String email, String password) {
-        mProgressDialog = new ProgressDialog(this);
-        mProgressDialog.setIndeterminate(true);
-        mProgressDialog.setMessage(getString(R.string.signingin));
-        mProgressDialog.setCancelable(false);
-        mProgressDialog.setOnShowListener(new ThemeUtils.DialogPainter());
-        mProgressDialog.setButton(DialogInterface.BUTTON_NEGATIVE, getString(android.R.string.cancel), this);
-        mProgressDialog.show();
+        dialog(R.string.signingin, 0, true, false);
         mChatBinder.signIn(email, password);
     }
 
@@ -542,12 +514,7 @@ public class MainActivity extends BaseAppActivity implements TextWatcher, Servic
                 new EditTextDialog(this, R.string.search, new EditTextDialog.OnTextChangedListener() {
                     @Override
                     public void onTextChanged(String newText) {
-                        mProgressDialog = new ProgressDialog(MainActivity.this);
-                        mProgressDialog.setIndeterminate(true);
-                        mProgressDialog.setMessage(getString(R.string.loading));
-                        mProgressDialog.setCancelable(true);
-                        mProgressDialog.setOnCancelListener(MainActivity.this);
-                        mProgressDialog.show();
+                        dialog(R.string.loading, 0, true, true);
                         mChatBinder.search(newText);
                     }
                 }).show(R.string.enter_query, null);
@@ -556,6 +523,10 @@ public class MainActivity extends BaseAppActivity implements TextWatcher, Servic
                 startActivityForResult(new Intent(this, SettingsActivity.class), REQUEST_SETTINGS);
                 break;
             default:
+                if (!mChatBinder.isConnected()) {
+                    mDrawerLayout.closeDrawer(GravityCompat.START);
+                    return false;
+                }
                 SubMenu subMenu = mNavigationView.getMenu().findItem(R.id.nav_rooms).getSubMenu();
                 MenuItem o;
                 for (int i=0;i<subMenu.size();i++) {
@@ -565,7 +536,7 @@ public class MainActivity extends BaseAppActivity implements TextWatcher, Servic
                         break;
                     }
                 }
-                mProgressBar.setVisibility(View.VISIBLE);
+                dialog(R.string.loading, 0, true, false);
                 mAdapter.clearAllItems();
                 mDrawerLayout.closeDrawer(GravityCompat.START);
                 setSubtitle(item.getTitle().toString());
@@ -643,11 +614,6 @@ public class MainActivity extends BaseAppActivity implements TextWatcher, Servic
     }
 
     @Override
-    public void onCancel(DialogInterface dialogInterface) {
-        mProgressDialog = null;
-    }
-
-    @Override
     public void onUserClick(String nickname, boolean isLongClick) {
         if (isLongClick) {
             new UserPreviewDialog(this, mChatBinder).show(nickname);
@@ -686,7 +652,7 @@ public class MainActivity extends BaseAppActivity implements TextWatcher, Servic
                     mRecyclerView.scrollToPosition(0);
                 }
             });
-            mSnackbar.setCallback(new Snackbar.Callback() {
+            mSnackbar.addCallback(new Snackbar.Callback() {
                 @Override
                 public void onDismissed(Snackbar snackbar, int event) {
                     mSnackbar = null;
@@ -698,5 +664,54 @@ public class MainActivity extends BaseAppActivity implements TextWatcher, Servic
         } else {
             mSnackbar.setText(getResources().getQuantityString(R.plurals.new_messages, mCounter, mCounter));
         }
+    }
+
+    private void hideDialog() {
+        mDialogView.setVisibility(View.GONE);
+        mRecyclerView.setEnabled(true);
+        mRecyclerView.setAlpha(1f);
+        mRecyclerView.setClickable(true);
+        mEditTextMessage.setEnabled(true);
+        mRecyclerView.setFocusable(true);
+        if (mEditTextMessage.getText().length() != 0) {
+            mFabSend.show();
+        }
+    }
+
+    boolean isDialog() {
+        return mDialogView.isShown();
+    }
+
+    private void dialog(@StringRes int text, @DrawableRes int icon, boolean showWait, boolean dismissible) {
+        dialog(
+                text == 0 ? null : getString(text),
+                icon == 0 ? null : ContextCompat.getDrawable(this, icon),
+                showWait,
+                dismissible
+        );
+    }
+
+    private void dialog(@Nullable CharSequence text, @Nullable Drawable icon, boolean showWait, boolean dismissible) {
+        if (TextUtils.isEmpty(text)) {
+            mTextViewHolder.setVisibility(View.GONE);
+        } else {
+            mTextViewHolder.setText(text);
+            mTextViewHolder.setVisibility(View.VISIBLE);
+        }
+        if (icon == null) {
+            mImageViewIcon.setVisibility(View.GONE);
+        } else {
+            mImageViewIcon.setImageDrawable(icon);
+            mImageViewIcon.setVisibility(View.VISIBLE);
+        }
+        mProgressBar.setVisibility(showWait ? View.VISIBLE : View.GONE);
+        mButtonDismiss.setVisibility(dismissible ? View.VISIBLE : View.GONE);
+        mDialogView.setVisibility(View.VISIBLE);
+        mRecyclerView.setEnabled(false);
+        mEditTextMessage.setEnabled(false);
+        mRecyclerView.setAlpha(0.4f);
+        mRecyclerView.setClickable(false);
+        mRecyclerView.setFocusable(false);
+        mFabSend.hide();
     }
 }

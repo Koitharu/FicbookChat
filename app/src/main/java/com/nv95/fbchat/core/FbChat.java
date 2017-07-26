@@ -93,6 +93,8 @@ public class FbChat implements WebSocketClient.Listener, Handler.Callback {
                 mCallback.onConnected();
                 return true;
             case MSG_DISCONNECT:
+                if (!mConnected) return true;
+                mConnected = false;
                 mCallback.onDisconnected((String) message.obj);
                 return true;
             case MSG_MESSAGE:

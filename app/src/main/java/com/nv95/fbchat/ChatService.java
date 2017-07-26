@@ -562,5 +562,9 @@ public class ChatService extends Service implements FbChat.ChatCallback {
                 return false;
             }
         }
+
+        public boolean isConnected() {
+            return mChat.isConnected();
+        }
     }
 }
