@@ -21,10 +21,10 @@ android {
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile 'com.android.support:design:26.+'
-    compile 'com.android.support:recyclerview-v7:26.+'
+    compile 'com.android.support:design:26.0.0-beta2'
+    compile 'com.android.support:recyclerview-v7:26.0.0-beta2'
     compile 'com.nostra13.universalimageloader:universal-image-loader:1.9.5'
-    compile 'com.davemorrissey.labs:subsampling-scale-image-view:3.6.0@aar'
+    compile 'com.davemorrissey.labs:subsampling-scale-image-view:3.6.0'
     compile 'com.soundcloud.android:android-crop:1.0.1@aar'
     compile 'org.jsoup:jsoup:1.10.3'
 }
