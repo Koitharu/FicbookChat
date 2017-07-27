@@ -77,7 +77,7 @@ public class FbChat implements WebSocketClient.Listener, Handler.Callback {
         mWebSocket.disconnect();
     }
 
-    public void send(JSONObject data) {
+    public void send(JSONObject data) throws IllegalStateException {
         mWebSocket.send(data.toString());
     }
 

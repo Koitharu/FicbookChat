@@ -178,11 +178,11 @@ public class WebSocketClient {
         }
     }
 
-    public void send(String data) {
+    public void send(String data) throws IllegalStateException {
         sendFrame(mParser.frame(data));
     }
 
-    public void send(byte[] data) {
+    void send(byte[] data) throws IllegalStateException {
         sendFrame(mParser.frame(data));
     }
 
@@ -235,7 +235,7 @@ public class WebSocketClient {
         }
     }
 
-    void sendFrame(final byte[] frame) {
+    void sendFrame(final byte[] frame) throws IllegalStateException {
         mHandler.post(new Runnable() {
             @Override
             public void run() {

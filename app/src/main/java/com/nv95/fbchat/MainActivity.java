@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.preference.PreferenceManager;
 import android.support.annotation.DrawableRes;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 import android.support.design.widget.CoordinatorLayout;
@@ -92,6 +93,7 @@ public class MainActivity extends BaseAppActivity implements TextWatcher, Servic
     private ChatMessagesAdapter mAdapter;
     private UserListAdapter mUsersAdapter;
     private TextView mTextViewAbout;
+    @Nullable
     private ChatService.ChatBinder mChatBinder;
     //dialog
     private View mDialogView;
@@ -359,6 +361,7 @@ public class MainActivity extends BaseAppActivity implements TextWatcher, Servic
             hideDialog();
             new LoginDialog(this, this).show();
         } else {
+            assert mChatBinder != null;
             mChatBinder.signIn(
                     AccountStore.getLogin(this),
                     AccountStore.getPassword(this)
@@ -378,6 +381,7 @@ public class MainActivity extends BaseAppActivity implements TextWatcher, Servic
         hideDialog();
         mTextViewLogin.setText(login);
         AvatarUtils.assignAvatarTo(mImageViewAvatar, login);
+        assert mChatBinder != null;
         mChatBinder.requestRooms();
         if (power >= ChatService.POWER_ADMIN) {
             mImageViewPower.setImageResource(R.drawable.ic_icon_key_white);
@@ -411,6 +415,7 @@ public class MainActivity extends BaseAppActivity implements TextWatcher, Servic
             mProgressBar.setVisibility(View.VISIBLE);
             mAdapter.clearAllItems();
             setSubtitle(item.getTitle().toString());
+            assert mChatBinder != null;
             mChatBinder.joinRoom(item.getTitle().toString());
         }
     }
@@ -427,6 +432,7 @@ public class MainActivity extends BaseAppActivity implements TextWatcher, Servic
 
     @Override
     public void onHistoryReceived(List<ChatMessage> history, String room) {
+        assert mChatBinder != null;
         if (room.equals(mChatBinder.getCurrentRoomName())) {
             hideDialog();
             mAdapter.setLoadEnabled(history.size() != 0);
@@ -492,6 +498,7 @@ public class MainActivity extends BaseAppActivity implements TextWatcher, Servic
     @Override
     public void onLogin(String email, String password) {
         dialog(R.string.signingin, 0, true, false);
+        assert mChatBinder != null;
         mChatBinder.signIn(email, password);
     }
 
@@ -508,13 +515,14 @@ public class MainActivity extends BaseAppActivity implements TextWatcher, Servic
     }
 
     @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_search:
                 new EditTextDialog(this, R.string.search, new EditTextDialog.OnTextChangedListener() {
                     @Override
                     public void onTextChanged(String newText) {
                         dialog(R.string.loading, 0, true, true);
+                        assert mChatBinder != null;
                         mChatBinder.search(newText);
                     }
                 }).show(R.string.enter_query, null);
@@ -523,6 +531,7 @@ public class MainActivity extends BaseAppActivity implements TextWatcher, Servic
                 startActivityForResult(new Intent(this, SettingsActivity.class), REQUEST_SETTINGS);
                 break;
             default:
+                assert mChatBinder != null;
                 if (!mChatBinder.isConnected() || item.getTitle().equals(mChatBinder.getCurrentRoomName())) {
                     mDrawerLayout.closeDrawer(GravityCompat.START);
                     return false;
@@ -566,7 +575,7 @@ public class MainActivity extends BaseAppActivity implements TextWatcher, Servic
                 break;
             case R.id.fabSend:
                 String msg = mEditTextMessage.getText().toString().trim();
-                if (msg.length() != 0) {
+                if (msg.length() != 0 && mChatBinder != null) {
                     mChatBinder.sendMessage(msg);
                     mEditTextMessage.getText().clear();
                 }
